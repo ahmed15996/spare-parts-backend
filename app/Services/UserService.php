@@ -91,9 +91,18 @@ class UserService extends BaseService
     }
     public function create(array $data): User
     {
+        $avatar = null;
+        if(array_key_exists('avatar', $data)){
+            $avatar = $data['avatar'];
+            unset($data['avatar']);
+        }
         $data['is_active'] = true;
-        $data['is_verified'] = false;
-        return $this->user->create($data);
+        $user = $this->user->create($data);
+        $user->assignRole('client');
+        if($avatar){
+            $user->addMediaFromRequest('avatar')->toMediaCollection('avatar');
+        }
+        return $user;
     }
 
     /**

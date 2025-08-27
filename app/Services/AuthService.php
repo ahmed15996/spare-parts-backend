@@ -81,4 +81,8 @@ class AuthService extends BaseService
     {
         return $this->providerRegistrationService->createRegistrationRequest($data);
     }
+    public function clientRegister(array $data)
+    {
+        return $this->userService->create($data);
+    }
 }
