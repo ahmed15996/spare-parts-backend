@@ -29,7 +29,7 @@ class Provider extends Model implements HasMedia
 
     public function brands()
     {
-        return $this->belongsToMany(Brand::class, 'brand_provider');
+        return $this->belongsToMany(Brand::class, 'brand_provider','provider_id','brand_id');
     }
 
     public function category()

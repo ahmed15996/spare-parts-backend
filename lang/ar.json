@@ -432,6 +432,9 @@
     "Longitude":"خط الطول",
     "Store Name":"اسم المتجر",
     "Add Client":"إضافة عميل",
+    "Registration Accepted":"تمت الموافقة على التسجيل",
+    "Provider registration has been accepted successfully. User account and provider profile have been created.":"تمت الموافقة على تسجيل المزود بنجاح. تم إنشاء حساب المستخدم وملف المزود.",
+    "Failed to accept registration: ":"فشل الموافقة على التسجيل: ",
     "Add Provider":"إضافة مزود",
     "Add Admin":"إضافة مدير",
     "Add Moderator":"إضافة مشرف",
@@ -450,5 +453,11 @@
     "Admin Information":"معلومات المدير",
     "Edit Moderator":"تعديل المشرف",
     "View Moderator":"عرض المشرف",
-    "Moderator Information":"معلومات المشرف"
+    "Moderator Information":"معلومات المشرف",
+    "You have a registration request in review, please wait for approval":"لديك طلب تسجيل في المراجعة، يرجى الإنتظار للموافقة",
+    "This phone number is already registered":"هذا الرقم مسجل مسبقاً",
+    "Accept":"موافقة",
+    "Reject":"رفض",
+    "Accept Provider Registration":"موافقة طلب تسجيل المزود",
+    "Are you sure you want to accept this provider registration? This will create a user account and provider profile.":"هل أنت متأكد أنك تريد موافقة طلب تسجيل المزود؟ سيتم إنشاء حساب مستخدم وملف مزود."
 }

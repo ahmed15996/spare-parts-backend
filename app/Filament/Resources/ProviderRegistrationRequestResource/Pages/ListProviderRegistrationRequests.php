@@ -18,8 +18,8 @@ class ListProviderRegistrationRequests extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()
-                ->label(__('Create') . ' ' . __('Provider Registration Request')),
+            // Actions\CreateAction::make()
+            //     ->label(__('Create') . ' ' . __('Provider Registration Request')),
         ];
     }
 }

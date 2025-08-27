@@ -7,14 +7,17 @@ use App\Models\ProviderRegistrationRequest;
 use App\Models\User;
 use App\Services\BaseService;
 use App\Services\UserService;
+use App\Services\ProviderRegisterationRequestService;
 
 
 class AuthService extends BaseService
 {
     use ApiResponseTrait;
 
-    public function __construct(private UserService $userService)
-    {
+    public function __construct(
+        private UserService $userService,
+        private ProviderRegisterationRequestService $providerRegistrationService
+    ) {
     }
 
     public function login(array $data)
@@ -27,11 +30,7 @@ class AuthService extends BaseService
             }
         } else {
             // Check if there's a pending registration request for this phone
-            $registration_request = ProviderRegistrationRequest::where('phone', $data['phone'])
-                ->where('status', 0)
-                ->first();
-            
-            if ($registration_request) {
+            if ($this->providerRegistrationService->hasPendingRegistration($data['phone'])) {
                 return $this->errorResponse(__('You have a registration request in review. Please contact support.'));
             }
             
@@ -78,25 +77,8 @@ class AuthService extends BaseService
         return $this->errorResponse(__('Invalid code'));
     }
 
-    public function providerRegisterRequest(array $data){
-        $data['status'] = 0;
-        $logo= $data['logo'] ? $data['logo'] : null;
-        $commercial_number_image= $data['commercial_number_image'] ? $data['commercial_number_image'] : null;
-        unset($data['logo'],$data['commercial_number_image']);
-        $data['city_id'] = $data['city_id'] == 0 ? null : $data['city_id'];
-        $data['brands'] = json_encode($data['brands']);
-        $data['store_name'] = [
-            'ar' => $data['store_name']['ar'],
-            'en' => $data['store_name']['en'],
-        ];
-        $request = ProviderRegistrationRequest::create($data);
-        if($logo){
-            $request->addMediaFromRequest('logo')->toMediaCollection('logo');
-        }
-        if($commercial_number_image){
-            $request->addMediaFromRequest('commercial_number_image')->toMediaCollection('commercial_number_image');
-        }
-       
-        return $this->successResponse([],__('Registration request sent successfully, please wait for approval'));
+    public function providerRegisterRequest(array $data)
+    {
+        return $this->providerRegistrationService->createRegistrationRequest($data);
     }
 }

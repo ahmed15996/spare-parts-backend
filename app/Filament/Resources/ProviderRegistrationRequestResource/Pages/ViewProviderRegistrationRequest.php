@@ -50,10 +50,9 @@ class ViewProviderRegistrationRequest extends ViewRecord
                     'last_name' => $this->record->last_name,
                     'email' => $this->record->email,
                     'phone' => $this->record->phone,
-                    'city_id' => $this->record->city_id,
+                    'city_id' => $this->record->city_id == 0 ? null : $this->record->city_id,
                     'lat' => $this->record->lat,
                     'long' => $this->record->long,
-                    'type' => 1, // Provider type
                     'is_active' => true,
                     'is_verified' => true,
                 ]);
@@ -69,7 +68,7 @@ class ViewProviderRegistrationRequest extends ViewRecord
                     'commercial_number' => $this->record->commercial_number,
                     'address' => $this->record->address,
                     'category_id' => $this->record->category_id,
-                    'city_id' => $this->record->city_id,
+                    'city_id' => $this->record->city_id == 0 ? null : $this->record->city_id,
                 ]);
 
                 // Handle brands relationship

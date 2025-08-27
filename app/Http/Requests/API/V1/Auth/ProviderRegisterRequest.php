@@ -24,9 +24,9 @@ class ProviderRegisterRequest extends FormRequest
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'phone' => 'required|string|max:255|unique:provider_registration_requests,phone',
-            'email' => 'required|email|max:255|unique:users,email',
-            'city_id' => 'required|integer|in:0,exists:cities,id',
+            'phone' => 'required|string|max:255',
+            'email' => 'required|email',
+            'city_id' => 'required|integer|exists:cities,id',
             'description' => 'required|string|max:255',
             'category_id' => 'required|integer|exists:categories,id',
             'store_name' => 'required|array',

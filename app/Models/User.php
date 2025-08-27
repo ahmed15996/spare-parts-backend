@@ -27,14 +27,13 @@ class User extends Model implements FilamentUser, HasMedia, Authenticatable, Aut
     protected function casts(): array
     {
         return [
-            'type' => 'int',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'activated_at' => 'datetime',
             'is_active' => 'boolean',
         ];
     }
-    protected $fillable = array('first_name', 'last_name', 'email', 'phone', 'city_id', 'is_active', 'lat', 'long', 'type', 'active_code', 'is_verified');
+    protected $fillable = array('first_name', 'last_name', 'email', 'phone', 'city_id', 'is_active', 'lat', 'long', 'active_code', 'is_verified');
 
     public function getNameAttribute()
     {
