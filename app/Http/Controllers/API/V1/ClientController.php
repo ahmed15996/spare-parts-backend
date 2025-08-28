@@ -37,9 +37,10 @@ class ClientController extends Controller
         $data = $request->validated();
         $providers = $this->providerSearchService->searchProvidersWithLocation($data);
         return $this->successResponse([
-            'providers' => ProviderResource::collection($providers),
+             ProviderResource::collection($providers),
         ]);
     }
+
 
     
 }

@@ -46,12 +46,12 @@ class ProviderSearchService extends BaseSearchService
 
         // Apply category filter
         if (!empty($filters['category_id'])) {
-            $queryBuilder->where('category_id', $filters['category_id']);
+            $queryBuilder->where('providers.category_id', $filters['category_id']);
         }
 
         // Apply city filter
         if (!empty($filters['city_id'])) {
-            $queryBuilder->where('city_id', $filters['city_id']);
+            $queryBuilder->where('providers.city_id', $filters['city_id']);
         }
 
         // Apply default filters (is_active = true through user relationship)
@@ -90,12 +90,12 @@ class ProviderSearchService extends BaseSearchService
     {
         // Apply category filter
         if ($request->has('category_id') && !empty($request->query('category_id'))) {
-            $queryBuilder->where('category_id', $request->query('category_id'));
+            $queryBuilder->where('providers.category_id', $request->query('category_id'));
         }
 
         // Apply city filter
         if ($request->has('city_id') && !empty($request->query('city_id'))) {
-            $queryBuilder->where('city_id', $request->query('city_id'));
+            $queryBuilder->where('providers.city_id', $request->query('city_id'));
         }
 
         // Apply default filters through user relationship
