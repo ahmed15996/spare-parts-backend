@@ -13,4 +13,10 @@ use Illuminate\Support\Facades\Route;
         Route::post('verify-code', [AuthController::class, 'verifyActiveCode'])->name('verify-active-code');
         Route::post('provider/register', [AuthController::class, 'providerRegisterRequest'])->name('provider.register');
         Route::post('client/register', [AuthController::class, 'clientRegister'])->name('client.register');
+        
+
+        Route::group(['middleware' => 'auth:sanctum'], function () {
+            Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+        });
     });
+    

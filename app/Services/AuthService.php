@@ -8,7 +8,9 @@ use App\Models\User;
 use App\Services\BaseService;
 use App\Services\UserService;
 use App\Services\ProviderRegisterationRequestService;
-
+use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
+use Illuminate\Http\Request;
 
 class AuthService extends BaseService
 {
@@ -75,6 +77,14 @@ class AuthService extends BaseService
             }
         }
         return $this->errorResponse(__('Invalid code'));
+    }
+    public function logout(Request $request){
+        $user = Auth::user();
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $user->fcmTokens()->where('token',$request->input('fcm_token'))->delete();
+        $token->delete();
+
+        return $this->successResponse([],__('Logged out successfully'));
     }
 
     public function providerRegisterRequest(array $data)

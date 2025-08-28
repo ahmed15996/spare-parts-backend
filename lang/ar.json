@@ -464,5 +464,6 @@
     "Accept Provider Registration":"موافقة طلب تسجيل المزود",
     "Are you sure you want to accept this provider registration? This will create a user account and provider profile.":"هل أنت متأكد أنك تريد موافقة طلب تسجيل المزود؟ سيتم إنشاء حساب مستخدم وملف مزود.",
     "Registration request sent successfully, please wait for approval":"تم إرسال طلب التسجيل بنجاح، يرجى الإنتظار للموافقة",
-    "Location":"العنوان"
+    "Location":"العنوان",
+    "Logged out successfully":"تم تسجيل الخروج بنجاح"
 }

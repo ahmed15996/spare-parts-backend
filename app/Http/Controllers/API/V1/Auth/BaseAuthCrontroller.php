@@ -62,9 +62,7 @@ class BaseAuthCrontroller extends Controller
     }
 
     public function logout(Request $request){
-        $request->user()->currentAccessToken()->delete();
-        
-        return $this->successResponse([],__('Logged out successfully'),200);
+        return $this->authService->logout($request);
     }
 
     public function sendResetCode(Request $request){
