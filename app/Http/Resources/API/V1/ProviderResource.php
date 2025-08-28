@@ -24,10 +24,11 @@ class ProviderResource extends JsonResource
                  
             ];
 
-            //TODO: compelete returned data
             if($request->route()->getName() == 'client.providers.show'){
                 $data['days'] = ProviderDayResource::collection($this->days);
                 $data['brands'] = BrandResource::collection($this->brands);
+                $data['banners'] = BannerResource::collection($this->activeProfileBanners);
+                $data['products'] = ProductResource::collection($this->products);
             }
 
             return $data;

@@ -16,10 +16,9 @@ class ProviderDayResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'name' => $this->day->name,
             'from' => $this->from,
             'to' => $this->to,
-            'is_closed' => $this->is_closed,
         ];
     }
 }

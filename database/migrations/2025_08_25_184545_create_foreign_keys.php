@@ -25,7 +25,7 @@ class CreateForeignKeys extends Migration {
 						->onUpdate('set null');
 		});
 		Schema::table('products', function(Blueprint $table) {
-			$table->foreign('provider_id')->references('user_id')->on('providers')
+			$table->foreign('provider_id')->references('id')->on('providers')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
@@ -35,7 +35,7 @@ class CreateForeignKeys extends Migration {
 						->onUpdate('restrict');
 		});
 		Schema::table('day_provider', function(Blueprint $table) {
-			$table->foreign('provider_id')->references('user_id')->on('providers')
+			$table->foreign('provider_id')->references('id')->on('providers')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
@@ -101,7 +101,7 @@ class CreateForeignKeys extends Migration {
 						->onUpdate('restrict');
 		});
 		Schema::table('subscriptions', function(Blueprint $table) {
-			$table->foreign('provider_id')->references('user_id')->on('providers')
+			$table->foreign('provider_id')->references('id')->on('providers')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
@@ -111,7 +111,7 @@ class CreateForeignKeys extends Migration {
 						->onUpdate('restrict');
 		});
 		Schema::table('banners', function(Blueprint $table) {
-			$table->foreign('provider_id')->references('user_id')->on('providers')
+			$table->foreign('provider_id')->references('id')->on('providers')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});

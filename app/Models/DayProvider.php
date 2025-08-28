@@ -11,4 +11,9 @@ class DayProvider extends Model
     public $timestamps = true;
     protected $fillable = array('provider_id', 'day_id', 'from', 'to', 'is_closed');
 
+    public function day()
+    {
+        return $this->belongsTo(Day::class);
+    }
+
 }

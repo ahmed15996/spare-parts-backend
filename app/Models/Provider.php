@@ -12,7 +12,6 @@ class Provider extends Model implements HasMedia
     use InteractsWithMedia, HasTranslations;
 
     protected $table = 'providers';
-    protected $primaryKey = 'user_id';
     public $incrementing = false;
     public $timestamps = true;
     protected $fillable = array('user_id', 'store_name', 'description', 'commercial_number', 'location', 'category_id', 'city_id', 'slug');
@@ -44,7 +43,7 @@ class Provider extends Model implements HasMedia
 
     public function products()
     {
-        return $this->hasMany('App\Models\Product');
+        return $this->hasMany('App\Models\Product','provider_id');
     }
 
     public function posts()
@@ -59,7 +58,7 @@ class Provider extends Model implements HasMedia
 
     public function days()
     {
-        return $this->hasMany('App\Models\DayProvider', 'provider_id');
+        return $this->hasMany('App\Models\DayProvider', 'provider_id','id');
     }
 
     public function adminRequests()
@@ -80,6 +79,11 @@ class Provider extends Model implements HasMedia
     public function banners()
     {
         return $this->hasMany('App\Models\Banner');
+    }
+
+    public function activeProfileBanners()
+    {
+        return $this->hasMany('App\Models\Banner')->where('status', 1)->where('type', 2);
     }
 
 }

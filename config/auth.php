@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'web'),
+        'guard' => env('AUTH_GUARD', 'sanctum'),
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
@@ -40,14 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'clients' => [
-            'driver' => 'session',
-            'provider' => 'clients',
-        ],
-        'providers' => [
-            'driver' => 'session',
-            'provider' => 'providers',
-        ],
+        'sanctum' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+        ]
     ],
 
     /*
@@ -71,17 +67,7 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
-        ],
-        'clients' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\Client::class),
-        ],
-        'providers' => [
-            'users' => [
-                'driver' => 'eloquent',
-                'model' => env('AUTH_MODEL', App\Models\Provider::class),
-            ],
-        ],
+        ]
 
     ],
 

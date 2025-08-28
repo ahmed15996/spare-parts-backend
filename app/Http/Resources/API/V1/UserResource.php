@@ -20,7 +20,6 @@ class UserResource extends JsonResource
         $data['role'] = $role->name;
         if($role->name == 'client'){
             $data += [
-                'id' => $this->id,
                 'first_name' => $this->first_name,
                 'last_name' => $this->last_name,
                 'address'=> $this->address,
@@ -29,8 +28,7 @@ class UserResource extends JsonResource
         }
         if($role->name == 'provider'){
             $data += [
-                'user_id' => $this->id,
-                'id' => $this->provider->id,
+                'id'=>$this->id,
                 'store_name' => $this->provider->store_name,
                 'address' => $this->provider->address,
                 'avatar' => $this->getFirstMediaUrl('avatar'),

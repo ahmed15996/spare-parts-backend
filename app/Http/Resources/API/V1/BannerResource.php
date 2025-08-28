@@ -22,7 +22,7 @@ class BannerResource extends JsonResource
                 'original_price' => $this->original_price,
                 'discount_price' => $this->discount_price,
                 'discount_percentage' => $this->discount_percentage,
-                'provider_id' => $this->provider_id,
+                'image' => $this->getFirstMediaUrl('image'),
             ];
         }
 }
