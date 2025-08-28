@@ -10,5 +10,7 @@ Route::group(['prefix'=>'v1','middleware'=>[AppLocale::class,'api']], function (
     
     require_once __DIR__ . '/API/V1/general.routes.php'; 
     require_once __DIR__ . '/API/V1/auth.rotues.php'; 
+    require_once __DIR__ . '/API/V1/client.routes.php';
+    require_once __DIR__ . '/API/V1/provider.routes.php';
     });
 

@@ -13,12 +13,12 @@ class Subscription extends Model
 
     public function package()
     {
-        return $this->belongsTo('App\Models\Package');
+        return $this->belongsTo('App\Models\Package','package_id');
     }
 
     public function provider_id()
     {
-        return $this->belongsTo('App\Models\Provider');
+        return $this->belongsTo('App\Models\Provider','provider_id');
     }
 
 }

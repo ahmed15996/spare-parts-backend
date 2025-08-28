@@ -100,15 +100,5 @@ class GeneralController extends Controller
             return $this->handleException($e, __('Failed to retrieve days'));
         }
     }
-    public function packages()
-    {
-        try {
-            $packages = Cache::rememberForever('packages', function () {
-                return Package::all();
-            });
-            return $this->collectionResponse(PackageResource::collection($packages), __('Packages retrieved successfully'));
-        } catch (\Exception $e) {
-            return $this->handleException($e, __('Failed to retrieve packages'));
-        }
-    }
+    
 }       

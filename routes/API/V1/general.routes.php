@@ -15,5 +15,4 @@ use Illuminate\Support\Facades\Route;
         Route::get('/settings', [GeneralController::class, 'settings'])->name('settings');
         Route::get('/banner-types', [GeneralController::class, 'bannerTypes'])->name('banner-types');
         Route::get('/days', [GeneralController::class, 'days'])->name('days');
-        Route::get('/packages', [GeneralController::class, 'packages'])->name('packages');
     });

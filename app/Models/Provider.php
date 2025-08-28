@@ -15,7 +15,7 @@ class Provider extends Model implements HasMedia
     protected $primaryKey = 'user_id';
     public $incrementing = false;
     public $timestamps = true;
-    protected $fillable = array('user_id', 'store_name', 'description', 'commercial_number', 'address', 'category_id', 'city_id', 'slug');
+    protected $fillable = array('user_id', 'store_name', 'description', 'commercial_number', 'location', 'category_id', 'city_id', 'slug');
     public $translatable = ['store_name'];
     
     protected $casts = [
@@ -59,7 +59,7 @@ class Provider extends Model implements HasMedia
 
     public function days()
     {
-        return $this->hasMany('App\Models\Day');
+        return $this->hasMany('App\Models\DayProvider', 'provider_id');
     }
 
     public function adminRequests()
@@ -74,7 +74,7 @@ class Provider extends Model implements HasMedia
 
     public function subscriptions()
     {
-        return $this->hasMany('App\Models\Subscription');
+        return $this->hasMany('App\Models\Subscription','provider_id');
     }
 
     public function banners()
