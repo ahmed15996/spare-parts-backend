@@ -7,6 +7,7 @@ use App\Http\Resources\API\V1\ProviderResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\V1\Auth\SearchRequest;
+use App\Http\Resources\API\V1\BrandResource;
 use App\Http\Resources\API\V1\CategoryResource;
 use App\Http\Resources\API\V1\ProductResource;
 use App\Models\Product;
@@ -67,5 +68,36 @@ class ClientController extends Controller
             ProductResource::make($product),
         ],__('Product fetched successfully'));
     }
+
+    public function bannserDetails(Request $request,$id){
+        $banner = $this->bannerService->findWithRelations($id, ['provider','media']);
+        if(!$banner){
+            return $this->errorResponse('Banner not found',404);
+        }
+        return $this->successResponse([
+            BannerResource::make($banner),
+        ],__('Banner fetched successfully'));
+    }
+
+    public function providerBrands(Request $request,$id){
+        $provider = $this->providerService->findWithRelations($id, ['brands']);
+        if(!$provider){
+            return $this->errorResponse('Provider not found',404);
+        }
+        return $this->successResponse([
+            BrandResource::collection($provider->brands),
+        ],__('Brands fetched successfully'));
+    }
+
+    public function providerProducts(Request $request,$id){
+        $provider = $this->providerService->findWithRelations($id, ['products']);
+        if(!$provider){
+            return $this->errorResponse('Provider not found',404);
+        }
+        return $this->successResponse([
+            ProductResource::collection($provider->products),
+        ],__('Products fetched successfully'));
+    }
+    
     
 }

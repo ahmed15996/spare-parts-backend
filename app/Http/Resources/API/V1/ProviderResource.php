@@ -19,16 +19,18 @@ class ProviderResource extends JsonResource
     {
             $data = [
                 'id' => $this->id,
+                'user_id' => $this->user_id,
                 'store_name' => $this->store_name,
                 'logo' => $this->getFirstMediaUrl('logo'),
+
                  
             ];
 
             if($request->route()->getName() == 'client.providers.show'){
                 $data['days'] = ProviderDayResource::collection($this->days);
-                $data['brands'] = BrandResource::collection($this->brands);
+                $data['brands'] = BrandResource::collection($this->brands->take(5));
                 $data['banners'] = BannerResource::collection($this->activeProfileBanners);
-                $data['products'] = ProductResource::collection($this->products);
+                $data['products'] = ProductResource::collection($this->products->take(5));
             }
 
             return $data;

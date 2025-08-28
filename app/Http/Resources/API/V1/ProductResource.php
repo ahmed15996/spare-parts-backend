@@ -22,16 +22,14 @@ class ProductResource extends JsonResource
             
         ];
 
-            if($request->route()->getName() == 'client.providers.show'){
+            if($request->route()->getName() == 'client.providers.show' || $request->route()->getName() == 'client.providers.products.index'){
                 $data['main_image'] = $this->getFirstMediaUrl('products');
             }
             if($request->route()->getName() == 'client.providers.products.show'){
                 $data['description'] = $this->description;
                 $data['gallery'] = $this->getMedia('products')->map(function($media){
-                    return [
-                        'url' => $media->getUrl(),
-                    ];
-                });
+                   return $media->getUrl();
+                })->toArray();
             }
             return $data;
     }

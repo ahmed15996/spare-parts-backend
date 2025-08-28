@@ -14,15 +14,20 @@ class BannerResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-            return [
+            $data = [
                 'id' => $this->id,
                 'title' => $this->title,
-                'description' => $this->description,
                 'type' => $this->type,
-                'original_price' => $this->original_price,
-                'discount_price' => $this->discount_price,
                 'discount_percentage' => $this->discount_percentage,
                 'image' => $this->getFirstMediaUrl('image'),
             ];
+
+            if($request->route()->getName() == 'client.banners.show'){
+                $data['description'] = $this->description;
+                $data['original_price'] = $this->original_price;
+                $data['discount_price'] = $this->discount_price;
+            }
+
+            return $data;
         }
 }
