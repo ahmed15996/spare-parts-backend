@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\V1\Auth;
 
 use App\Http\Requests\API\V1\Auth\ClientRegisterRequest;
 use App\Http\Requests\API\V1\Auth\ProviderRegisterRequest;
-use App\Http\Resources\ClientResource;
+use App\Http\Resources\API\V1\ClientResource;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
 

@@ -24,6 +24,7 @@ class ProviderRegistrationRequest extends Model implements HasMedia
         'description',
         'commercial_number',
         'address',
+        'location',
         'status',
     ];
     public $translatable = ['store_name'];

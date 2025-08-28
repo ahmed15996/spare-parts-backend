@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\ProviderRegistrationRequest;
 use App\Services\BaseService;
+use Filament\Notifications\Actions\Action;
 
 class ProviderRegisterationRequestService extends BaseService
 {
@@ -63,6 +64,7 @@ class ProviderRegisterationRequestService extends BaseService
             $request->addMediaFromRequest('commercial_number_image')->toMediaCollection('commercial_number_image');
         }
 
+        $this->afterCreate($request);
         return $this->successResponse([], __('Registration request sent successfully, please wait for approval'));
     }
 
@@ -143,7 +145,12 @@ class ProviderRegisterationRequestService extends BaseService
      */
     protected function afterCreate(ProviderRegistrationRequest $request): void
     {
-        // Add post-creation logic here
-        // Example: Send notification to admins, log activity, etc.
+       $this->sendAdminNotification('تسجيل طلب تسجيل مزود', 'تم إرسال طلب تسجيل مزود جديد', [
+         Action::make('view')
+            ->url(route('filament.admin.resources.provider-registration-requests.view', $request->id))
+            ->label(__('View'))
+            ->icon('heroicon-o-eye')
+            ->color('primary'),
+       ]);
     }
 }

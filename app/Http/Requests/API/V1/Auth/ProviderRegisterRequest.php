@@ -35,6 +35,7 @@ class ProviderRegisterRequest extends FormRequest
             'lat' => 'required|numeric|min:-90|max:90',
             'long' => 'required|numeric|min:-180|max:180',
             'address' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
             'commercial_number' => 'required|string|max:255',
             'commercial_number_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',

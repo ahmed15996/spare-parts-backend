@@ -26,6 +26,7 @@ return new class extends Migration
 			$table->text('description');
 			$table->string('commercial_number');
 			$table->text('address');
+            $table->text('location');
 			$table->tinyInteger('status')->default(0);
             $table->timestamps();
         });

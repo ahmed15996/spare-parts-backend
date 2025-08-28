@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\API\V1;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -20,7 +20,8 @@ class ClientResource extends JsonResource
                 'last_name' => $this->last_name,
                 'phone' => $this->phone,
                 'avatar' => $this->getFirstMediaUrl('avatar'),
-                'city'=>$this->city->name
+                'city'=>$this->city->name,
+                'role'=>'client'
             ];
         }
 }

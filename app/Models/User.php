@@ -33,7 +33,7 @@ class User extends Model implements FilamentUser, HasMedia, Authenticatable, Aut
             'is_active' => 'boolean',
         ];
     }
-    protected $fillable = array('first_name', 'last_name', 'email', 'phone', 'city_id', 'is_active', 'lat', 'long', 'active_code', 'is_verified');
+    protected $fillable = array('first_name', 'last_name', 'email', 'phone', 'city_id', 'is_active', 'lat', 'long', 'active_code', 'is_verified', 'address');
 
     public function getNameAttribute()
     {
@@ -101,6 +101,12 @@ class User extends Model implements FilamentUser, HasMedia, Authenticatable, Aut
     public function fcmTokens()
     {
         return $this->hasMany('App\Models\FcmToken');
+    }
+
+    public static function getAdmins(){
+        return self::whereHas('roles', function($query){
+            $query->whereIn('name', ['super_admin', 'admin']);
+        })->get();
     }
 
 }

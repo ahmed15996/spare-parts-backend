@@ -245,13 +245,11 @@ class ProviderResource extends Resource
 
                 Infolists\Components\Section::make(__('Location Information'))
                     ->schema([
-                        Infolists\Components\TextEntry::make('user.lat')
-                            ->label(__('Latitude'))
-                            ->numeric(decimalPlaces: 6)
+                        Infolists\Components\TextEntry::make('user.address')
+                            ->label(__('Address'))
                             ->placeholder(__('Not provided')),
-                        Infolists\Components\TextEntry::make('user.long')
-                            ->label(__('Longitude'))
-                            ->numeric(decimalPlaces: 6)
+                        Infolists\Components\TextEntry::make('location')
+                            ->label(__('Location'))
                             ->placeholder(__('Not provided')),
                     ])
                     ->columns(2),
@@ -276,8 +274,8 @@ class ProviderResource extends Resource
                             ->columnSpanFull(),
                         Infolists\Components\TextEntry::make('commercial_number')
                             ->label(__('Commercial Number')),
-                        Infolists\Components\TextEntry::make('address')
-                            ->label(__('Address'))
+                        Infolists\Components\TextEntry::make('location')
+                            ->label(__('Location'))
                             ->columnSpanFull(),
                     ])
                     ->columns(2),

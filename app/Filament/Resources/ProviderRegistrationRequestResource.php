@@ -120,8 +120,9 @@ class ProviderRegistrationRequestResource extends Resource
                     ])
                     ->columns(2),
                     
-                Forms\Components\Section::make(__('Location'))
+                Forms\Components\Section::make(__('Location Information'))
                     ->schema([
+                        //TODO: refactor to map 
                         Forms\Components\TextInput::make('lat')
                             ->label(__('Latitude'))
                             ->required()
@@ -130,6 +131,10 @@ class ProviderRegistrationRequestResource extends Resource
                             ->label(__('Longitude'))
                             ->required()
                             ->numeric(),
+                        Forms\Components\TextInput::make('location')
+                            ->label(__('Location'))
+                            ->required()
+                            ->columnSpanFull(),
                     ])
                     ->columns(2),
                     

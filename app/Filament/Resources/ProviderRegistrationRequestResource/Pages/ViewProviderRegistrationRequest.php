@@ -53,6 +53,7 @@ class ViewProviderRegistrationRequest extends ViewRecord
                     'city_id' => $this->record->city_id == 0 ? null : $this->record->city_id,
                     'lat' => $this->record->lat,
                     'long' => $this->record->long,
+                    'address' => $this->record->address,
                     'is_active' => true,
                     'is_verified' => true,
                 ]);
@@ -66,7 +67,7 @@ class ViewProviderRegistrationRequest extends ViewRecord
                     'store_name' => $this->record->store_name,
                     'description' => $this->record->description,
                     'commercial_number' => $this->record->commercial_number,
-                    'address' => $this->record->address,
+                    'location' => $this->record->location,
                     'category_id' => $this->record->category_id,
                     'city_id' => $this->record->city_id == 0 ? null : $this->record->city_id,
                 ]);
@@ -167,14 +168,14 @@ class ViewProviderRegistrationRequest extends ViewRecord
                     ])
                     ->columns(2),
 
-                Infolists\Components\Section::make(__('Location'))
+                Infolists\Components\Section::make(__('Location Information'))
                     ->schema([
-                        Infolists\Components\TextEntry::make('lat')
-                            ->label(__('Latitude'))
-                            ->numeric(decimalPlaces: 6),
-                        Infolists\Components\TextEntry::make('long')
-                            ->label(__('Longitude'))
-                            ->numeric(decimalPlaces: 6),
+                        Infolists\Components\TextEntry::make('location')
+                            ->label(__('Location'))
+                            ->columnSpanFull(),
+                        Infolists\Components\TextEntry::make('address')
+                            ->label(__('Address'))
+                            ->columnSpanFull(),
                     ])
                     ->columns(2),
 

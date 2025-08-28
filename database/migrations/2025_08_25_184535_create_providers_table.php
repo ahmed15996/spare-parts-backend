@@ -16,7 +16,7 @@ class CreateProvidersTable extends Migration {
 			$table->json('store_name');
 			$table->text('description');
 			$table->string('commercial_number');
-			$table->text('address');
+			$table->text('location');
 			$table->timestamps();
 		});
 	}
