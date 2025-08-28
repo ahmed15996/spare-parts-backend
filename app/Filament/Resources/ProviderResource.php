@@ -222,7 +222,7 @@ class ProviderResource extends Resource
             ->schema([
                 Infolists\Components\Section::make(__('User Information'))
                     ->schema([
-                        Infolists\Components\TextEntry::make('')
+                        Infolists\Components\TextEntry::make('user.first_name')
                             ->label(__('First Name')),
                         Infolists\Components\TextEntry::make('user.last_name')
                             ->label(__('Last Name')),

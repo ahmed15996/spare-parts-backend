@@ -64,7 +64,10 @@ class ViewProviderRegistrationRequest extends ViewRecord
                 // Create Provider
                 $provider = Provider::create([
                     'user_id' => $user->id,
-                    'store_name' => $this->record->store_name,
+                    'store_name' => [
+                        'ar' => $this->record->getTranslation('store_name', 'ar'),
+                        'en' => $this->record->getTranslation('store_name', 'en'),
+                    ],
                     'description' => $this->record->description,
                     'commercial_number' => $this->record->commercial_number,
                     'location' => $this->record->location,
@@ -134,11 +137,16 @@ class ViewProviderRegistrationRequest extends ViewRecord
 
                 Infolists\Components\Section::make(__('Provider Information'))
                     ->schema([
-                        Infolists\Components\TextEntry::make('store_name.ar')
-                            ->label(__('Store Name (Arabic)')),
-                        Infolists\Components\TextEntry::make('store_name.en')
+                        Infolists\Components\TextEntry::make('store_name')
+                            ->label(__('Store Name (Arabic)'))
+                            ->formatStateUsing(function ($state, $record) {
+                                return $record->getTranslation('store_name', 'ar');
+                            }),
+                        Infolists\Components\TextEntry::make('store_name')
                             ->label(__('Store Name (English)'))
-                            ->placeholder(__('Not provided')),
+                            ->formatStateUsing(function ($state, $record) {
+                                return $record->getTranslation('store_name', 'en');
+                            }),
                         Infolists\Components\TextEntry::make('city.name')
                             ->label(__('City'))
                             ->formatStateUsing(function ($state, $record) {
