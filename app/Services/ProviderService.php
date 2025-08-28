@@ -85,7 +85,7 @@ class ProviderService extends BaseService
         //return all providers
         return $this->provider->limit($limit)->get();
     }
-}
+    }
 
     /**
      * Create Category with business logic

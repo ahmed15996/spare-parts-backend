@@ -146,7 +146,7 @@ abstract class BaseSearchService
     {
         return $this->model
             ->whereRaw('SOUNDEX(' . $this->searchField . ') = SOUNDEX(?)', [$query])
-            ->limit(5)
+            ->limit(10)
             ->get();
     }
 
