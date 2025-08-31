@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Services;
+use App\Http\Resources\API\V1\PersonalProfileResource;
 use App\Http\Resources\API\V1\UserResource;
 use App\Http\Traits\ApiResponseTrait;
-use App\Models\ProviderRegistrationRequest;
 use App\Models\User;
 use App\Services\BaseService;
 use App\Services\UserService;
@@ -94,5 +94,11 @@ class AuthService extends BaseService
     public function clientRegister(array $data)
     {
         return $this->userService->create($data);
+    }
+
+    public function updateProfile(array $data, User $user)
+    {
+       return $this->userService->updateWithBusinessLogic($user,$data);
+
     }
 }

@@ -128,15 +128,20 @@ class UserService extends BaseService
      */
     public function updateWithBusinessLogic(User $user, array $data): bool
     {
-        // Add your business logic here before updating
-        $this->validateBusinessRules($data, $user);
-        
-        $updated = $this->update($user, $data);
-        
-        if ($updated) {
-            // Add your business logic here after updating
-            $this->afterUpdate($user);
+        $avatar = null;
+        if(array_key_exists('avatar', $data)){
+            $avatar = $data['avatar'];
+            unset($data['avatar']);
         }
+        $updated = $this->update($user, $data);
+        if($avatar){
+            $user->addMedia($avatar)->toMediaCollection('avatar');
+        }
+        
+        // if ($updated) {
+        //     // Add your business logic here after updating
+        //     $this->afterUpdate($user);
+        // }
         
         return $updated;
     }

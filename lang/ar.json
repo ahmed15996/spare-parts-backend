@@ -472,5 +472,8 @@
     "Please complete your provider profile first":"يرجى إكمال ملف المزود أولاً",
     "Banner fetched successfully":"تم جلب البانر بنجاح",
     "Banner not found":"البانر غير موجود",
-    "Brands fetched successfully":"تم جلب الماركات بنجاح"
+    "Brands fetched successfully":"تم جلب الماركات بنجاح",
+    "Profile updated successfully":"تم تحديث الملف الشخصي بنجاح",
+    "Failed to update profile":"فشل تحديث الملف الشخصي",
+    "Profile retrieved successfully":"تم جلب الملف الشخصي بنجاح"    
 }

@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 
         Route::group(['middleware' => 'auth:sanctum'], function () {
             Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+            Route::post('update-profile', [AuthController::class, 'updateProfile'])->name('update-profile');
+            Route::get('profile', [AuthController::class, 'getProfile'])->name('profile');
         });
     });
     
