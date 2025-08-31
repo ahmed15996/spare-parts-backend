@@ -17,11 +17,16 @@ use App\Services\BannerService;
 use App\Services\ProviderService;
 use App\Services\ProviderSearchService;
 use App\Services\ProductService;
+use App\Services\CarService;
 use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
 {
-    public function __construct(protected CategoryService $categoryService,protected BannerService $bannerService,protected ProviderService $providerService,protected ProviderSearchService $providerSearchService,protected ProductService $productService)
+    public function __construct(protected CategoryService $categoryService,
+    protected BannerService $bannerService,
+    protected ProviderService $providerService,
+    protected ProviderSearchService $providerSearchService,
+    protected ProductService $productService)
     {
     }
     public function home(Request $request){
@@ -98,6 +103,6 @@ class ClientController extends Controller
             ProductResource::collection($provider->products),
         ],__('Products fetched successfully'));
     }
-    
-    
+
+
 }

@@ -8,4 +8,9 @@ return [
     'department_id' => 'Department',
     'password' => 'Password',
     'password_confirmation' => 'Password Confirmation',
+    
+    // Car attributes
+    'brand_model_id' => 'Brand Model',
+    'manufacture_year' => 'Manufacture Year',
+    'number' => 'Car Number',
 ];

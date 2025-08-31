@@ -475,5 +475,16 @@
     "Brands fetched successfully":"تم جلب الماركات بنجاح",
     "Profile updated successfully":"تم تحديث الملف الشخصي بنجاح",
     "Failed to update profile":"فشل تحديث الملف الشخصي",
-    "Profile retrieved successfully":"تم جلب الملف الشخصي بنجاح"    
+    "Profile retrieved successfully":"تم جلب الملف الشخصي بنجاح",
+    "No cars found":"لا يوجد سيارات",
+    "Cars fetched successfully":"تم جلب السيارات بنجاح",
+    "Car not found":"السيارة غير موجودة",
+    "Car fetched successfully":"تم جلب السيارة بنجاح",
+    "Car created successfully":"تم إنشاء السيارة بنجاح",
+    "Failed to create car":"فشل إنشاء السيارة",
+    "Car updated successfully":"تم تحديث السيارة بنجاح",
+    "Failed to update car":"فشل تحديث السيارة",
+    "Car deleted successfully":"تم حذف السيارة بنجاح",
+    "Failed to delete car":"فشل حذف السيارة",
+    "Unauthorized":"غير مصرح لك بالدخول"
 }

@@ -9,4 +9,9 @@ return [
     'password' => 'كلمة المرور',
     'password_confirmation' => 'تأكيد كلمة المرور',
     'order' => 'الترتيب',
+    
+    // Car attributes
+    'brand_model_id' => 'نموذج الماركة',
+    'manufacture_year' => 'سنة التصنيع',
+    'number' => 'رقم السيارة',
 ];
