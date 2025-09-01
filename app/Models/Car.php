@@ -20,5 +20,13 @@ class Car extends Model
     {
         return $this->belongsTo('App\Models\BrandModel');
     }
+    public function requests()
+    {
+        return $this->hasMany('App\Models\Request');
+    }
+
+    public function brand(){
+        return $this->hasOneThrough('App\Models\Brand', 'App\Models\BrandModel', 'id', 'id', 'brand_model_id', 'brand_id');
+    }
 
 }

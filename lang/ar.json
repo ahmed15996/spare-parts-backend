@@ -571,6 +571,28 @@
     "The profile update request has been approved successfully.":"تم الموافقة على طلب تحديث ملف المزود بنجاح.",
     "The profile update request has been rejected.":"تم رفض طلب تحديث ملف المزود.",
     "Failed to approve request: :message":"فشل الموافقة على الطلب: :message",
-    "Failed to reject request: :message":"فشل رفض الطلب: :message"
+    "Failed to reject request: :message":"فشل رفض الطلب: :message",
+    "Request submitted successfully":"تم إرسال الطلب بنجاح",
+    "Failed to submit request":"فشل إرسال الطلب",
+    "Car":"السيارة",
+    "Car retrieved successfully":"تم جلب السيارة بنجاح",
+    "Failed to retrieve car":"فشل جلب السيارة",
+    "Offer retrieved successfully":"تم جلب العرض بنجاح",
+    "Failed to retrieve offer":"فشل جلب العرض",
+    "Request Details":"تفاصيل الطلب",
+    "Request Offers":"عرض العروض",
+    "Offers retrieved successfully":"تم جلب العروض بنجاح",
+    "Failed to retrieve offers":"فشل جلب العروض",
+    "View Request":"عرض الطلب",
+    "View Offer":"عرض العرض",
+    "Filter Offers":"تصفية العروض",
+    "Filter Offers Successfully":"تم تصفية العروض بنجاح",
+    "Failed to filter offers":"فشل تصفية العروض",
+    "Requests":"الطلبات",
+    "Offers":"العروض",
+    "Request":"الطلب",
+    "Offer":"العرض",
+    "Request Number":"رقم الطلب",
+    "Requests Management":"إدارة الطلبات"
 
-}
+}   

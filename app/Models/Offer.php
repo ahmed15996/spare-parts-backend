@@ -18,7 +18,7 @@ class Offer extends Model
 
     public function request()
     {
-        return $this->belongsTo('App\Models\Provider');
+        return $this->belongsTo('App\Models\Request');
     }
 
     public function city()

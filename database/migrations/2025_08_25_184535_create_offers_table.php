@@ -14,6 +14,9 @@ class CreateOffersTable extends Migration {
 			$table->integer('provider_id')->unsigned();
 			$table->integer('city_id')->unsigned();
 			$table->integer('request_id')->unsigned();
+			$table->decimal('price', 10, 2);
+			$table->text('description');
+			$table->boolean('has_delivery')->default(false);
 			$table->tinyInteger('status');
 		});
 	}

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\V1\ClientController;
 use App\Http\Controllers\API\V1\CarController;
+use App\Http\Controllers\API\V1\Client\RequestController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -29,5 +30,12 @@ Route::group(['as'=>'client.','prefix'=>'client','middleware' => 'auth:sanctum']
         Route::post('/', [CarController::class, 'store'])->name('cars.store');
         Route::put('/{id}', [CarController::class, 'update'])->name('cars.update');
         Route::delete('/{id}', [CarController::class, 'destroy'])->name('cars.delete');
+    });
+
+    Route::group(['prefix'=>'requests','as'=>'requests.'],function(){
+        Route::get('/{id}', [RequestController::class, 'show'])->name('show');
+        Route::post('/', [RequestController::class, 'store'])->name('store');
+        Route::get('/{id}/offers/{offer_id}', [RequestController::class, 'showOffer'])->name('offers.show');
+        Route::post('/{id}/filter-offers', [RequestController::class, 'filterOffers'])->name('offers.filter');
     });
 });

@@ -12,10 +12,14 @@ class CreateRequestsTable extends Migration {
 			$table->increments('id');
 			$table->timestamps();
 			$table->integer('city_id')->unsigned()->nullable();
-			$table->boolean('all_cities');
+			$table->integer('category_id')->unsigned()->nullable();
+			$table->integer('car_id')->unsigned()->nullable();
+			$table->integer('number')->unique();
 			$table->text('description');
 			$table->integer('user_id')->unsigned();
 			$table->tinyInteger('status');
+			$table->index('category_id');
+			$table->index('number');
 		});
 	}
 

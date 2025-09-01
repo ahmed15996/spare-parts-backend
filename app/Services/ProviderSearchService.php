@@ -60,24 +60,31 @@ class ProviderSearchService extends BaseSearchService
         });
 
         // Add distance calculation and sorting if user has coordinates
-        if ($userLat && $userLong) {
-            $queryBuilder->select('providers.*')
-                ->selectRaw("
-                    (6371 * acos(
-                        cos(radians(?)) * 
-                        cos(radians(users.lat)) * 
-                        cos(radians(users.long) - radians(?)) + 
-                        sin(radians(?)) * 
-                        sin(radians(users.lat))
-                    )) AS distance
-                ", [$userLat, $userLong, $userLat])
-                ->join('users', 'providers.user_id', '=', 'users.id')
-                ->whereNotNull('users.lat')
-                ->whereNotNull('users.long')
-                ->orderBy('distance', 'asc');
-        } else {
-            // If no user coordinates, order by store name
-            $queryBuilder->orderBy('store_name');
+        if($filters['order_by'] == 1){
+            if ($userLat && $userLong) {
+                $queryBuilder->select('providers.*')
+                    ->selectRaw("
+                        (6371 * acos(
+                            cos(radians(?)) * 
+                            cos(radians(users.lat)) * 
+                            cos(radians(users.long) - radians(?)) + 
+                            sin(radians(?)) * 
+                            sin(radians(users.lat))
+                        )) AS distance
+                    ", [$userLat, $userLong, $userLat])
+                    ->join('users', 'providers.user_id', '=', 'users.id')
+                    ->whereNotNull('users.lat')
+                    ->whereNotNull('users.long')
+                    ->orderBy('distance', 'asc');
+            }else{
+                $queryBuilder->where('providers.city_id', function($q) use ($filters, $user){
+                    if($filters['city_id']){
+                        $q->where('city_id', $filters['city_id']);
+                    }else{
+                        $q->where('city_id', $user->city_id);
+                    }
+                });
+            }
         }
 
         return $queryBuilder->paginate($perPage);
