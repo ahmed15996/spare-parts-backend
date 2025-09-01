@@ -34,9 +34,7 @@ class ViewProviderRegistrationRequest extends ViewRecord
                 ->modalDescription(__('Are you sure you want to accept this provider registration? This will create a user account and provider profile.'))
                 ->action(function () {
                     $this->acceptRegistration();
-                }),
-            Actions\EditAction::make()
-                ->visible(fn () => $this->record->status == 0),
+                })
         ];
     }
 
@@ -75,14 +73,26 @@ class ViewProviderRegistrationRequest extends ViewRecord
                     'city_id' => $this->record->city_id == 0 ? null : $this->record->city_id,
                 ]);
 
+                // Ensure provider was created successfully with an ID
+                if (!$provider || !$provider->id) {
+                    throw new \Exception(__('Failed to create provider record'));
+                }
+
                 // Handle brands relationship
                 if ($this->record->brands) {
                     $brandIds = is_string($this->record->brands) 
                         ? json_decode($this->record->brands, true) 
                         : $this->record->brands;
                     
-                    if (is_array($brandIds)) {
-                        $provider->brands()->sync(array_map('intval', $brandIds));
+                    if (is_array($brandIds) && !empty($brandIds)) {
+                        // Filter out any invalid brand IDs
+                        $validBrandIds = array_filter(array_map('intval', $brandIds), function($id) {
+                            return $id > 0;
+                        });
+                        
+                        if (!empty($validBrandIds)) {
+                            $provider->brands()->sync($validBrandIds);
+                        }
                     }
                 }
 
@@ -92,7 +102,7 @@ class ViewProviderRegistrationRequest extends ViewRecord
                 }
                 
                 foreach ($this->record->getMedia('commercial_number_image') as $media) {
-                    $media->copy($provider, 'commercial_documents');
+                    $media->copy($provider, 'commercial_number_image');
                 }
 
                 // Update registration request status
@@ -196,7 +206,7 @@ class ViewProviderRegistrationRequest extends ViewRecord
                             ->placeholder(__('No logo uploaded')),
                         Infolists\Components\SpatieMediaLibraryImageEntry::make('commercial_number_image')
                             ->label(__('Commercial Number Image'))
-                            ->collection('commercial_number_image')
+                            ->collection('commerciacommercial_documentsl_number_image')
                             ->size(200)
                             ->placeholder(__('No document uploaded')),
                     ])

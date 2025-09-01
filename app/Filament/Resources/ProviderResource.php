@@ -277,6 +277,15 @@ class ProviderResource extends Resource
                         Infolists\Components\TextEntry::make('location')
                             ->label(__('Location'))
                             ->columnSpanFull(),
+
+                            // Brands
+                            Infolists\Components\TextEntry::make('brands')
+                            ->label(__('Brands'))
+                            ->formatStateUsing(function ($state, $record) {
+                                if (!$record || $record->brands->isEmpty()) return __('No brands');
+                                
+                                return $record->brands->pluck('name')->implode(', ');
+                            })
                     ])
                     ->columns(2),
 

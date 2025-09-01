@@ -22,8 +22,15 @@ class ProviderRegistrationRequestResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
     
+    protected static ?int $navigationSort = 1;
+    
     protected static ?string $modelLabel = 'Provider Registration Request';
     protected static ?string $pluralModelLabel = 'Provider Registration Requests';
+    
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Provider Requests');
+    }
     
     public static function getModelLabel(): string
     {
@@ -37,7 +44,17 @@ class ProviderRegistrationRequestResource extends Resource
     
     public static function getNavigationLabel(): string
     {
-        return __('Provider Requests');
+        return __('Registration Requests');
+    }
+    
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('status', 0)->count() ?: null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'warning';
     }
 
     public static function form(Form $form): Form
@@ -166,6 +183,12 @@ class ProviderRegistrationRequestResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('store_name')
+                ->label(__('Store Name'))
+                ->formatStateUsing(function ($state, $record) {
+                    return  $record->getTranslation('store_name', app()->getLocale());
+                })
+                ->searchable(),
                 Tables\Columns\TextColumn::make('first_name')
                     ->label(__('First Name'))
                     ->searchable(),
@@ -178,9 +201,7 @@ class ProviderRegistrationRequestResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->label(__('Email'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('store_name.ar')
-                    ->label(__('Store Name (AR)'))
-                    ->searchable(),
+               
                 Tables\Columns\TextColumn::make('city.name')
                     ->label(__('City'))
                     ->formatStateUsing(function ($state, $record) {
@@ -226,7 +247,7 @@ class ProviderRegistrationRequestResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->visible(fn (ProviderRegistrationRequest $record) => $record->status == 0),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

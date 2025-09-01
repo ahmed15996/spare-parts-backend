@@ -4,17 +4,21 @@ namespace App\Http\Controllers\API\V1\Auth;
 
 use App\Http\Requests\API\V1\Auth\ClientRegisterRequest;
 use App\Http\Requests\API\V1\Auth\ProviderRegisterRequest;
+use App\Http\Requests\API\V1\Auth\ProviderProfileUpdateRequest;
 use App\Http\Requests\API\V1\UpdateProfileRequest;
 use App\Http\Resources\API\V1\ClientResource;
 use App\Http\Resources\API\V1\PersonalProfileResource;
 use App\Services\AuthService;
+use App\Services\ProviderProfileUpdateService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends BaseAuthCrontroller
 {
-    public function __construct(protected AuthService $authService)
-    {
+    public function __construct(
+        protected AuthService $authService,
+        protected ProviderProfileUpdateService $profileUpdateService
+    ) {
     }
     
     //personal profile ( user data only )
@@ -44,7 +48,33 @@ class AuthController extends BaseAuthCrontroller
         // return $this->successResponse([], 'Provider registration request sent successfully');
     }
 
+    /**
+     * Submit a provider profile update request
+     * This method allows providers to request updates to their store information
+     * The request will be reviewed by admin before being applied
+     */
+    public function providerProfileUpdateRequest(ProviderProfileUpdateRequest $request)
+    {
+        // Get the authenticated user
+        $user = Auth::user();
+        
+        // Check if user is a provider
+        if (!$user->hasRole('provider')) {
+            return $this->errorResponse(__('Only providers can submit profile update requests'));
+        }
 
+        // Get the provider model
+        $provider = $user->provider;
+        
+        if (!$provider) {
+            return $this->errorResponse(__('Provider profile not found'));
+        }
 
+        // Get validated data
+        $data = $request->validated();
+
+        // Submit the update request
+        return $this->profileUpdateService->createUpdateRequest($provider, $data);
+    }
 
 }

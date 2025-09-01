@@ -19,6 +19,10 @@ use Illuminate\Support\Facades\Route;
             Route::post('logout', [AuthController::class, 'logout'])->name('logout');
             Route::post('update-profile', [AuthController::class, 'updateProfile'])->name('update-profile');
             Route::get('profile', [AuthController::class, 'getProfile'])->name('profile');
+            
+            // Provider profile update request (requires provider role)
+            Route::post('provider/profile-update-request', [AuthController::class, 'providerProfileUpdateRequest'])
+                ->name('provider.profile-update-request');
         });
     });
     

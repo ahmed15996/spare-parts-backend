@@ -12,7 +12,7 @@ class Provider extends Model implements HasMedia
     use InteractsWithMedia, HasTranslations;
 
     protected $table = 'providers';
-    public $incrementing = false;
+    public $incrementing = true;
     public $timestamps = true;
     protected $fillable = array('user_id', 'store_name', 'description', 'commercial_number', 'location', 'category_id', 'city_id', 'slug');
     public $translatable = ['store_name'];
