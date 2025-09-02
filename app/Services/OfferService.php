@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Offer;
+use App\Models\Provider;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -46,12 +47,10 @@ class OfferService extends BaseService
      */
     public function createWithBusinessLogic(array $data): Offer
     {
-        $data['user_id'] = Auth::id();
-        $data['number'] = rand(100000, 999999);
+
         $data['status'] = 0;
- 
-        
-                    $offer = $this->create($data);
+        $data['provider_id'] = Auth::user()->provider->id;
+        $offer = $this->create($data);
         
         // Add your business logic here after creating
         $this->afterCreate($offer);
@@ -119,7 +118,7 @@ class OfferService extends BaseService
      */
     protected function afterCreate(Offer $offer): void
     {
-        //TODO: Send Fcm Notifications to Providers
+        //TODO: Send Fcm Notifications to Client
     }
 
     /**
@@ -215,5 +214,11 @@ class OfferService extends BaseService
     {
         $query = $this->filterOffers($data);
         return $query->get();
+    }
+
+    public function getProviderOffers(Provider $provider){
+        $offers = $provider->offers()->with('request','request.car','request.category','request.user','request.city')->get();
+        return $offers;
+
     }
 }

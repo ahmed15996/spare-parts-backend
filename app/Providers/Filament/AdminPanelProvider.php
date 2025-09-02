@@ -91,9 +91,9 @@ class AdminPanelProvider extends PanelProvider
                     ->collapsed(),
             ])->databaseNotifications()
             ->viteTheme('resources/css/filament/admin/theme.css')
-            ->brandName('PUIUX')
-            ->brandLogo(fn () => view('filament.admin.logo-light'))
-            ->darkModeBrandLogo(fn () => view('filament.admin.logo-dark'))
+            ->brandName('Link')
+            ->brandLogo( asset('images/link-logo.jpeg'))
+            ->darkModeBrandLogo( asset('images/link-logo.jpeg'))
             ->brandLogoHeight('2.5rem')
             ->favicon("");
     }

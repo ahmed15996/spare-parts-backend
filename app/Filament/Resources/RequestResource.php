@@ -239,7 +239,7 @@ class RequestResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RequestResource\RelationManagers\OffersRelationManager::class,
         ];
     }
 

@@ -9,11 +9,11 @@ class Offer extends Model
 
     protected $table = 'offers';
     public $timestamps = true;
-    protected $fillable = array('provider_id', 'city_id', 'request_id', 'status');
+    protected $fillable = array('provider_id', 'city_id', 'request_id', 'status', 'price', 'description', 'has_delivery');
 
     public function provider()
     {
-        return $this->belongsTo('App\Models\Provider');
+        return $this->belongsTo('App\Models\Provider','provider_id');
     }
 
     public function request()

@@ -593,6 +593,22 @@
     "Request":"الطلب",
     "Offer":"العرض",
     "Request Number":"رقم الطلب",
-    "Requests Management":"إدارة الطلبات"
+    "Requests Management":"إدارة الطلبات",
+    "Offer deleted successfully":"تم حذف العرض بنجاح",
+    "Failed to delete offer":"فشل حذف العرض",
+    "Provider requests retrieved successfully":"تم جلب طلبات المزود بنجاح",
+    "Failed to retrieve provider requests":"فشل جلب طلبات المزود",
+    "Provider statistics retrieved successfully":"تم جلب الإحصائيات بنجاح",
+    "Failed to retrieve provider statistics":"فشل جلب الإحصائيات",
+    "Request not found":"الطلب غير موجود",
+    "Failed to retrieve request":"فشل جلب الطلب",
+    "Request retrieved successfully":"تم جلب الطلب بنجاح",
+    "Offer sent successfully":"تم إرسال العرض بنجاح",
+    "Failed to send offer":"فشل إرسال العرض",
+    "Offer not found":"العرض غير موجود",
+    "No offers found":"لا يوجد عروض",
+    "ID":"الرقم",
+    "Delivery":"التوصيل",
+    "You have already sent an offer for this request":"لديك عرض مسبقاً لهذا الطلب"
 
 }   

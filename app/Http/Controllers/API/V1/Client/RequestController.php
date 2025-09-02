@@ -64,4 +64,15 @@ class RequestController extends Controller
         }
     }
 
+    public function destroyOffer($id, $offer_id){
+        try{
+            $offer = $this->offerService->findWithRelations($offer_id, ['request']);
+            $this->offerService->deleteWithBusinessLogic($offer);
+            return $this->successResponse([], __('Offer deleted successfully'));
+        }catch(\Exception $e){
+            Log::debug($e->getMessage());
+            return $this->errorResponse(__('Failed to delete offer'), 500);
+        }
+    }
+
 }

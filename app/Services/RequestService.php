@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Models\Provider;
 use App\Models\Request;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request as HttpRequest;
 
 class RequestService extends BaseService
 {
@@ -138,5 +140,28 @@ class RequestService extends BaseService
     {
         // Add your post-deletion business logic here
         // Example: Clean up related records, send notifications, etc.
+    }
+
+    public function getProviderRequests(Provider $provider , HttpRequest $request){
+        $perPage = $request->query('per_page', 10);
+        $day = $request->query('day', 'today');
+
+        $query = $this->request;
+
+        $query->where('category_id', $provider->category_id);
+        $query->where('city_id', $provider->city_id);
+        $query->whereHas('car', function($q) use ($provider){
+            $q->whereHas('brand',function($q) use ($provider){
+                $q->whereIn('id', $provider->brands->pluck('id'));
+            });
+            
+        });
+
+        if($day == 'today'){
+            $query->whereDate('created_at', today());
+        }
+
+        return $query->paginate($perPage);
+
     }
 }

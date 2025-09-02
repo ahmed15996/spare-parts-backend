@@ -206,4 +206,8 @@ class ProviderService extends BaseService
         // Add your post-deletion business logic here
         // Example: Clean up related records, send notifications, etc.
     }
+    public function stockCount(Provider $provider): int
+    {
+        return $provider->products->sum('stock');
+    }
 }

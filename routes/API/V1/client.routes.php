@@ -37,5 +37,6 @@ Route::group(['as'=>'client.','prefix'=>'client','middleware' => 'auth:sanctum']
         Route::post('/', [RequestController::class, 'store'])->name('store');
         Route::get('/{id}/offers/{offer_id}', [RequestController::class, 'showOffer'])->name('offers.show');
         Route::post('/{id}/filter-offers', [RequestController::class, 'filterOffers'])->name('offers.filter');
+        Route::delete('/{id}/offers/{offer_id}', [RequestController::class, 'destroyOffer'])->name('offers.destroy');
     });
 });

@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Models\Provider;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role as ModelsRole;
 
 class ViewProviderRegistrationRequest extends ViewRecord
 {
@@ -57,7 +58,8 @@ class ViewProviderRegistrationRequest extends ViewRecord
                 ]);
 
                 // Assign provider role
-                $user->assignRole('provider');
+                $role = ModelsRole::where('name', 'provider')->where('guard_name', 'sanctum')->first();
+                $user->assignRole($role);
 
                 // Create Provider
                 $provider = Provider::create([
