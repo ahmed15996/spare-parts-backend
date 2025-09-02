@@ -650,5 +650,7 @@
     "Original Price":"السعر الأصلي",
     "Discount Price":"السعر المخفض",
     "Discount %":"نسبة الخصم",
-    "Accepted At":"تم الموافقة على البانر في"
+    "Accepted At":"تم الموافقة على البانر في",
+    "Banner Rejected":"البانر مرفوض",
+    "Banner Approved":"البانر مقبول"
 }   
