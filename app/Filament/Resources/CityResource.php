@@ -32,12 +32,6 @@ class CityResource extends Resource
                ->label('Name')
                ->translateLabel()
                ->required(),
-
-               Select::make('country_id')
-               ->label('Country')
-               ->translateLabel()
-               ->required()
-               ->relationship('country', 'name'),
             ]);
     }
 
@@ -50,10 +44,7 @@ class CityResource extends Resource
                 ->searchable()
                 ->sortable(),
 
-                TextColumn::make('country.name')
-                ->label('Country')->translateLabel()
-                ->searchable()
-                ->sortable(),
+
             ])
             ->filters([
                 //
