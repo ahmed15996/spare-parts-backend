@@ -12,9 +12,9 @@ class CreateCommentsTable extends Migration {
 			$table->increments('id');
 			$table->timestamps();
 			$table->morphs('author');
-			$table->morphs('commentable');
-			$table->text('cotent');
-			$table->integer('parent_id')->unsigned()->nullable();
+			$table->unsignedInteger('post_id');
+			$table->text('content');
+			$table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
 		});
 	}
 

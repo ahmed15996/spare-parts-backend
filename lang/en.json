@@ -32,5 +32,20 @@
     "Updated At": "Updated At",
     "Import": "Import",
     "Record created successfully": "Record created successfully",
-    "Record updated successfully": "Record updated successfully"
+    "Record updated successfully": "Record updated successfully",
+    "Post": "Post",
+    "Posts": "Posts",
+    "Content": "Content",
+    "Status": "Status",
+    "Pending": "Pending",
+    "Accepted": "Accepted",
+    "Rejected": "Rejected",
+    "Rejection Reason": "Rejection Reason",
+    "Accept": "Accept",
+    "Reject": "Reject",
+    "Accepted At": "Accepted At",
+    "Author Type": "Author Type",
+    "Author ID": "Author ID",
+    "Content": "Content",
+    "Content": "Content"
 }

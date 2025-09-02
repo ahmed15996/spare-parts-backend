@@ -35,10 +35,6 @@ class User extends Model implements FilamentUser, HasMedia, Authenticatable, Aut
     }
     protected $fillable = array('first_name', 'last_name', 'email', 'phone', 'city_id', 'is_active', 'lat', 'long', 'active_code', 'is_verified', 'address');
 
-    public function getNameAttribute()
-    {
-        return $this->first_name . ' ' . $this->last_name;
-    }
     public function sendActiveCode()
     {
         $this->active_code = env('APP_ENV') != 'production' ? 1234 : rand(1000,9999);
@@ -107,6 +103,16 @@ class User extends Model implements FilamentUser, HasMedia, Authenticatable, Aut
         return self::whereHas('roles', function($query){
             $query->whereIn('name', ['super_admin', 'admin']);
         })->get();
+    }
+
+    public function getNameAttribute(){
+        if($this->hasRole('client')){
+            return $this->first_name . ' ' . $this->last_name;
+        }
+        if($this->hasRole('provider')){
+            return $this->provider->store_name;
+        }
+        return $this->first_name . ' ' . $this->last_name;
     }
 
 }

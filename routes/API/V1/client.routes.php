@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\API\V1\ClientController;
 use App\Http\Controllers\API\V1\CarController;
+use App\Http\Controllers\API\V1\PostController;
+use App\Http\Controllers\API\V1\CommentController;
+use App\Http\Controllers\API\V1\LikeController;
 use App\Http\Controllers\API\V1\Client\RequestController;
 use Illuminate\Support\Facades\Route;
 

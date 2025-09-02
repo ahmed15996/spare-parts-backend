@@ -3,8 +3,10 @@
 use App\Http\Controllers\API\V1\BannerController;
 use App\Http\Controllers\API\V1\ContactController;
 use App\Http\Controllers\API\V1\GeneralController;
+use App\Http\Controllers\API\V1\PostController;
+use App\Http\Controllers\API\V1\CommentController;
+use App\Http\Controllers\API\V1\LikeController;
 use Illuminate\Support\Facades\Route;
-
 
     //# General endpoints 
     Route::group(['as'=>'general.','prefix'=>'general'], function () {
@@ -16,3 +18,20 @@ use Illuminate\Support\Facades\Route;
         Route::get('/banner-types', [GeneralController::class, 'bannerTypes'])->name('banner-types');
         Route::get('/days', [GeneralController::class, 'days'])->name('days');
     });
+
+    //# Posts endpoints (authenticated users)
+    Route::group(['as'=>'posts.','prefix'=>'posts', 'middleware' => 'auth:sanctum'], function () {
+        Route::get('/', [PostController::class, 'index'])->name('index');
+        Route::post('/', [PostController::class, 'store'])->name('store');
+        Route::get('/{id}', [PostController::class, 'show'])->name('show');
+        Route::delete('/{id}', [PostController::class, 'destroy'])->name('destroy');
+
+        Route::post('/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
+        Route::delete('/{id}/comments/{comment_id}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
+        Route::post('/{id}/like', [LikeController::class, 'reactToPost'])->name('react');
+        Route::get('/{id}/likers', [LikeController::class, 'likersOfPost'])->name('likers');
+    });
+
+    // Comment reactions
+    // Route::post('/comments/{id}/react', [LikeController::class, 'reactToComment'])->name('comments.react');
