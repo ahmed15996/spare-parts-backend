@@ -13,8 +13,13 @@ class EditCategory extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make()->label(__('Delete'))->modalHeading(__('Delete Category')),
+            // Actions\DeleteAction::make()->label(__('Delete'))->modalHeading(__('Delete Category')),
             Actions\LocaleSwitcher::make(),
         ];
+    }
+
+    public function getTitle(): string
+    {
+        return __('Edit Category');
     }
 }

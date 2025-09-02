@@ -15,7 +15,7 @@ class CreateProductsTable extends Migration {
 			$table->string('name');
 			$table->text('description');
 			$table->decimal('price');
-			$table->decimal('discount_price')->nullable();
+			$table->integer('discount_percentage')->nullable();
 			$table->integer('stock');
 			$table->boolean('published');
 		});

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\V1\ProviderController;
+use App\Http\Controllers\API\V1\Provider\ProductController as ProviderProductController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -20,5 +21,13 @@ use Illuminate\Support\Facades\Route;
         Route::group(['prefix'=>'offers','as'=>'offers.'],function(){
             Route::get('/', [ProviderController::class, 'myOffers'])->name('index');
             Route::get('/{id}', [ProviderController::class, 'offerShow'])->name('show');
+        });
+
+        Route::group(['prefix' => 'products', 'as' => 'products.'], function () {
+            Route::get('/', [ProviderProductController::class, 'index'])->name('index');
+            Route::get('/{id}', [ProviderProductController::class, 'show'])->name('show');
+            Route::post('/', [ProviderProductController::class, 'store'])->name('store');
+            Route::post('/{id}', [ProviderProductController::class, 'update'])->name('update');
+            Route::delete('/{id}', [ProviderProductController::class, 'destroy'])->name('destroy');
         });
     });

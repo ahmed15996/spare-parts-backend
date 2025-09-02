@@ -12,7 +12,7 @@ class Product extends Model  implements HasMedia
 
     protected $table = 'products';
     public $timestamps = true;
-    protected $fillable = array('provider_id', 'name', 'description', 'price', 'discount_price', 'stock', 'published');
+    protected $fillable = array('provider_id', 'name', 'description', 'price', 'discount_percentage', 'stock', 'published');
 
     public function provider()
     {

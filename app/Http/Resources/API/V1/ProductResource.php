@@ -18,10 +18,12 @@ class ProductResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'price' => $this->price,
-            'discount_price' => $this->discount_price,
             
         ];
 
+        if($this->discount_percentage){
+            $data['discount_price'] = $this->price * (1 - $this->discount_percentage / 100);
+        }
             if($request->route()->getName() == 'client.providers.show' || $request->route()->getName() == 'client.providers.products.index'){
                 $data['main_image'] = $this->getFirstMediaUrl('products');
             }

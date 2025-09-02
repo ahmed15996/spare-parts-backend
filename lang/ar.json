@@ -609,6 +609,25 @@
     "No offers found":"لا يوجد عروض",
     "ID":"الرقم",
     "Delivery":"التوصيل",
-    "You have already sent an offer for this request":"لديك عرض مسبقاً لهذا الطلب"
+    "You have already sent an offer for this request":"لديك عرض مسبقاً لهذا الطلب",
+    "No products found":"لا يوجد منتجات",
+    "Product created successfully":"تم إنشاء المنتج بنجاح",
+    "Failed to create product":"فشل إنشاء المنتج",
+    "Product updated successfully":"تم تحديث المنتج بنجاح",
+    "Failed to update product":"فشل تحديث المنتج",
+    "Product deleted successfully":"تم حذف المنتج بنجاح",
+    "Failed to delete product":"فشل حذف المنتج",
+    "Product not found":"المنتج غير موجود",
+    "Products fetched successfully":"تم جلب المنتجات بنجاح",
+    "Failed to retrieve products":"فشل جلب المنتجات",
+    "Discount Percentage":"نسبة الخصم",
+    "Stock":"المخزون",
+    "Add City":"اضافة مدينة",
+    "Edit City":"تعديل المدينة",
+    "Delete City":"حذف المدينة",
+    "City Name":"اسم المدينة",
+    "City Description":"وصف المدينة",
+    "City Image":"صورة المدينة",
+    "City Status":"حالة المدينة"
 
 }   

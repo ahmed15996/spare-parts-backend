@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class ProductResource extends Resource
 {
@@ -41,9 +42,9 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('provider_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Hidden::make('provider_id')
+                    ->default(fn () => Auth::user()?->provider?->id)
+                    ->dehydrated(true),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
@@ -54,7 +55,7 @@ class ProductResource extends Resource
                     ->required()
                     ->numeric()
                     ->prefix('$'),
-                Forms\Components\TextInput::make('discount_price')
+                Forms\Components\TextInput::make('discount_percentage')
                     ->numeric(),
                 Forms\Components\TextInput::make('stock')
                     ->required()
@@ -69,35 +70,42 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('Updated At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('provider_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('provider.store_name')
+                    ->label(__('Store Name'))
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('price')
+                    ->label(__('Price'))
                     ->money()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('discount_price')
+                Tables\Columns\TextColumn::make('discount_percentage')
                     ->numeric()
+                    ->label(__('Discount Percentage'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('stock')
                     ->numeric()
+                    ->label(__('Stock'))
                     ->sortable(),
                 Tables\Columns\IconColumn::make('published')
+                    ->label(__('Published'))
                     ->boolean(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -120,5 +128,15 @@ class ProductResource extends Resource
             'create' => Pages\CreateProduct::route('/create'),
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        $user = Auth::user();
+        if ($user && $user->hasRole('provider') && $user->provider) {
+            $query->where('provider_id', $user->provider->id);
+        }
+        return $query;
     }
 }

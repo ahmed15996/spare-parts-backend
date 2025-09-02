@@ -18,8 +18,8 @@ class ListProducts extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()
-                ->label(__('Create') . ' ' . __('Product')),
+            // Actions\CreateAction::make()
+            //     ->label(__('Create') . ' ' . __('Product')),
         ];
     }
 }

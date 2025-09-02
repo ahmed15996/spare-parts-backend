@@ -13,7 +13,7 @@ class ListCategories extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()->label(__('Add Category')),
+            // Actions\CreateAction::make()->label(__('Add Category')),
             Actions\LocaleSwitcher::make(),
         ];
     }

@@ -87,34 +87,48 @@ class ProductService extends BaseService
      */
     public function createWithBusinessLogic(array $data): Product
     {
-        // Add your business logic here before creating
-        $this->validateBusinessRules($data);
-        
-        $provider = $this->create($data);
-        
-        // Add your business logic here after creating
-        $this->afterCreate($provider);
-        
-        return $provider;
+        $gallery = $data['gallery'] ?? null;
+        unset($data['gallery']);
+        $product = $this->create($data);
+        if ($gallery && is_array($gallery)) {
+            foreach ($gallery as $image) {
+                $product->addMedia($image)->toMediaCollection('products');
+            }
+        }
+        return $product;
     }
 
     /**
      * Update Category with business logic
      */
-    // public function updateWithBusinessLogic(Product $product, array $data): bool
-    // {
-    //     // Add your business logic here before updating
-    //     $this->validateBusinessRules($data, $provider);
-        
-    //     $updated = $this->update($provider, $data);
-        
-    //     if ($updated) {
-    //         // Add your business logic here after updating
-    //         $this->afterUpdate($provider);
-    //     }
-        
-    //     return $updated;
-    // }
+    public function updateWithBusinessLogic(Product $product, array $data): bool
+    {
+        $gallery = $data['gallery'] ?? null;
+        $removeMediaIds = $data['remove_media_ids'] ?? [];
+        unset($data['gallery']);
+        unset($data['remove_media_ids']);
+        $updated = $this->update($product, $data);
+        if ($updated && $gallery && is_array($gallery)) {
+            // Append new images; deletion is to be handled explicitly from the client via a separate endpoint
+            foreach ($gallery as $image) {
+                $product->addMedia($image)->toMediaCollection('products');
+            }
+        }
+        if ($updated && is_array($removeMediaIds) && !empty($removeMediaIds)) {
+            $product->media()->whereIn('id', $removeMediaIds)->get()->each->delete();
+        }
+        return $updated;
+    }
+
+    public function getGalleryUrls(Product $product): array
+    {
+        return $product->getMedia('products')->map(function ($media) {
+            return [
+                'id' => $media->id,
+                'url' => $media->getUrl(),
+            ];
+        })->toArray();
+    }
 
     /**
      * Delete Category with business logic
