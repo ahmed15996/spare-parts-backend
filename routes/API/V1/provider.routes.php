@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V1\Provider\BannerController;
 use App\Http\Controllers\API\V1\ProviderController;
 use App\Http\Controllers\API\V1\Provider\ProductController as ProviderProductController;
 use Illuminate\Support\Facades\Route;
@@ -29,5 +30,10 @@ use Illuminate\Support\Facades\Route;
             Route::post('/', [ProviderProductController::class, 'store'])->name('store');
             Route::post('/{id}', [ProviderProductController::class, 'update'])->name('update');
             Route::delete('/{id}', [ProviderProductController::class, 'destroy'])->name('destroy');
+        });
+        Route::group(['prefix' => 'banners', 'as' => 'banners.'], function () {
+            Route::get('/', [BannerController::class, 'index'])->name('index');
+            Route::get('/{id}', [BannerController::class, 'show'])->name('show');
+            Route::post('/', [BannerController::class, 'store'])->name('store');
         });
     });

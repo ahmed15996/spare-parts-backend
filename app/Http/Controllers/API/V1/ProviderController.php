@@ -145,8 +145,5 @@ class ProviderController extends Controller
             Log::debug($e->getMessage());
             return $this->errorResponse(__('Failed to retrieve offer'), 500);
         }
-    }
-
-
-    
+    }    
 }

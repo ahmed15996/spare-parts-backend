@@ -3,9 +3,10 @@
 namespace App\Services;
 
 use App\Models\Banner;
+use App\Models\Provider;
+use Filament\Notifications\Actions\Action;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-
 class BannerService extends BaseService
 {
     protected $banner;
@@ -45,12 +46,14 @@ class BannerService extends BaseService
      */
     public function createWithBusinessLogic(array $data): Banner
     {
-        // Add your business logic here before creating
-        $this->validateBusinessRules($data);
+
+        $image = $data['image'];
+        unset($data['image']);
         
         $category = $this->create($data);
         
         // Add your business logic here after creating
+        $category->addMedia($image)->toMediaCollection('image');
         $this->afterCreate($category);
         
         return $category;
@@ -117,8 +120,11 @@ class BannerService extends BaseService
      */
                 protected function afterCreate(Banner $banner): void
     {
-        // Add your post-creation business logic here
-        // Example: Send notifications, update related records, etc.
+        $this->sendAdminNotification(__('New banner'), __('A new banner has been created'), [
+            Action::make('view')
+                ->url(route('filament.admin.resources.banners.view', $banner->id))
+                ->label(__('Let\'s review it'))
+        ]);
     }
 
     /**
@@ -137,5 +143,10 @@ class BannerService extends BaseService
     {
         // Add your post-deletion business logic here
         // Example: Clean up related records, send notifications, etc.
+    }
+
+    public function getProviderBanners(Provider $provider): Collection
+    {
+        return $this->banner->where('provider_id', $provider->id)->get();
     }
 }

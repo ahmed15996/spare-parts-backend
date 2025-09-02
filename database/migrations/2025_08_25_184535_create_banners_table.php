@@ -16,10 +16,12 @@ class CreateBannersTable extends Migration {
 			$table->tinyInteger('type');
 			$table->decimal('original_price')->nullable();
 			$table->decimal('discount_price')->nullable();
-			$table->integer('discount_percentage');
+			$table->integer('discount_percentage')->nullable();
 			$table->integer('provider_id')->unsigned();
 			$table->tinyInteger('status');
 			$table->text('rejection_reason')->nullable();
+			$table->integer('number')->unique();
+			$table->date('accepted_at')->nullable();
 		});
 	}
 

@@ -63,10 +63,7 @@ class GeneralController extends Controller
         }
     }
 
-    public function bannerTypes()
-    {
-        return $this->successResponse(BannerTypeResource::collection(BannerType::cases()), __('Banner types retrieved successfully'));
-    }
+
     public function brandModels($brand)
     {
         try {
