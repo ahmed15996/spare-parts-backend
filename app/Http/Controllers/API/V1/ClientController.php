@@ -12,6 +12,7 @@ use App\Http\Resources\API\V1\CategoryResource;
 use App\Http\Resources\API\V1\ProductResource;
 use App\Models\Product;
 use App\Models\Provider;
+use App\Models\Favourite;
 use App\Services\CategoryService;
 use App\Services\BannerService;
 use App\Services\ProviderService;
@@ -97,12 +98,46 @@ class ClientController extends Controller
     public function providerProducts(Request $request,$id){
         $provider = $this->providerService->findWithRelations($id, ['products']);
         if(!$provider){
-            return $this->errorResponse('Provider not found',404);
+            return $this->errorResponse(__('Provider not found'),404);
         }
         return $this->successResponse([
             ProductResource::collection($provider->products),
         ],__('Products fetched successfully'));
     }
 
+    public function toggleFavourite(Request $request,$id){
+        $user = Auth::user();
+        $provider = Provider::find($id);
+        if(!$provider){
+            return $this->errorResponse('Provider not found',404);
+        }
+        $favourite = Favourite::where('user_id', $user->id)->where('provider_id', $provider->id)->first();
+        if($favourite){
+            $favourite->delete();
+        }
+        else{
+            Favourite::create([
+                'user_id' => $user->id,
+                'provider_id' => $provider->id,
+            ]);
+        }
+        return $this->successResponse([],__('Favourite toggled successfully'));
+    }
 
+    public function getFavourites(Request $request)
+    {
+        $user = Auth::user();
+        $providers = $user->favourites()
+            ->with(['provider.city', 'provider.category', 'provider.media'])
+            ->get()
+            ->map(function ($favourite) {
+                $provider = $favourite->provider;
+                $provider->is_fav = true;
+                return $provider;
+            });
+            
+        return $this->successResponse([
+            ProviderResource::collection($providers),
+        ], __('Favourites retrieved successfully'));
+    }
 }

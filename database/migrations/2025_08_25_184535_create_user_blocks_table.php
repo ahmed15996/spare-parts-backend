@@ -9,10 +9,13 @@ class CreateUserBlocksTable extends Migration {
 	public function up()
 	{
 		Schema::create('user_blocks', function(Blueprint $table) {
-			$table->increments('id');
+			$table->id();
 			$table->timestamps();
-			$table->integer('blocker_id')->unsigned();
-			$table->integer('blocked_id')->unsigned();
+			$table->foreignId('blocker_id')->constrained('users')->onDelete('cascade');
+			$table->foreignId('blocked_id')->constrained('users')->onDelete('cascade');
+			
+			// Prevent duplicate blocks
+			$table->unique(['blocker_id', 'blocked_id']);
 		});
 	}
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\API\V1\CommentController;
 use App\Http\Controllers\API\V1\LikeController;
 use App\Http\Controllers\API\V1\Client\RequestController;
 use App\Http\Controllers\API\V1\ReviewController;
+use App\Http\Controllers\API\V1\BlockController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -50,4 +51,9 @@ Route::group(['as'=>'client.','prefix'=>'client','middleware' => 'auth:sanctum']
         Route::post('/{id}/filter-offers', [RequestController::class, 'filterOffers'])->name('offers.filter');
         Route::delete('/{id}/offers/{offer_id}', [RequestController::class, 'destroyOffer'])->name('offers.destroy');
     });
+
+    // Favourites routes
+    Route::get('/favourites', [ClientController::class, 'getFavourites'])->name('favourites.index');
+    Route::post('/providers/{id}/toggle-favourite', [ClientController::class, 'toggleFavourite'])->name('providers.toggle-favourite');
+    
 });

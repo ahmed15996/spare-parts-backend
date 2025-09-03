@@ -101,6 +101,11 @@ class Provider extends Model implements HasMedia
         return $this->morphMany(Report::class, 'reportable');
     }
 
+    public function favourites()
+    {
+        return $this->hasMany(Favourite::class);
+    }
+
     /**
      * Get the average rating for this provider (last 3 months)
      */

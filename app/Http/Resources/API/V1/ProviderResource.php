@@ -23,7 +23,7 @@ class ProviderResource extends JsonResource
                 'store_name' => $this->store_name,
                 'logo' => $this->getFirstMediaUrl('logo'),
                 'rating' => $this->getAverageRating(),
-                 
+                'is_favourite' => $this->favourites->where('user_id', $request->user()->id)->count() > 0 ? true : false,
             ];
 
             if($request->route()->getName() == 'client.providers.show'){

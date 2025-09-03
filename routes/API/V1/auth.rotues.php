@@ -5,7 +5,7 @@ use App\Http\Controllers\API\V1\BannerController;
 use App\Http\Controllers\API\V1\ContactController;
 use App\Http\Controllers\API\V1\GeneralController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\API\V1\BlockController;
 
     //# General endpoints 
     Route::group(['as'=>'auth.', 'prefix'=>'auth'], function () {
@@ -20,6 +20,13 @@ use Illuminate\Support\Facades\Route;
             Route::post('update-profile', [AuthController::class, 'updateProfile'])->name('update-profile');
             Route::get('profile', [AuthController::class, 'getProfile'])->name('profile');
             
+
+                // Block routes
+    Route::post('/blocks', [BlockController::class, 'block'])->name('blocks.store');
+    Route::delete('/blocks/{id}', [BlockController::class, 'unblock'])->name('blocks.destroy');
+    Route::get('/blocks', [BlockController::class, 'listBlocks'])->name('blocks.index');
+    Route::get('/blocks/{id}/status', [BlockController::class, 'checkBlockStatus'])->name('blocks.status');
+
             // Provider profile update request (requires provider role)
             Route::post('provider/profile-update-request', [AuthController::class, 'providerProfileUpdateRequest'])
                 ->name('provider.profile-update-request');

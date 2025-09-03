@@ -104,6 +104,43 @@ class User extends Model implements FilamentUser, HasMedia, Authenticatable, Aut
         return $this->hasMany('App\Models\Review');
     }
 
+    public function favourites()
+    {
+        return $this->hasMany(Favourite::class);
+    }
+
+    /**
+     * Get users that this user has blocked
+     */
+    public function blockedUsers()
+    {
+        return $this->hasMany(Block::class, 'blocker_id');
+    }
+
+    /**
+     * Get users that have blocked this user
+     */
+    public function blockedByUsers()
+    {
+        return $this->hasMany(Block::class, 'blocked_id');
+    }
+
+    /**
+     * Check if this user has blocked another user
+     */
+    public function hasBlocked(int $userId): bool
+    {
+        return $this->blockedUsers()->where('blocked_id', $userId)->exists();
+    }
+
+    /**
+     * Check if this user is blocked by another user
+     */
+    public function isBlockedBy(int $userId): bool
+    {
+        return $this->blockedByUsers()->where('blocker_id', $userId)->exists();
+    }
+
     public static function getAdmins(){
         return self::whereHas('roles', function($query){
             $query->whereIn('name', ['super_admin', 'admin']);
