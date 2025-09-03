@@ -111,4 +111,61 @@ class Provider extends Model implements HasMedia
     {
         return Review::getProviderReviewCount($this->id);
     }
+
+    /**
+     * Check if provider is currently open
+     */
+    public function isCurrentlyOpen(): bool
+    {
+        $now = now();
+        $currentDay = $now->format('N'); // 1 (Monday) through 7 (Sunday)
+        
+        // Convert to match your day IDs (assuming 1=Sunday, 2=Monday, etc.)
+        $dayId = $currentDay == 7 ? 1 : $currentDay + 1;
+        
+        $dayProvider = $this->days()
+            ->where('day_id', $dayId)
+            ->first();
+
+        if (!$dayProvider || $dayProvider->is_closed) {
+            return false;
+        }
+
+        // Check if current time is within working hours
+        $currentTime = $now->format('H:i');
+        return $currentTime >= $dayProvider->from && $currentTime <= $dayProvider->to;
+    }
+
+    /**
+     * Get working hours for a specific day
+     */
+    public function getWorkingHours(int $dayId): ?array
+    {
+        $dayProvider = $this->days()
+            ->where('day_id', $dayId)
+            ->first();
+
+        if (!$dayProvider || $dayProvider->is_closed) {
+            return null;
+        }
+
+        return [
+            'from' => $dayProvider->from,
+            'to' => $dayProvider->to,
+            'is_closed' => false,
+        ];
+    }
+
+    public static function boot(){
+        parent::boot();
+        static::created(function($provider){
+            $days = Day::all();
+            foreach($days as $day){
+                $provider->days()->create([
+                    'day_id' => $day->id,
+                    'is_closed' => true,
+                ]);
+            }
+        });
+    }
 }

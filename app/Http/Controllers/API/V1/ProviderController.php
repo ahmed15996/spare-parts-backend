@@ -21,8 +21,11 @@ use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Models\Review;
 use App\Http\Requests\API\V1\Provider\SendOfferRequest;
+use App\Http\Requests\API\V1\Provider\UpdateDaysRequest;
 use App\Services\OfferService;
+use App\Services\ProviderDaysService;
 use App\Http\Resources\API\V1\Provider\Offers\ProviderOfferResource;
+use App\Http\Resources\API\V1\Provider\ProviderDayResource;
 class ProviderController extends Controller
 {
     public function __construct(
@@ -30,7 +33,8 @@ class ProviderController extends Controller
         protected BannerService $bannerService,
         protected RequestService $requestService,
         protected ProviderService $providerService,
-        protected OfferService $offerService
+        protected OfferService $offerService,
+        protected ProviderDaysService $providerDaysService
     ) {
     }
     public function packages()
@@ -151,4 +155,59 @@ class ProviderController extends Controller
             return $this->errorResponse(__('Failed to retrieve offer'), 500);
         }
     }    
+
+    public function days(){
+        try{
+            $provider = Auth::user()->provider;
+            $days = $this->providerDaysService->getProviderDays($provider);
+            return $this->successResponse(
+                ProviderDayResource::collection($days),
+                __('Working days retrieved successfully')
+            );
+        }catch(\Exception $e){
+            Log::debug($e->getMessage());
+            return $this->errorResponse(__('Failed to retrieve working days'), 500);
+        }
+    }
+
+    public function updateDays(UpdateDaysRequest $request){
+        try{
+            $provider = Auth::user()->provider;
+            $updated = $this->providerDaysService->updateProviderDays($provider, $request->validated()['days']);
+            
+            if ($updated) {
+                $days = $this->providerDaysService->getProviderDays($provider);
+                return $this->successResponse(
+                    ProviderDayResource::collection($days),
+                    __('Working days updated successfully')
+                );
+            }
+            
+            return $this->errorResponse(__('Failed to update working days'), 500);
+        }
+        catch(\Exception $e){
+            Log::debug($e->getMessage());
+            return $this->errorResponse(__('Failed to update working days'), 500);
+        }
+    }
+
+    /**
+     * Check if provider is currently open
+     */
+    public function checkAvailability()
+    {
+        try {
+            $provider = Auth::user()->provider;
+            $isOpen = $this->providerDaysService->isProviderOpen($provider);
+            $nextOpening = $this->providerDaysService->getNextOpeningTime($provider);
+            
+            return $this->successResponse([
+                'is_open' => $isOpen,
+                'next_opening' => $nextOpening,
+            ], __('Availability status retrieved successfully'));
+        } catch (\Exception $e) {
+            Log::debug($e->getMessage());
+            return $this->errorResponse(__('Failed to check availability'), 500);
+        }
+    }
 }

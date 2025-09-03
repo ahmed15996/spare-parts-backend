@@ -31,6 +31,7 @@ class ProviderResource extends JsonResource
                 $data['brands'] = BrandResource::collection($this->brands->take(5));
                 $data['banners'] = BannerResource::collection($this->activeProfileBanners);
                 $data['products'] = ProductResource::collection($this->products->take(5));
+                $data['is_currently_open'] = $this->isCurrentlyOpen();
             }
 
             return $data;

@@ -16,6 +16,17 @@ class DaySeeder extends Seeder
         $days = [
             [
                 'name' => [
+                    'ar' => 'السبت',
+                    'en' => 'Saturday',
+                ],
+            ],
+            [
+                'name' => [
+                    'ar' => 'الأحد',
+                    'en' => 'Sunday',
+                ],
+            ],[
+                'name' => [
                     'ar' => 'الاثنين',
                     'en' => 'Monday',
                 ],
@@ -43,19 +54,7 @@ class DaySeeder extends Seeder
                     'ar' => 'الجمعة',
                     'en' => 'Friday',
                 ],
-            ],
-            [
-                'name' => [
-                    'ar' => 'السبت',
-                    'en' => 'Saturday',
-                ],
-            ],
-            [
-                'name' => [
-                    'ar' => 'الأحد',
-                    'en' => 'Sunday',
-                ],
-            ],
+            ]
         ];
         foreach ($days as $dayData) {
             Day::create($dayData);

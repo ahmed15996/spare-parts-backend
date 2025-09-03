@@ -210,4 +210,13 @@ class ProviderService extends BaseService
     {
         return $provider->products->sum('stock');
     }
+
+    public function updateDays(Provider $provider, array $days): bool
+    {
+        $provider->days()->delete();
+        foreach($days as $day){
+            $provider->days()->create($day);
+        }
+        return true;
+    }
 }
