@@ -32,6 +32,9 @@ Route::group(['as'=>'client.','prefix'=>'client'], function () {
 
 //# Authenticated client endpoints (require authentication)
 Route::group(['as'=>'client.','prefix'=>'client','middleware' => 'auth:sanctum'], function () {
+    // Reports
+    \App\Http\Controllers\API\V1\ReportController::class;
+    Route::post('/reports', [\App\Http\Controllers\API\V1\ReportController::class, 'store'])->name('reports.store');
     Route::group(['prefix'=>'cars'],function(){
         Route::get('/', [CarController::class, 'index'])->name('cars.index');
         Route::get('/{id}', [CarController::class, 'show'])->name('cars.show');

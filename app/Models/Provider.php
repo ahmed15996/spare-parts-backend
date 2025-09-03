@@ -96,6 +96,11 @@ class Provider extends Model implements HasMedia
         return $this->hasMany('App\Models\Review');
     }
 
+    public function reports()
+    {
+        return $this->morphMany(Report::class, 'reportable');
+    }
+
     /**
      * Get the average rating for this provider (last 3 months)
      */

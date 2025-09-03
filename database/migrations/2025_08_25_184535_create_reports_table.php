@@ -13,7 +13,7 @@ class CreateReportsTable extends Migration {
 			$table->timestamps();
 			$table->integer('reporter_id')->unsigned();
 			$table->morphs('reportable');
-			$table->text('reason');
+			$table->text('reason')->nullable();
 		});
 	}
 

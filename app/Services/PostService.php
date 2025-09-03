@@ -90,7 +90,8 @@ class PostService extends BaseService
     {
         return $this->post->newQuery()
             ->where('status', PostStatus::Approved->value)
-            ->with(['author', 'comments', 'likes'])
+            ->with(['author'])
+            ->withCount(['comments', 'likes as likes_count' => function ($q) { $q->where('value', 1); }])
             ->latest('id')
             ->paginate($per_page);
     }

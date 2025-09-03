@@ -22,7 +22,7 @@ class Post extends Model implements HasMedia
 
     public function comments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class,'post_id');
     }
 
     public function likes()

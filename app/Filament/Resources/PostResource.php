@@ -53,10 +53,11 @@ class PostResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->withCount('comments'))
             ->columns([
                 Tables\Columns\ImageColumn::make('first_post_media_url')->label(__('Image'))->circular()->size(48),
                 Tables\Columns\TextColumn::make('author.name')->label(__('Author'))->searchable(),
-                Tables\Columns\IconColumn::make('comments_count')->label(__('Comments'))->state(fn ($record) => $record->comments()->count())->icon('heroicon-o-chat-bubble-oval-left')->sortable(false),
+                Tables\Columns\TextColumn::make('comments_count')->label(__('Comments'))->sortable(),
                 Tables\Columns\IconColumn::make('likes_count')->label(__('Likes'))->state(fn ($record) => $record->likes()->where('value', 1)->count())->icon('heroicon-o-hand-thumb-up')->sortable(false),
                 Tables\Columns\BadgeColumn::make('status')->label(__('Status'))
                     ->colors([

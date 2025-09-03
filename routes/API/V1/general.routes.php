@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 
     //# Posts endpoints (authenticated users)
     Route::group(['as'=>'posts.','prefix'=>'posts', 'middleware' => 'auth:sanctum'], function () {
-        Route::get('/', [PostController::class, 'index'])->name('index');
+        Route::get('/', [PostController::class, 'feed'])->name('feed');
         Route::post('/', [PostController::class, 'store'])->name('store');
         Route::get('/{id}', [PostController::class, 'show'])->name('show');
         Route::delete('/{id}', [PostController::class, 'destroy'])->name('destroy');

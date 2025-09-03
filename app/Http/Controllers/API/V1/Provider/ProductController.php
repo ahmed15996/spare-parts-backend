@@ -52,7 +52,9 @@ class ProductController extends Controller
 
         $product = $this->productService->createWithBusinessLogic($data);
 
-        return $this->successResponse([], __('Product created successfully'));
+        return $this->successResponse([
+            'id' => $product->id,
+        ], __('Product created successfully'));
     }
 
     public function update(UpdateProductRequest $request, $id)

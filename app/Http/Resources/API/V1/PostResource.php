@@ -40,8 +40,8 @@ class PostResource extends JsonResource
                 // No comments/media block for rejected own posts
             } else {
                 // Accepted (or pending) => show normally
-                $data['likes_count'] = $this->likes_count ?? 0;
-                $data['comments_count'] = $this->whenCounted('comments');
+                $data['likes_count'] = $this->likes_count ?? ($this->relationLoaded('likes') ? $this->likes->where('value', 1)->count() : 0);
+                $data['comments_count'] = $this->comments_count ?? ($this->relationLoaded('comments') ? $this->comments->count() : 0);
                 if ($request->route()?->getName() === 'posts.show' || $request->route()?->getName() === 'client.posts.show') {
                     $data['comments'] = CommentResource::collection($this->whenLoaded('comments'));
                 }
@@ -53,8 +53,8 @@ class PostResource extends JsonResource
             }
         } else {
             // Not owner: return as if accepted (full view)
-            $data['likes_count'] = $this->likes_count ?? 0;
-            $data['comments_count'] = $this->whenCounted('comments');
+            $data['likes_count'] = $this->likes_count ?? ($this->relationLoaded('likes') ? $this->likes->where('value', 1)->count() : 0);
+            $data['comments_count'] = $this->comments_count ?? ($this->relationLoaded('comments') ? $this->comments->count() : 0);
             if ($request->route()?->getName() === 'posts.show' || $request->route()?->getName() === 'client.posts.show') {
                 $data['comments'] = CommentResource::collection($this->whenLoaded('comments'));
             }
