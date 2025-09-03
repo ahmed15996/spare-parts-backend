@@ -720,5 +720,7 @@
     "Failed to delete report":"فشل حذف التقرير",
     "Failed to fetch report":"فشل جلب التقرير",
     "Report updated successfully":"تم تحديث التقرير بنجاح",
-    "Failed to update report":"فشل تحديث التقرير"
+    "Failed to update report":"فشل تحديث التقرير",
+    "New report":"تقرير جديد",
+    "A new report has been received":"تم إرسال تقرير جديد"
 }   

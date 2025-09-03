@@ -24,7 +24,7 @@ class StoreBanner extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'original_price' => 'nullable|numeric|min:0',
+            'original_price' => 'required|numeric|min:0',
             'discount_percentage' => 'nullable|integer|min:0|lte:100',
             'discount_price' => 'nullable|numeric|min:0',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
