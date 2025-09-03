@@ -31,7 +31,7 @@ class BannerResource extends JsonResource
                     'phone' => $this->provider->user->phone,
                     'address' => $this->provider->address,
                     'name' => $this->provider->store_name,
-                    'avatar' => $this->provider->getFirstMediaUrl('avatar'),
+                    'avatar' => $this->provider->getFirstMediaUrl('logo'),
                     'rating' => $this->provider->getAverageRating(),
                     'days' => ProviderDayResource::collection($this->provider->days),
                 ];

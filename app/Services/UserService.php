@@ -97,6 +97,12 @@ class UserService extends BaseService
             unset($data['avatar']);
         }
         $data['is_active'] = true;
+        $exist = User::where('phone', $data['phone'])->first();
+        //update if exist
+        if($exist){
+            $exist->update($data);
+            return $exist;
+        }
         $user = $this->user->create($data);
         $user->assignRole('client');
         if($avatar){

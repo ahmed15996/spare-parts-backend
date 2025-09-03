@@ -83,7 +83,7 @@ class PostResource extends JsonResource
                     'id' => $author->id,
                     'name' => $author->name ?? ($author->store_name ?? null),
                     'address' => $author->address ?? null,
-                    'avatar' => method_exists($author, 'getFirstMediaUrl') ? $author->getFirstMediaUrl('avatar') : null,
+                    'avatar' => method_exists($author, 'getFirstMediaUrl') ? $author->getFirstMediaUrl('logo') : null,
                 ];
             }
         }

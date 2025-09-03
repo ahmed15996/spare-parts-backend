@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
             // Provider profile update request (requires provider role)
             Route::post('provider/profile-update-request', [AuthController::class, 'providerProfileUpdateRequest'])
                 ->name('provider.profile-update-request');
+            Route::get('provider/profile', [AuthController::class, 'providerProfile'])->name('provider.profile');
         });
     });
     

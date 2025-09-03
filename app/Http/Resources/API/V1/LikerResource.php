@@ -13,7 +13,7 @@ class LikerResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $user->name ?? ($user->first_name . ' ' . $user->last_name ?? ''),
-            'avatar' => $user->getFirstMediaUrl('avatar')
+            'avatar' => $user->role == 'client' ? $user->getFirstMediaUrl('avatar') : $user->getFirstMediaUrl('logo'),
         ];
     }
 }

@@ -687,6 +687,14 @@
     "Failed to fetch likers":"فشل جلب المعجبين",
     "No likers found":"لا يوجد معجبين",
     "Liker":"المعجب",
-    "Likers":"المعجبين"
+    "Likers":"المعجبين",
+    "Provider reviews retrieved successfully":"تم جلب المراجعات بنجاح",
+    "Failed to retrieve provider reviews":"فشل جلب المراجعات",
+    "User reviews retrieved successfully":"تم جلب المراجعات بنجاح",
+    "Failed to retrieve user reviews":"فشل جلب المراجعات",
+    "Review deleted successfully":"تم حذف المراجعة بنجاح",
+    "Review created successfully":"تم إنشاء المراجعة بنجاح",
+    "Failed to create review":"فشل إنشاء المراجعة",
+    "You have already reviewed this provider":"لقد قمت بمراجعة بالفعل هذا المزود"
 
 }   

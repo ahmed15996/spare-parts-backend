@@ -15,7 +15,7 @@ class CommentResource extends JsonResource
             'author' => [
                 'id' => $this->author->id,
                 'name' => $this->author->name,
-                'avatar' => $this->author->getFirstMediaUrl('avatar'),
+                'avatar' => $this->author->role == 'client' ? $this->author->getFirstMediaUrl('avatar') : $this->author->getFirstMediaUrl('logo'),
             ],
             'created_at' => Carbon::parse($this->created_at)->format('H:i d/m/Y'),
         ];
