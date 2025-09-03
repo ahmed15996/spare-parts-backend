@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Route;
         Route::get('/settings', [GeneralController::class, 'settings'])->name('settings');
         Route::get('/banner-types', [GeneralController::class, 'bannerTypes'])->name('banner-types');
         Route::get('/days', [GeneralController::class, 'days'])->name('days');
+        Route::get('/onboarding', [GeneralController::class, 'onboarding'])->name('onboarding');
+    });
+    Route::group(['as'=>'contacts.','prefix'=>'contacts'], function () {
+        Route::post('/', [ContactController::class, 'store'])->name('store');
     });
 
     //# Posts endpoints (authenticated users)

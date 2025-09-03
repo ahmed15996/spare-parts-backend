@@ -11,10 +11,12 @@ use App\Http\Resources\API\V1\BannerTypeResource;
     use App\Http\Resources\API\V1\SettingResource;
 use App\Http\Resources\API\V1\DayResource;
 use App\Http\Resources\API\V1\PackageResource;
+use App\Http\Resources\API\V1\OnboardingResource;
 use App\Models\Brand;
 use App\Models\City;
 use App\Models\Day;
 use App\Models\Package;
+use App\Models\Onboarding;
 use App\Services\CategoryService;
 use App\Services\CityService;
 use App\Services\BrandService;
@@ -95,6 +97,18 @@ class GeneralController extends Controller
             return $this->collectionResponse(DayResource::collection($days), __('Days retrieved successfully'));
         } catch (\Exception $e) {
             return $this->handleException($e, __('Failed to retrieve days'));
+        }
+    }
+
+    public function onboarding()
+    {
+        try {
+            $onboardings = Cache::rememberForever('onboardings', function () {
+                return Onboarding::ordered()->active()->get();
+            });
+            return $this->collectionResponse(OnboardingResource::collection($onboardings), __('Onboardings retrieved successfully'));
+        } catch (\Exception $e) {
+            return $this->handleException($e, __('Failed to retrieve onboardings'));
         }
     }
     

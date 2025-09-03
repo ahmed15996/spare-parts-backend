@@ -46,6 +46,20 @@
     "Accepted At": "Accepted At",
     "Author Type": "Author Type",
     "Author ID": "Author ID",
-    "Content": "Content",
-    "Content": "Content"
+    "Onboarding": "Onboarding",
+    "Onboardings": "Onboardings",
+    "Content Management": "Content Management",
+    "Onboarding Information": "Onboarding Information",
+    "Title": "Title",
+    "Description": "Description",
+    "Order": "Order",
+    "Media": "Media",
+    "Onboarding Image": "Onboarding Image",
+    "Enter onboarding title": "Enter onboarding title",
+    "Enter onboarding description": "Enter onboarding description",
+    "Enter display order": "Enter display order",
+    "Upload an image for this onboarding step. Recommended size: 800x450px": "Upload an image for this onboarding step. Recommended size: 800x450px",
+    "Click to upload image": "Click to upload image",
+    "Onboardings retrieved successfully": "Onboardings retrieved successfully",
+    "Failed to retrieve onboardings": "Failed to retrieve onboardings"
 }

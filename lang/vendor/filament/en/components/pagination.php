@@ -2,46 +2,45 @@
 
 return [
 
-    'label' => 'Pagination navigation',
+    'label' => 'Pagination Navigation',
 
-    'overview' => '{1} Showing 1 result|[2,*] Showing :first to :last of :total results',
+    'overview' => [
+        'Showing' => 'Showing',
+        'to' => 'to',
+        'of' => 'of',
+        'results' => 'results',
+    ],
 
     'fields' => [
-
         'records_per_page' => [
-
-            'label' => 'Per page',
-
-            'options' => [
-                'all' => 'All',
-            ],
-
+            'label' => 'per page',
         ],
-
     ],
 
     'actions' => [
-
-        'first' => [
-            'label' => 'First',
-        ],
-
         'go_to_page' => [
             'label' => 'Go to page :page',
         ],
 
-        'last' => [
-            'label' => 'Last',
-        ],
-
         'next' => [
             'label' => 'Next',
+            'tooltip' => 'Next page',
         ],
 
         'previous' => [
             'label' => 'Previous',
+            'tooltip' => 'Previous page',
         ],
 
+        'first' => [
+            'label' => 'First',
+            'tooltip' => 'First page',
+        ],
+
+        'last' => [
+            'label' => 'Last',
+            'tooltip' => 'Last page',
+        ],
     ],
 
 ];

@@ -2,8 +2,13 @@
 
 return [
 
-    'messages' => [
-        'uploading_file' => 'Uploading file...',
+    'actions' => [
+        'save' => [
+            'label' => 'Save',
+        ],
+        'cancel' => [
+            'label' => 'Cancel',
+        ],
     ],
 
 ];

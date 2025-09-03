@@ -14,6 +14,7 @@ class CreateContactsTable extends Migration {
 			$table->string('name');
 			$table->string('email');
 			$table->longText('message');
+			$table->tinyInteger('type')->default(1);
 			$table->boolean('is_read')->default(false);
 		});
 	}

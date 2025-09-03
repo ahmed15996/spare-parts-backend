@@ -11,6 +11,7 @@ return [
         'settings' => 'الإعدادات',
         'communication' => 'الاتصال',
         'locations' => 'المواقع',
+        'content_management' => 'إدارة المحتوى',
     ],
 
     'labels' => [
@@ -23,6 +24,7 @@ return [
         'roles' => 'الأدوار',
         'general_settings' => 'الإعدادات العامة',
         'social_media' => 'وسائل التواصل الاجتماعي',
+        'onboardings' => 'التوجيهات',
     ],
 
     'actions' => [
