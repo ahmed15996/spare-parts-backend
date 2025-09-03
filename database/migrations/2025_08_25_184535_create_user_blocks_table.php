@@ -11,11 +11,17 @@ class CreateUserBlocksTable extends Migration {
 		Schema::create('user_blocks', function(Blueprint $table) {
 			$table->id();
 			$table->timestamps();
-			$table->foreignId('blocker_id')->constrained('users')->onDelete('cascade');
-			$table->foreignId('blocked_id')->constrained('users')->onDelete('cascade');
+			$table->unsignedInteger('blocker_id');
+			$table->unsignedInteger('blocked_id');
 			
 			// Prevent duplicate blocks
 			$table->unique(['blocker_id', 'blocked_id']);
+		});
+
+		// Add foreign key constraints
+		Schema::table('user_blocks', function(Blueprint $table) {
+			$table->foreign('blocker_id')->references('id')->on('users')->onDelete('cascade');
+			$table->foreign('blocked_id')->references('id')->on('users')->onDelete('cascade');
 		});
 	}
 

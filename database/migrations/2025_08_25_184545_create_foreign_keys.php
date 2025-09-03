@@ -44,11 +44,6 @@ class CreateForeignKeys extends Migration {
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
-		Schema::table('comments', function(Blueprint $table) {
-			$table->foreign('parent_id')->references('id')->on('comments')
-						->onDelete('restrict')
-						->onUpdate('restrict');
-		});
 		Schema::table('cars', function(Blueprint $table) {
 			$table->foreign('brand_model_id')->references('id')->on('brand_models')
 						->onDelete('restrict')
@@ -115,16 +110,7 @@ class CreateForeignKeys extends Migration {
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
-		Schema::table('user_blocks', function(Blueprint $table) {
-			$table->foreign('blocker_id')->references('id')->on('users')
-						->onDelete('restrict')
-						->onUpdate('restrict');
-		});
-		Schema::table('user_blocks', function(Blueprint $table) {
-			$table->foreign('blocked_id')->references('id')->on('users')
-						->onDelete('restrict')
-						->onUpdate('restrict');
-		});
+
 	}
 
 	public function down()
@@ -183,11 +169,6 @@ class CreateForeignKeys extends Migration {
 		Schema::table('banners', function(Blueprint $table) {
 			$table->dropForeign('banners_provider_id_foreign');
 		});
-		Schema::table('user_blocks', function(Blueprint $table) {
-			$table->dropForeign('user_blocks_blocker_id_foreign');
-		});
-		Schema::table('user_blocks', function(Blueprint $table) {
-			$table->dropForeign('user_blocks_blocked_id_foreign');
-		});
+
 	}
 }
