@@ -213,10 +213,6 @@ class ProviderService extends BaseService
 
     public function updateDays(Provider $provider, array $days): bool
     {
-        $provider->days()->delete();
-        foreach($days as $day){
-            $provider->days()->create($day);
-        }
-        return true;
+        return $provider->days()->update($days);
     }
 }
