@@ -26,6 +26,15 @@ class BannerResource extends JsonResource
                 $data['description'] = $this->description;
                 $data['original_price'] = $this->original_price;
                 $data['discount_price'] = $this->discount_price;
+                $data['provider'] =[
+                    'user_id' => $this->provider->user_id,
+                    'phone' => $this->provider->user->phone,
+                    'address' => $this->provider->address,
+                    'name' => $this->provider->store_name,
+                    'avatar' => $this->provider->getFirstMediaUrl('avatar'),
+                    'rating' => $this->provider->getAverageRating(),
+                    'days' => ProviderDayResource::collection($this->provider->days),
+                ];
             }
 
             return $data;

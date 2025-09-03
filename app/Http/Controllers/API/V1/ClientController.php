@@ -75,7 +75,7 @@ class ClientController extends Controller
     }
 
     public function bannserDetails(Request $request,$id){
-        $banner = $this->bannerService->findWithRelations($id, ['provider','media']);
+        $banner = $this->bannerService->findWithRelations($id, ['provider.days','provider.media','media']);
         if(!$banner){
             return $this->errorResponse('Banner not found',404);
         }

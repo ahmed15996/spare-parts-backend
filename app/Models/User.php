@@ -99,6 +99,11 @@ class User extends Model implements FilamentUser, HasMedia, Authenticatable, Aut
         return $this->hasMany('App\Models\FcmToken');
     }
 
+    public function reviews()
+    {
+        return $this->hasMany('App\Models\Review');
+    }
+
     public static function getAdmins(){
         return self::whereHas('roles', function($query){
             $query->whereIn('name', ['super_admin', 'admin']);

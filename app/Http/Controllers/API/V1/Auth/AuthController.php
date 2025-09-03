@@ -8,6 +8,7 @@ use App\Http\Requests\API\V1\Auth\ProviderProfileUpdateRequest;
 use App\Http\Requests\API\V1\UpdateProfileRequest;
 use App\Http\Resources\API\V1\ClientResource;
 use App\Http\Resources\API\V1\PersonalProfileResource;
+use App\Http\Resources\API\V1\ProviderProfileResource;
 use App\Services\AuthService;
 use App\Services\ProviderProfileUpdateService;
 use Illuminate\Http\Request;
@@ -75,6 +76,13 @@ class AuthController extends BaseAuthCrontroller
 
         // Submit the update request
         return $this->profileUpdateService->createUpdateRequest($provider, $data);
+    }
+
+    // to return Business information for provider
+    public function providerProfile(){
+        $provider = Auth::user()->provider;
+        return $this->successResponse(new ProviderProfileResource($provider), __('Provider profile retrieved successfully'));
+
     }
 
 }

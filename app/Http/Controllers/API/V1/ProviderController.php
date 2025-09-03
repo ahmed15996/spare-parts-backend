@@ -19,6 +19,7 @@ use App\Http\Resources\API\V1\SubscriptionResource;
 use App\Http\Resources\API\V1\Provider\RequestResource as ProviderRequestResource;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
+use App\Models\Review;
 use App\Http\Requests\API\V1\Provider\SendOfferRequest;
 use App\Services\OfferService;
 use App\Http\Resources\API\V1\Provider\Offers\ProviderOfferResource;
@@ -54,9 +55,13 @@ class ProviderController extends Controller
         try{
             $provider = User::with('provider')->find(Auth::id())->provider;
             $stockCount = $this->providerService->stockCount($provider);
+            
+            // Get the actual calculated rating from reviews
+            $rating = $provider->getAverageRating();
+            
             return $this->successResponse([
                 'stock_count' => $stockCount,
-                'rating' =>'4'
+                'rating' => $rating,
             ]);
         }catch(\Exception $e){
             Log::debug($e->getMessage());

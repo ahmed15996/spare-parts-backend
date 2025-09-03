@@ -6,6 +6,7 @@ use App\Http\Controllers\API\V1\PostController;
 use App\Http\Controllers\API\V1\CommentController;
 use App\Http\Controllers\API\V1\LikeController;
 use App\Http\Controllers\API\V1\Client\RequestController;
+use App\Http\Controllers\API\V1\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -22,6 +23,10 @@ Route::group(['as'=>'client.','prefix'=>'client'], function () {
         Route::get('/{id}/brands', [ClientController::class, 'providerBrands'])->name('brands.show');
         Route::get('/{id}/products', [ClientController::class, 'providerProducts'])->name('products.index');
         Route::post('/search', [ClientController::class, 'search'])->name('search');
+        
+        // Provider reviews routes
+        Route::get('/{id}/reviews', [ReviewController::class, 'getProviderReviews'])->name('reviews.index');
+        Route::post('/{id}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
     });
 });
 

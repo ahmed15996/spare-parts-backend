@@ -91,4 +91,24 @@ class Provider extends Model implements HasMedia
         return $this->subscriptions->where('is_active', true)->first() ? true : false;
     }
 
+    public function reviews()
+    {
+        return $this->hasMany('App\Models\Review');
+    }
+
+    /**
+     * Get the average rating for this provider (last 3 months)
+     */
+    public function getAverageRating(): float
+    {
+        return Review::calculateProviderRating($this->id);
+    }
+
+    /**
+     * Get the total number of reviews for this provider (last 3 months)
+     */
+    public function getReviewCount(): int
+    {
+        return Review::getProviderReviewCount($this->id);
+    }
 }
