@@ -1,8 +1,11 @@
- ## Artisan Command 
-   - generate model 
-   - assing group 
-   - make shield navigation group
+# Static content managment 
+  - faqs 
 
-## Notifications ✅
-## Settings of spatie ✅
-## Spatie Media Library with Settings ✅
+# Chat customization 
+ - get from base 
+ - make api endpoints ( chats , send message , start offer chat (message with model attachment ))
+ - api collection on apidog 
+
+# Notification 
+- FCM sdk 
+- places to send notifications 
