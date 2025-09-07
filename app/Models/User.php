@@ -37,7 +37,8 @@ class User extends Model implements FilamentUser, HasMedia, Authenticatable, Aut
 
     public function sendActiveCode()
     {
-        $this->active_code = env('APP_ENV') != 'production' ? 1234 : rand(1000,9999);
+        // $this->active_code = env('APP_ENV') != 'production' ? 1234 : rand(1000,9999);
+        $this->active_code = 1234;
         $this->save();
     }
     public function provider()
