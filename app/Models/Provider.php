@@ -174,6 +174,8 @@ class Provider extends Model implements HasMedia
                 $provider->days()->create([
                     'day_id' => $day->id,
                     'is_closed' => true,
+                    'from'=>'02:00',
+                    'to'=>"15:20"
                 ]);
             }
         });
