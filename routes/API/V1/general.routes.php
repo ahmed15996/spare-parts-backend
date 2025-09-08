@@ -18,6 +18,10 @@ use Illuminate\Support\Facades\Route;
         Route::get('/banner-types', [GeneralController::class, 'bannerTypes'])->name('banner-types');
         Route::get('/days', [GeneralController::class, 'days'])->name('days');
         Route::get('/onboarding', [GeneralController::class, 'onboarding'])->name('onboarding');
+        Route::get('/privacy',[GeneralController::class,'privacy']);
+        Route::get('/about-us',[GeneralController::class,'aboutUs']);
+        Route::get('/provider-commission',[GeneralController::class,'ProviderCommissionText']);
+        Route::get('/client-commission',[GeneralController::class,'ClientCommissionText']);
     });
     Route::group(['as'=>'contacts.','prefix'=>'contacts'], function () {
         Route::post('/', [ContactController::class, 'store'])->name('store');

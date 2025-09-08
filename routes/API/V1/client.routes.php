@@ -8,6 +8,7 @@ use App\Http\Controllers\API\V1\LikeController;
 use App\Http\Controllers\API\V1\Client\RequestController;
 use App\Http\Controllers\API\V1\ReviewController;
 use App\Http\Controllers\API\V1\BlockController;
+use App\Http\Controllers\API\V1\CommissionController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -43,6 +44,8 @@ Route::group(['as'=>'client.','prefix'=>'client','middleware' => 'auth:sanctum']
         Route::put('/{id}', [CarController::class, 'update'])->name('cars.update');
         Route::delete('/{id}', [CarController::class, 'destroy'])->name('cars.delete');
     });
+
+    Route::post('/commissions', [CommissionController::class, 'clientCommission'])->name('commissions.client');
 
     Route::group(['prefix'=>'requests','as'=>'requests.'],function(){
         Route::get('/{id}', [RequestController::class, 'show'])->name('show');

@@ -4,6 +4,8 @@ namespace App\Helpers;
 
 use App\Settings\GeneralSettings;
 use App\Settings\SocialMediaSettings;
+use App\Settings\CommissionSettings;
+use App\Settings\ContentSettings;
 use Illuminate\Support\Facades\Cache;
 
 if(!function_exists('settings')){
@@ -11,8 +13,8 @@ if(!function_exists('settings')){
     {
         return Cache::rememberForever('all_settings', function () {
             return [
-                app(GeneralSettings::class),
-                app(SocialMediaSettings::class),
+                app(CommissionSettings::class),
+                app(ContentSettings::class),
             ];
         });
     }
@@ -23,11 +25,11 @@ if(!function_exists('setting')){
     {
         return Cache::rememberForever("setting_{$group}_{$name}", function () use ($group, $name) {
             switch ($group) {
-                case 'general':
-                    $settings = app(GeneralSettings::class);
+                case 'commission':
+                    $settings = app(CommissionSettings::class);
                     break;
-                case 'social_media':
-                    $settings = app(SocialMediaSettings::class);
+                case 'content':
+                        $settings = app(ContentSettings::class);
                     break;
                 default:
                     return null;
@@ -42,7 +44,7 @@ if(!function_exists('clear_settings_cache')){
     function clear_settings_cache()
     {
         Cache::forget('all_settings');
-        Cache::forget('setting_general_*');
-        Cache::forget('setting_social_media_*');
+        Cache::forget('setting_content_*');
+        Cache::forget('setting_commission_*');
     }
 }

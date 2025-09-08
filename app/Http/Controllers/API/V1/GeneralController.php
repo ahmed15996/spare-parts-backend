@@ -21,6 +21,8 @@ use App\Services\CategoryService;
 use App\Services\CityService;
 use App\Services\BrandService;
 use App\Enums\BannerType;
+
+use function App\Helpers\setting;
 use function App\Helpers\settings;
 
 
@@ -111,5 +113,26 @@ class GeneralController extends Controller
             return $this->handleException($e, __('Failed to retrieve onboardings'));
         }
     }
-    
+
+    // Content Routes 
+    public function privacy()
+    {
+        $privacy = setting('content','privacy_'.app()->getLocale());
+        return $this->successResponse($privacy, __('Privacy retrieved successfully'));
+    }
+    public function aboutUs()
+    {
+        $aboutUs = setting('content','about_us_'.app()->getLocale());
+        return $this->successResponse($aboutUs, __('About Us retrieved successfully'));
+    }
+    public function providerCommissionText()
+    {
+        $providerCommissionText = setting('commission','provider_commission_text_'.app()->getLocale());
+        return $this->successResponse($providerCommissionText, __('Provider Commission Text retrieved successfully'));
+    }
+    public function clientCommissionText()
+    {
+        $clientCommissionText = setting('commission','client_commission_text_'.app()->getLocale());
+        return $this->successResponse($clientCommissionText, __('Client Commission Text retrieved successfully'));
+    }
 }       

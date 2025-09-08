@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V1\CommissionController;
 use App\Http\Controllers\API\V1\Provider\BannerController;
 use App\Http\Controllers\API\V1\ProviderController;
 use App\Http\Controllers\API\V1\Provider\ProductController as ProviderProductController;
@@ -26,6 +27,10 @@ use Illuminate\Support\Facades\Route;
         Route::group(['prefix'=>'offers','as'=>'offers.'],function(){
             Route::get('/', [ProviderController::class, 'myOffers'])->name('index');
             Route::get('/{id}', [ProviderController::class, 'offerShow'])->name('show');
+        });
+        Route::group(['as'=>'commissions','prefix'=>'commissions'],function(){
+            Route::post('/', [CommissionController::class, 'providerCommission'])->name('store');
+            Route::get('/products', [CommissionController::class, 'products'])->name('products');
         });
 
         Route::group(['prefix' => 'products', 'as' => 'products.'], function () {

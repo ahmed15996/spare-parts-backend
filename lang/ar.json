@@ -1080,5 +1080,15 @@
     "Active only":"النشط فقط",
     "Inactive only":"المعطل فقط",
     "Informative Content":"المحتوى المعلومي",
-    "FAQ Information":"معلومات الأسئلة الشائعة"
+    "FAQ Information":"معلومات الأسئلة الشائعة",
+    "The commission due has been calculated and is :value and please pay it":"تم حساب العموله المستحقه وهي :value  والرجاء الدفع",
+    "No valid products provided":"لم يتم إدخال منتجات صحيحه",
+    "Privacy retrieved successfully":"تم استرجاع الخصوصية بنجاح",
+    "Failed to retrieve privacy":"فشل في استرجاع الخصوصية",
+    "About Us retrieved successfully":"تم استرجاع المن نحن بنجاح",
+    "Failed to retrieve about us":"فشل في استرجاع المن نحن",
+    "Provider Commission Text retrieved successfully":"تم استرجاع نص عمولة المزود بنجاح",
+    "Failed to retrieve provider commission text":"فشل في استرجاع نص عمولة المزود",
+    "Client Commission Text retrieved successfully":"تم استرجاع نص عمولة العميل بنجاح",
+    "Failed to retrieve client commission text":"فشل في استرجاع نص عمولة العميل"
 }  

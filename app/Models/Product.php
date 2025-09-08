@@ -25,4 +25,22 @@ class Product extends Model  implements HasMedia
         return $query->where('published', true);
     }
 
+    public function commissions()
+    {
+        return $this->hasMany(CommissionProduct::class, 'product_id');
+    }
+
+    public function totalCommission(): float
+    {
+        return (float) $this->commissions()->sum('value');
+    }
+
+    public function getTotalCommissionAttribute(): float
+    {
+        return $this->totalCommission();
+    }
+
+
+
+
 }

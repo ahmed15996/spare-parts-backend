@@ -19,6 +19,7 @@ class ProductResource extends JsonResource
 
         $isProviderProductRoute = $routeName && Str::startsWith($routeName, 'provider.products.') && $request->route()->getName() != 'provider.products.index';
 
+        $isCommissionRoute = $routeName && Str::startsWith($routeName, 'provider.commissions');
         $data = [
             'id' => $this->id,
             'name' => $this->name,
@@ -40,6 +41,14 @@ class ProductResource extends JsonResource
                 ];
             })->toArray();
         }
+        if($isCommissionRoute){
+            unset($data['main_image']);
+            $data['description'] = $this->description;
+            $data['price'] = $this->price;
+            $data['stock'] = $this->stock;
+            $data['total_commission'] = $this->totalCommission();
+        }
+
 
         return $data;
     }

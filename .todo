@@ -1,6 +1,3 @@
-# Static content managment 
-  - faqs 
-
 # Chat customization 
  - get from base 
  - make api endpoints ( chats , send message , start offer chat (message with model attachment ))
@@ -8,4 +5,4 @@
 
 # Notification 
 - FCM sdk 
-- places to send notifications 
+- places to send notifications= 
