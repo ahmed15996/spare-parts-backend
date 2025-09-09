@@ -14,16 +14,18 @@ class OfferResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $routeName = $request->route()?->getName();
+
         $data = [
             'id' => $this->id,
             'status' => $this->status,
             'price' => $this->price,
-            'city' => $this->city->name,
-            'user_id' => $this->provider->user_id,// id of provider user for chat 
-            'provider' => $this->provider->store_name,
+            'city' => $this->city?->name,
+            'user_id' => $this->provider?->user_id,// id of provider user for chat 
+            'provider' => $this->provider?->store_name,
         ];
 
-        if($request->route()->getName() == 'client.requests.offers.show'){
+        if($routeName === 'client.requests.offers.show'){
             $data['provider_id'] = $this->provider_id;
             $data['description'] = $this->description;
             $data['has_delivery'] = $this->has_delivery;

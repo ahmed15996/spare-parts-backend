@@ -14,20 +14,21 @@ class CarResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $routeName = $request->route()?->getName();
 
-        if($request->route()->getName() =='client.requests.show'){
+        if($routeName === 'client.requests.show'){
             return [
                 'id' => $this->id,
-                'brand'=>$this->brand->name,
-                'model'=>$this->brandModel->name,
+                'brand'=>$this->brand?->name,
+                'model'=>$this->brandModel?->name,
                 'manufacture_year'=>$this->manufacture_year,
                 'number'=>$this->number,
             ];
         }
         return [
            'id' => $this->id,
-           'brand_id'=>$this->brandModel->brand_id,
-           'brand_model_id'=>$this->brandModel->id,
+           'brand_id'=>$this->brandModel?->brand_id,
+           'brand_model_id'=>$this->brandModel?->id,
            'manufacture_year'=>$this->manufacture_year,
            'number'=>$this->number,
         ];
