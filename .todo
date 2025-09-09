@@ -2,10 +2,15 @@
 - packages discount ✅
 - commission module 
 - statictisc in home page ✅
-- provider ( reviews , product statistics in veiw page)
+- provider ( reviews , product statistics in veiw page) ✅
 - baan users ✅
 
 # Notification 
 - FCM sdk 
 - places to send notifications
 - dashboard notifications services ( send notificatinos to specific users)
+
+
+# delete account 
+- client 
+- provider  

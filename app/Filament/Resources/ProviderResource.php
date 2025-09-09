@@ -304,6 +304,80 @@ class ProviderResource extends Resource
                     ])
                     ->columns(2),
 
+                Infolists\Components\Section::make(__('Product Statistics'))
+                    ->schema([
+                        Infolists\Components\TextEntry::make('total_products')
+                            ->label(__('Total Products'))
+                            ->state(function ($record) {
+                                return $record->products()->count();
+                            })
+                            ->badge()
+                            ->color('primary'),
+                        Infolists\Components\TextEntry::make('total_stock')
+                            ->label(__('Total Stock (Pieces)'))
+                            ->state(function ($record) {
+                                return $record->products()->sum('stock');
+                            })
+                            ->badge()
+                            ->color('success'),
+                        Infolists\Components\TextEntry::make('published_products')
+                            ->label(__('Published Products'))
+                            ->state(function ($record) {
+                                return $record->products()->where('published', true)->count();
+                            })
+                            ->badge()
+                            ->color('info'),
+                        Infolists\Components\TextEntry::make('average_rating')
+                            ->label(__('Average Rating'))
+                            ->state(function ($record) {
+                                $rating = $record->getAverageRating();
+                                return $rating > 0 ? number_format($rating, 1) . '/5' : __('No ratings yet');
+                            })
+                            ->badge()
+                            ->color(fn ($state) => str_contains($state, 'No ratings') ? 'gray' : 'warning'),
+                    ])
+                    ->columns(2),
+
+                Infolists\Components\Section::make(__('Client Reviews'))
+                    ->schema([
+                        Infolists\Components\RepeatableEntry::make('reviews')
+                            ->label('')
+                            ->state(function ($record) {
+                                return $record->reviews()
+                                    ->with('user')
+                                    ->latest()
+                                    ->limit(10)
+                                    ->get()
+                                    ->map(function ($review) {
+                                        return [
+                                            'user_name' => $review->user->first_name . ' ' . $review->user->last_name,
+                                            'rating' => $review->rating,
+                                            'comment' => $review->comment,
+                                            'created_at' => $review->created_at->format('M d, Y'),
+                                        ];
+                                    });
+                            })
+                            ->schema([
+                                Infolists\Components\TextEntry::make('user_name')
+                                    ->label(__('Client'))
+                                    ->weight('bold'),
+                                Infolists\Components\TextEntry::make('rating')
+                                    ->label(__('Rating'))
+                                    ->formatStateUsing(fn ($state) => str_repeat('★', $state) . str_repeat('☆', 5 - $state))
+                                    ->color('warning'),
+                                Infolists\Components\TextEntry::make('comment')
+                                    ->label(__('Comment'))
+                                    ->columnSpanFull()
+                                    ->placeholder(__('No comment')),
+                                Infolists\Components\TextEntry::make('created_at')
+                                    ->label(__('Date'))
+                                    ->color('gray'),
+                            ])
+                            ->columns(2)
+                            ->placeholder(__('No reviews yet')),
+                    ])
+                    ->collapsible(),
+
                 Infolists\Components\Section::make(__('Account Information'))
                     ->schema([
                         Infolists\Components\TextEntry::make('created_at')

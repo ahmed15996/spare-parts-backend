@@ -161,5 +161,18 @@
     "Category": "Category",
     "City": "City",
     "Offer City": "Offer City",
-    "Not specified": "Not specified"
+    "Not specified": "Not specified",
+    "Product Statistics": "Product Statistics",
+    "Total Products": "Total Products",
+    "Total Stock (Pieces)": "Total Stock (Pieces)",
+    "Published Products": "Published Products",
+    "Average Rating": "Average Rating",
+    "No ratings yet": "No ratings yet",
+    "Client Reviews": "Client Reviews",
+    "Client": "Client",
+    "Rating": "Rating",
+    "Comment": "Comment",
+    "Date": "Date",
+    "No comment": "No comment",
+    "No reviews yet": "No reviews yet"
 }

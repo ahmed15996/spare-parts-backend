@@ -19,6 +19,13 @@ class ViewProvider extends ViewRecord
 
     protected function resolveRecord($key): \Illuminate\Database\Eloquent\Model
     {
-        return static::getResource()::resolveRecordRouteBinding($key)->load(['user', 'category', 'city']);
+        return static::getResource()::resolveRecordRouteBinding($key)->load([
+            'user', 
+            'category', 
+            'city', 
+            'products', 
+            'reviews.user',
+            'brands'
+        ]);
     }
 }
