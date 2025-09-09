@@ -6,6 +6,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use App\Filament\Resources\OfferResource;
 
 class OffersRelationManager extends RelationManager
 {
@@ -60,6 +61,8 @@ class OffersRelationManager extends RelationManager
             ])
             ->filters([])
             ->actions([
+                Tables\Actions\ViewAction::make()
+                    ->url(fn ($record) => "/admin/offers/{$record->id}"),
             ])
             ->bulkActions([
             ])

@@ -64,15 +64,6 @@ class RequestResource extends Resource
                     ->rows(4)
                     ->columnSpanFull(),
 
-                Forms\Components\Select::make('status')
-                    ->label(__('Status'))
-                    ->options([
-                        0 => __('Pending'),
-                        1 => __('Approved'),
-                        2 => __('Rejected'),
-                    ])
-                    ->default(0)
-                    ->required(),
             ]);
     }
 
@@ -109,20 +100,6 @@ class RequestResource extends Resource
                         return $state;
                     }),
 
-                Tables\Columns\BadgeColumn::make('status')
-                    ->label(__('Status'))
-                    ->formatStateUsing(fn ($state) => match($state) {
-                        0 => __('Pending'),
-                        1 => __('Approved'),
-                        2 => __('Rejected'),
-                        default => __('Unknown')
-                    })
-                    ->colors([
-                        'warning' => 0,
-                        'success' => 1,
-                        'danger' => 2,
-                    ]),
-
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('Created At'))
                     ->dateTime()
@@ -136,13 +113,7 @@ class RequestResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('status')
-                    ->label(__('Status'))
-                    ->options([
-                        0 => __('Pending'),
-                        1 => __('Approved'),
-                        2 => __('Rejected'),
-                    ]),
+               
 
                 Tables\Filters\SelectFilter::make('city_id')
                     ->label(__('City'))
@@ -173,21 +144,7 @@ class RequestResource extends Resource
                                 Infolists\Components\TextEntry::make('number')
                                     ->label(__('Request Number')),
 
-                                Infolists\Components\TextEntry::make('status')
-                                    ->label(__('Status'))
-                                    ->badge()
-                                    ->formatStateUsing(fn ($state) => match($state) {
-                                        0 => __('Pending'),
-                                        1 => __('Approved'),
-                                        2 => __('Rejected'),
-                                        default => __('Unknown')
-                                    })
-                                    ->color(fn ($state) => match($state) {
-                                        0 => 'warning',
-                                        1 => 'success',
-                                        2 => 'danger',
-                                        default => 'gray'
-                                    }),
+                                
                             ]),
 
                         Infolists\Components\Grid::make(2)
