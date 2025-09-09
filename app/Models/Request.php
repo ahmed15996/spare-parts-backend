@@ -33,6 +33,6 @@ class Request extends Model
 
     public function offers()
     {
-        return $this->hasMany('App\Models\Offer');
+        return $this->hasMany('App\Models\Offer', 'request_id');
     }
 }

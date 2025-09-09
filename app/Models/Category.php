@@ -19,5 +19,9 @@ class Category extends Model implements HasMedia
     {
         return $this->belongsToMany('App\Models\Provider');
     }
+    public function requests()
+    {
+        return $this->hasMany('App\Models\Request');
+    }
 
 }
