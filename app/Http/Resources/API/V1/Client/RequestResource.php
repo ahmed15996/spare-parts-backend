@@ -26,6 +26,12 @@ class RequestResource extends JsonResource
             'car_type'=> $this->car->brandModel->brand->name  . ' ' . $this->car->manufacture_year
         ];
 
+        if($request->route() && ($request->route()->getName() == 'api.conversations.conversation.messages' || $request->route()->getName() == 'api.conversations.index')){
+            unset($data);
+            $data['number'] = $this->number;
+            $data['description'] = $this->description;
+        }
+
         
         if($request->route()->getName() == 'client.requests.show'){
             $data['description'] = $this->description;

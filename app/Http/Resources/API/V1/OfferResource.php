@@ -16,6 +16,7 @@ class OfferResource extends JsonResource
     {
         $data = [
             'id' => $this->id,
+            'status' => $this->status,
             'price' => $this->price,
             'city' => $this->city->name,
             'user_id' => $this->provider->user_id,// id of provider user for chat 

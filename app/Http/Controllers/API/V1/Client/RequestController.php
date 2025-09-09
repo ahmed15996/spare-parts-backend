@@ -11,10 +11,15 @@ use Illuminate\Http\Request;
 use App\Services\RequestService;
 use App\Services\OfferService;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 class RequestController extends Controller
 {
     public function __construct(protected RequestService $requestService, protected OfferService $offerService)
     {
+    }
+    public function index(Request $request){
+        $requests = $this->requestService->getWithScopes()->where('user_id', Auth::id());
+        return $this->successResponse(RequestResource::collection($requests), __('Requests retrieved successfully'));
     }
     public function store(StoreRequest $request)
     {

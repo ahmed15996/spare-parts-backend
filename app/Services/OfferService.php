@@ -221,4 +221,15 @@ class OfferService extends BaseService
         return $offers;
 
     }
+
+    public function markAsAccepted($offer_id){
+        $offer = $this->offer->find($offer_id);
+
+        if($offer && $offer->status == 0){
+            $offer->update([
+                'status'=>1
+            ]);
+        }
+        return $offer;
+    }
 }

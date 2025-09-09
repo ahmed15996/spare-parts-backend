@@ -1,8 +1,10 @@
-# Chat customization 
- - get from base 
- - make api endpoints ( chats , send message , start offer chat (message with model attachment ))
- - api collection on apidog 
+# dashboard 
+- commission module 
+- statictisc in home page
+- provider ( reviews , product statistics in veiw page)
+- baan users 
 
 # Notification 
 - FCM sdk 
-- places to send notifications= 
+- places to send notifications
+- dashboard notifications services ( send notificatinos to specific users)

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
+use Modules\Chat\Models\Conversation;
 use Spatie\Permission\Traits\HasRoles;
 use Filament\Panel;
 use Illuminate\Foundation\Auth\Access\Authorizable;
@@ -156,6 +157,9 @@ class User extends Model implements FilamentUser, HasMedia, Authenticatable, Aut
             return $this->provider->store_name;
         }
         return $this->first_name . ' ' . $this->last_name;
+    }
+    public function conversations(){
+        return $this->belongsToMany(Conversation::class, 'conversation_user');
     }
 
 }

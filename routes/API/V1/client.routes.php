@@ -48,6 +48,7 @@ Route::group(['as'=>'client.','prefix'=>'client','middleware' => 'auth:sanctum']
     Route::post('/commissions', [CommissionController::class, 'clientCommission'])->name('commissions.client');
 
     Route::group(['prefix'=>'requests','as'=>'requests.'],function(){
+        Route::get('/', [RequestController::class, 'index'])->name('index');
         Route::get('/{id}', [RequestController::class, 'show'])->name('show');
         Route::post('/', [RequestController::class, 'store'])->name('store');
         Route::get('/{id}/offers/{offer_id}', [RequestController::class, 'showOffer'])->name('offers.show');

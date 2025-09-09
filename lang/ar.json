@@ -1090,5 +1090,21 @@
     "Provider Commission Text retrieved successfully":"تم استرجاع نص عمولة المزود بنجاح",
     "Failed to retrieve provider commission text":"فشل في استرجاع نص عمولة المزود",
     "Client Commission Text retrieved successfully":"تم استرجاع نص عمولة العميل بنجاح",
-    "Failed to retrieve client commission text":"فشل في استرجاع نص عمولة العميل"
+    "Failed to retrieve client commission text":"فشل في استرجاع نص عمولة العميل",
+    "Conversations fetched successfully":"تم استرجاع المحادثات بنجاح",
+    "Failed to retrieve conversations":"فشل في استرجاع المحادثات",
+    "Conversation started successfully":"تم بدء المحادثة بنجاح",
+    "Failed to start conversation":"فشل في انشاء المحادثة",
+    "Messages fetched successfully":"تم استرجاع الرسائل بنجاح",
+    "Failed to fetch messages":"فشل في استرجاع الرسائل",
+    "Message sent successfully":"تم ارسال الرسالة بنجاح",
+    "Failed to send message":"فشل في ارسال الرسالة",
+    "The type field is required.":"حقل النوع مطلوب",    
+    "The type field must be an integer.":"حقل النوع يجب أن يكون رقما",
+    "The type field must be one of the following: :values":"حقل النوع يجب أن يكون واحد من القيم التالية: :values",
+    "The file field is required when the type is file.":"حقل الملف مطلوب عندما يكون النوع هو ملف",
+    "The file field must be a file.":"حقل الملف يجب أن يكون ملفا",
+    "The offer id field is required when the type is offer.":"حقل العرض مطلوب عندما يكون النوع هو عرض",
+    "The offer id field must be an integer.":"حقل العرض يجب أن يكون رقما",
+    "The offer id field must be an existing offer id.":"حقل العرض يجب أن يكون رقم عرض موجود"
 }  
