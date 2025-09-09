@@ -39,7 +39,11 @@ class MessageResource extends JsonResource
         if($type == MessageType::Offer && isset($this->metadata['offer_id'])){
             $offer = $this->offerService->findWithRelations($this->metadata['offer_id']);
             if($offer && $offer->request) {
-                $data['request'] =  RequestResource::make($offer->request);
+                $data['request'] =  [
+                    'id' => $offer->request->id,
+                    'number' => $offer->request->number,
+                    'description' => $offer->request->description,
+                ];
             }
         }
         if($type == MessageType::File){
@@ -53,7 +57,7 @@ class MessageResource extends JsonResource
             });
         }
 
-        if($request->route() && $request->route()->getName() == 'api.conversations.index'){
+        if($request &&$request->route() && $request->route()->getName() == 'api.conversations.index'){
             unset($data['sender']);
             unset($data['conversation_id']);
         }

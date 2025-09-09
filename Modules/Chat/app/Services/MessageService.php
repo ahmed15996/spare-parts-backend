@@ -69,7 +69,6 @@ class MessageService extends BaseService
         broadcast(new MessageSent($message));
 
         if($message->type == MessageType::Offer){
-            Log::debug('here-OFFER');
             $offerService = app(OfferService::class);
             $offerService->markAsAccepted($message->metadata['offer_id']);
         }
