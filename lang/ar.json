@@ -1106,5 +1106,9 @@
     "The file field must be a file.":"حقل الملف يجب أن يكون ملفا",
     "The offer id field is required when the type is offer.":"حقل العرض مطلوب عندما يكون النوع هو عرض",
     "The offer id field must be an integer.":"حقل العرض يجب أن يكون رقما",
-    "The offer id field must be an existing offer id.":"حقل العرض يجب أن يكون رقم عرض موجود"
+    "The offer id field must be an existing offer id.":"حقل العرض يجب أن يكون رقم عرض موجود",
+    "days":"الأيام",
+    "Discount":"الخصم",
+    "Manage General":"إدارة العام",
+    "Packages Discount":"خصم الباقات"
 }  

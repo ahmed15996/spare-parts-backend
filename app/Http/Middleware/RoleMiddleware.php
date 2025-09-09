@@ -18,7 +18,6 @@ class RoleMiddleware
         }
 
         // Check if user has any of the required roles using Spatie's hasRole method
-        $hasRole = false;
         foreach ($roles as $role) {
             if ($user->hasRole($role)) {
                 $hasRole = true;

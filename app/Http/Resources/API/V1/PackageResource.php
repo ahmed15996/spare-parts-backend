@@ -5,6 +5,8 @@ namespace App\Http\Resources\API\V1;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+use function App\Helpers\setting;
+
 class PackageResource extends JsonResource
 {
     /**
@@ -20,6 +22,7 @@ class PackageResource extends JsonResource
             'description' => $this->description,
             'price' => $this->price,
             'banner_type' => $this->banner_type->label(),
+            'discount' => $this->discount? $this->discount :setting('general', 'packages_discount')??0,
         ];
     }
 }

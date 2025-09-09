@@ -65,6 +65,12 @@ class PackageResource extends Resource
                             ->numeric()
                             ->prefix('SAR')
                             ->minValue(0),
+                        Forms\Components\TextInput::make('discount')
+                            ->label(__('Discount'))
+                            ->required()
+                            ->numeric()
+                            ->minValue(0)
+                            ->suffix('%'),
                         Forms\Components\Select::make('banner_type')
                             ->label(__('Banner Type'))
                             ->options(collect(BannerType::cases())->mapWithKeys(function ($case) {
@@ -76,7 +82,7 @@ class PackageResource extends Resource
                             ->required()
                             ->numeric()
                             ->minValue(1)
-                            ->suffix('days'),
+                            ->suffix(__('days')),
                     ])->columns(3),
             ]);
     }
@@ -99,7 +105,7 @@ class PackageResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('duration')
                     ->label(__('Duration (Days)'))
-                    ->formatStateUsing(fn ($record) => $record->duration . ' days')
+                    ->formatStateUsing(fn ($record) => $record->duration)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('Created At'))

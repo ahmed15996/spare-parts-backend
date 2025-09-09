@@ -13,7 +13,7 @@ class Package extends Model
     use HasTranslations;
     protected $table = 'packages';
     public $timestamps = true;
-    protected $fillable = array('name', 'description', 'price', 'banner_type', 'duration');
+    protected $fillable = array('name', 'description', 'price', 'banner_type', 'duration', 'discount');
 
     public $translatable = ['name', 'description'];
     protected $casts = [
