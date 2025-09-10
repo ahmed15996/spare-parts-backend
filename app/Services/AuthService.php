@@ -51,6 +51,11 @@ class AuthService extends BaseService
     }
     public function verifyActiveCode(array $data)
     {
+        // phone roles 
+        // - add 966
+        // - remove 0 if it's there
+        $data['phone'] = str_replace('0', '', $data['phone']);
+        $data['phone'] = '966' . $data['phone'];
         $user = User::where('phone',$data['phone'])->where('active_code',$data['code'])->first();
         
         if($user){
@@ -89,10 +94,14 @@ class AuthService extends BaseService
 
     public function providerRegisterRequest(array $data)
     {
+        $data['phone'] = str_replace('0', '', $data['phone']);
+        $data['phone'] = '966' . $data['phone'];
         return $this->providerRegistrationService->createRegistrationRequest($data);
     }
     public function clientRegister(array $data)
     {
+        $data['phone'] = str_replace('0', '', $data['phone']);
+        $data['phone'] = '966' . $data['phone'];
         return $this->userService->create($data);
     }
 

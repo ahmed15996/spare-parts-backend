@@ -24,7 +24,7 @@ class ClientRegisterRequest extends FormRequest
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
+            'phone' => 'required|string|max:10',
             'fcm_token' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'city_id' => 'required|integer|exists:cities,id',

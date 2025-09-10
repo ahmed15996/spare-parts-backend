@@ -22,7 +22,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone' => 'required|string|max:14',
+            'phone' => 'required|string|max:10',
             'fcm_token' => 'required|string|max:255',
         ];
     }
