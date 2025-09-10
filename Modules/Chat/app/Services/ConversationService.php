@@ -31,6 +31,16 @@ class ConversationService extends BaseService
             $query->where('users.id', $user_id);
         })
         ->where('last_message_id', '!=', null)
+        ->whereDoesntHave('users', function($query) use ($user_id) {
+            // Exclude conversations with users that the current user has blocked
+            $query->where('users.id', '!=', $user_id)
+                  ->whereExists(function($subQuery) use ($user_id) {
+                      $subQuery->select('id')
+                               ->from('user_blocks')
+                               ->whereColumn('user_blocks.blocked_id', 'users.id')
+                               ->where('user_blocks.blocker_id', $user_id);
+                  });
+        })
         ->with([
             'users',
             'lastMessage.sender'
@@ -50,7 +60,14 @@ class ConversationService extends BaseService
      */
     public function startConversation($receiver_id)
     {
-        $conversation = Conversation::getOrCreate(Auth::id(), $receiver_id);
+        $current_user_id = Auth::id();
+        
+        // Check if either user has blocked the other
+        if (\App\Models\Block::isBlocked($current_user_id, $receiver_id) || \App\Models\Block::isBlocked($receiver_id, $current_user_id)) {
+            return null; // Don't start conversation if either user is blocked
+        }
+
+        $conversation = Conversation::getOrCreate($current_user_id, $receiver_id);
         $this->afterCreate($conversation);
         return $conversation;
     }
@@ -75,6 +92,14 @@ class ConversationService extends BaseService
             },
             'lastMessage.sender'
         ])->find($conversation_id);
+
+        // Check if the other user is blocked by the current user
+        if ($conversation) {
+            $otherUser = $conversation->getOtherUser($current_user_id);
+            if ($otherUser && \App\Models\Block::isBlocked($current_user_id, $otherUser->id)) {
+                return null; // Don't return conversation if user is blocked
+            }
+        }
 
         return $conversation;
     }
@@ -139,6 +164,11 @@ class ConversationService extends BaseService
 
     public function getConversationByUsers($user1_id, $user2_id)
     {
+        // Check if either user has blocked the other
+        if (\App\Models\Block::isBlocked($user1_id, $user2_id) || \App\Models\Block::isBlocked($user2_id, $user1_id)) {
+            return null; // Don't return conversation if either user is blocked
+        }
+
         return Conversation::whereHas('users', function($query) use ($user1_id, $user2_id) {
             $query->where('users.id', $user1_id)->orWhere('users.id', $user2_id);
         })->first();
