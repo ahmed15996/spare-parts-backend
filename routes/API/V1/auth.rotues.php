@@ -15,11 +15,12 @@ use App\Http\Controllers\API\V1\BlockController;
         Route::post('client/register', [AuthController::class, 'clientRegister'])->name('client.register');
         
 
-        Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::group(['middleware' => 'auth:sanctum'], function () {
             Route::post('logout', [AuthController::class, 'logout'])->name('logout');
             Route::post('update-profile', [AuthController::class, 'updateProfile'])->name('update-profile');
             Route::get('profile', [AuthController::class, 'getProfile'])->name('profile');
-            
+            Route::get('notifications', [AuthController::class, 'getNotifications'])->name('notifications');
+            Route::post('notifications/mark-as-read', [AuthController::class, 'markAsRead'])->name('notifications.mark-as-read');
 
                 // Block routes
     Route::post('/blocks', [BlockController::class, 'block'])->name('blocks.store');

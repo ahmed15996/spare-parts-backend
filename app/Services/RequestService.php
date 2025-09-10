@@ -2,12 +2,19 @@
 
 namespace App\Services;
 
+use App\Models\CustomNotification;
+use App\Models\Notification as ModelsNotification;
 use App\Models\Provider;
 use App\Models\Request;
+use App\Models\User;
+use App\Notifications\NewClientRequest;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class RequestService extends BaseService
 {
@@ -121,7 +128,42 @@ class RequestService extends BaseService
      */
     protected function afterCreate(Request $request): void
     {
-        //TODO: Send Fcm Notifications to Providers
+        $recipients  =  User::with('provider')->whereHas('provider',function($q) use ($request){
+            $q->where('category_id', $request->category_id)->where('city_id', $request->city_id);
+        })->get();
+       
+        try{
+            $data = [
+                'title'=>[
+                    'en'=>'new client request from '.$request->user->name,
+                    'ar'=>'طلب جديد من '.$request->user->name,
+                ],
+                'body'=>[
+                    'en'=> 'you have a new client request from '.$request->user->name,
+                    'ar'=>'لديك طلب جديد من '.$request->user->name,
+                ],
+                'metadata'=>[
+                    'type'=>'new_client_request',
+                    'route'=>'provider.requests.show',
+                    'request_id'=>$request->id,
+                ]
+
+            ];
+            foreach($recipients as $recipient){
+               // Send FCM notification
+               $recipient->notify(new NewClientRequest($request,$data));
+               
+               // Create database notification separately
+               $recipient->customNotifications()->create([
+                   'title' => $data['title'],
+                   'body' => $data['body'],
+                   'metadata' => $data['metadata'],
+               ]);
+            }
+        }catch(\Exception $e){
+            Log::error($e);
+        }
+
     }
 
     /**

@@ -63,7 +63,7 @@ class User extends Model implements FilamentUser, HasMedia, Authenticatable, Aut
 
     public function customNotifications()
     {
-        return $this->morphToMany('App\Models\CustomNotification', 'notifiable');
+        return $this->morphMany('App\Models\CustomNotification', 'notifiable');
     }
 
     public function reports()
@@ -99,6 +99,14 @@ class User extends Model implements FilamentUser, HasMedia, Authenticatable, Aut
     public function fcmTokens()
     {
         return $this->hasMany('App\Models\FcmToken');
+    }
+    public function getFCMTokens()
+    {
+        return $this->fcmTokens()->pluck('token')->toArray();
+    }
+    public function routeNotificationForFcm()
+    {
+        return $this->getFCMTokens();
     }
 
     public function reviews()

@@ -3,10 +3,13 @@
 namespace App\Services;
 
 use App\Models\Offer;
+use App\Models\User;
+use App\Notifications\NewProviderOffer;
 use App\Models\Provider;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class OfferService extends BaseService
 {
@@ -118,8 +121,38 @@ class OfferService extends BaseService
      */
     protected function afterCreate(Offer $offer): void
     {
-        //TODO: Send Fcm Notifications to Client
-    }
+        $recipent  =  User::where('id', $offer->request->user_id)->first();
+       
+        try{
+            $data = [
+                'title'=>[
+                        'en'=>'new provider offer from '.$offer->provider->store_name . ' ' . $offer->request->user->name,
+                    'ar'=>'عرض جديد من '.$offer->provider->store_name . ' ' . $offer->request->user->name,
+                ],
+                'body'=>[
+                    'en'=> $offer->provider->store_name . ' ' . $offer->request->user->name . 'أرسل عرض جديد فلتتطلع إليه',
+                    'ar'=>$offer->provider->store_name . ' ' . $offer->request->user->name . 'أرسل عرض جديد فلتتطلع إليه',
+                ],
+                'metadata'=>[
+                    'type'=>'new_provider_offer',
+                    'route'=>'client.requests.offers.show',
+                    'offer_id'=>$offer->id,
+                ]
+
+            ];
+           
+            $recipent->notify(new NewProviderOffer($offer));
+               
+               // Create database notification separately
+               $recipent->customNotifications()->create([
+                   'title' => $data['title'],
+                   'body' => $data['body'],
+                   'metadata' => $data['metadata'],
+               ]);
+        }catch(\Exception $e){
+            Log::error($e);
+        }   
+     }
 
     /**
      * After update business logic

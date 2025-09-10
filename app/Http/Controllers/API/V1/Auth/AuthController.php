@@ -7,10 +7,12 @@ use App\Http\Requests\API\V1\Auth\ProviderRegisterRequest;
 use App\Http\Requests\API\V1\Auth\ProviderProfileUpdateRequest;
 use App\Http\Requests\API\V1\UpdateProfileRequest;
 use App\Http\Resources\API\V1\ClientResource;
+use App\Http\Resources\API\V1\NotificationResource;
 use App\Http\Resources\API\V1\PersonalProfileResource;
 use App\Http\Resources\API\V1\ProviderProfileResource;
 use App\Services\AuthService;
 use App\Services\ProviderProfileUpdateService;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +20,8 @@ class AuthController extends BaseAuthCrontroller
 {
     public function __construct(
         protected AuthService $authService,
-        protected ProviderProfileUpdateService $profileUpdateService
+        protected ProviderProfileUpdateService $profileUpdateService,
+        protected NotificationService $notificationService
     ) {
     }
     
@@ -83,6 +86,20 @@ class AuthController extends BaseAuthCrontroller
         $provider = Auth::user()->provider;
         return $this->successResponse(new ProviderProfileResource($provider), __('Provider profile retrieved successfully'));
 
+    }
+    public function getNotifications(Request $request){
+        $notifications = $this->notificationService->getUserNotifications(Auth::user()->id,$request->per_page ?? 10);
+        if($notifications->isNotEmpty()){
+            return $this->paginatedResourceResponse($notifications, NotificationResource::class, __('Notifications retrieved successfully'));
+        }
+        return $this->errorResponse(__('No notifications found'));
+    }
+    public function markAsRead(Request $request){
+        $notifications = $this->notificationService->markAsRead(Auth::user()->id,$request->notification_ids);
+        if($notifications){
+            return $this->successResponse([], __('Notifications marked as read successfully'));
+        }
+        return $this->errorResponse(__('Failed to mark notifications as read'));
     }
 
 }

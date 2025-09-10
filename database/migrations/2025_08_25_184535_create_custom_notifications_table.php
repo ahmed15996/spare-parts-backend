@@ -13,6 +13,8 @@ class CreateCustomNotificationsTable extends Migration {
 			$table->timestamps();
 			$table->json('title');
 			$table->json('body');
+			$table->json('metadata');
+			$table->boolean('is_read')->default(false);
 			$table->morphs('notifiable');
 		});
 	}
