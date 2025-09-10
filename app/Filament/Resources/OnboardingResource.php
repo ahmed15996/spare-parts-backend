@@ -17,10 +17,7 @@ class OnboardingResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
-    public static function getNavigationGroup(): ?string
-    {
-        return __('Content Management');
-    }
+
 
     public static function getModelLabel(): string
     {

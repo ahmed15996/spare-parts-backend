@@ -329,7 +329,7 @@
     "Data":"بيانات",
     "Content":"محتوى",
     "Media":"وسائط",
-    "Reports":"تقارير",
+    "Reports":"الشكاوي والإبلاغات",
     "Analytics":"تحليلات",
     "Statistics":"إحصائيات",
     "Charts":"رسوم بيانية",
@@ -1346,5 +1346,6 @@
     "Delete Account Reasons retrieved successfully": "تم استرجاع أسباب حذف الحساب بنجاح",
     "Failed to delete account. Please contact support.": "فشل في حذف الحساب. يرجى الاتصال بالدعم.",
     "Failed to delete account. Please try again or contact support.": "فشل في حذف الحساب. يرجى المحاولة مرة أخرى أو الاتصال بالدعم.",
-    "Error": "خطأ"
+    "Error": "خطأ",
+    "Selection Lists":"قوائم الاختيار"
 }  

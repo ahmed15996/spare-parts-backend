@@ -89,6 +89,6 @@ class CategoryResource extends Resource
     }
     public static function getNavigationGroup(): ?string
     {
-        return __('Main Core');
-    }   
+        return __('Selection Lists');
+    } 
 }

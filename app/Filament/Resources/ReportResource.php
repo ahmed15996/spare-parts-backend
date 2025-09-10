@@ -16,10 +16,6 @@ class ReportResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-flag';
 
-    public static function getNavigationGroup(): ?string
-    {
-        return __('Moderation');
-    }
 
     public static function getModelLabel(): string
     {

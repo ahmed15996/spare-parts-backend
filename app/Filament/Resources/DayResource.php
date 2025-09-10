@@ -39,6 +39,10 @@ class DayResource extends Resource
     {
         return __('Days');
     }
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Selection Lists');
+    }
 
     public static function form(Form $form): Form
     {

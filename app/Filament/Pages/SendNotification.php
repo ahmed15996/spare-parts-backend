@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\DB;
 
 class SendNotification extends Page
 {
+    protected static ?int $navigationSort = 1003;
     protected static ?string $navigationIcon = 'heroicon-o-bell';
     protected static string $view = 'filament.pages.send-notification';
     protected static ?string $title = 'Send Notifications';
     protected static ?string $navigationLabel = 'Send Notification';
-    protected static ?int $navigationSort = 3;
 
     public ?array $data = [];
 

@@ -40,6 +40,10 @@ class BrandResource extends Resource
     {
         return __('Brands');
     }
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Selection Lists');
+    }
 
     public static function form(Form $form): Form
     {

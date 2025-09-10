@@ -77,7 +77,7 @@ class CityResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Locations');
+        return __('Selection Lists');
     }
 
     public static function getPluralLabel(): ?string

@@ -13,6 +13,7 @@ class ManageContent extends SettingsPage
 
     protected static string $settings = ContentSettings::class;
 
+    protected static ?int $navigationSort = 1001;
     public function form(Form $form): Form
     {
         return $form
