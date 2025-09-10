@@ -26,6 +26,7 @@ class PageResource extends Resource
 {
     use Translatable;
     protected static ?string $model = Page::class;
+    protected static bool $shouldRegisterNavigation = false;
     protected static ?string $navigationIcon = 'fas-file-alt';
 
     /**
