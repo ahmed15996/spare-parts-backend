@@ -6,6 +6,7 @@ use App\Http\Controllers\API\V1\GeneralController;
 use App\Http\Controllers\API\V1\PostController;
 use App\Http\Controllers\API\V1\CommentController;
 use App\Http\Controllers\API\V1\LikeController;
+use App\Http\Controllers\DeleteAccountReasonController;
 use Illuminate\Support\Facades\Route;
 
     //# General endpoints 
@@ -22,6 +23,7 @@ use Illuminate\Support\Facades\Route;
         Route::get('/about-us',[GeneralController::class,'aboutUs']);
         Route::get('/provider-commission',[GeneralController::class,'ProviderCommissionText']);
         Route::get('/client-commission',[GeneralController::class,'ClientCommissionText']);
+        Route::get('/delete-account-reasons', [DeleteAccountReasonController::class, 'index'])->name('delete-account-reasons');
     });
     Route::group(['as'=>'contacts.','prefix'=>'contacts'], function () {
         Route::post('/', [ContactController::class, 'store'])->name('store');

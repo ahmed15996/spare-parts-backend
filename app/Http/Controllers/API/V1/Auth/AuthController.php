@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers\API\V1\Auth;
 
+use App\Enums\DeleteAccountRequestStatus;
 use App\Http\Requests\API\V1\Auth\ClientRegisterRequest;
+use App\Http\Requests\API\V1\Auth\DeleteAccountRequest;
 use App\Http\Requests\API\V1\Auth\ProviderRegisterRequest;
 use App\Http\Requests\API\V1\Auth\ProviderProfileUpdateRequest;
 use App\Http\Requests\API\V1\UpdateProfileRequest;
 use App\Http\Resources\API\V1\ClientResource;
+use App\Http\Resources\API\V1\DeleteAccountReasonResource;
 use App\Http\Resources\API\V1\NotificationResource;
 use App\Http\Resources\API\V1\PersonalProfileResource;
 use App\Http\Resources\API\V1\ProviderProfileResource;
+use App\Models\DeleteAccountReason;
+use App\Models\DeleteAccountRequest as ModelsDeleteAccountRequest;
 use App\Services\AuthService;
 use App\Services\ProviderProfileUpdateService;
 use App\Services\NotificationService;
@@ -100,6 +105,49 @@ class AuthController extends BaseAuthCrontroller
             return $this->successResponse([], __('Notifications marked as read successfully'));
         }
         return $this->errorResponse(__('Failed to mark notifications as read'));
+    }
+    public function deleteAccount(DeleteAccountRequest $request){
+        $user = Auth::user();
+        $validated = $request->validated();
+        if($user->hasRole('provider')){
+            $deleteAccountRequest = ModelsDeleteAccountRequest::create([
+                'provider_id'=>$user->provider->id,
+                'reason_id'=>$validated['reason_id'],
+                'status'=>DeleteAccountRequestStatus::Pending->value,
+            ]);
+            return $this->successResponse([],__('Delete account request submitted successfully, the support team will contact you soon'));
+        }
+        
+        // For clients, delete related records first to avoid foreign key constraints
+        try {
+            // Delete FCM tokens
+            $user->fcmTokens()->delete();
+            
+            // Delete custom notifications
+            $user->customNotifications()->delete();
+            
+            // Delete any other related records that might have foreign key constraints
+            // Add more relationships here if needed
+            
+            // Finally delete the user
+            $user->delete();
+            
+            return $this->successResponse([],__('Account deleted successfully'));
+        } catch (\Exception $e) {
+            return $this->errorResponse(__('Failed to delete account. Please contact support.'));
+        }
+    }
+
+    public function deleteAccountReasons()
+    {
+        $reasons = [];
+        if(Auth::user()->hasRole('provider')){
+            $reasons = DeleteAccountReason::forProviders()->orderBy('reason')->get();
+        }else{
+            $reasons = DeleteAccountReason::forClients()->orderBy('reason')->get();
+        }
+        
+        return $this->successResponse(DeleteAccountReasonResource::collection($reasons), __('Delete Account Reasons retrieved successfully'));
     }
 
 }

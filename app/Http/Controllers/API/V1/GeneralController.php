@@ -15,12 +15,17 @@ use App\Http\Resources\API\V1\OnboardingResource;
 use App\Models\Brand;
 use App\Models\City;
 use App\Models\Day;
+use App\Models\DeleteAccountReason;
 use App\Models\Package;
 use App\Models\Onboarding;
+use App\Models\Faq;
 use App\Services\CategoryService;
 use App\Services\CityService;
 use App\Services\BrandService;
 use App\Enums\BannerType;
+use App\Http\Resources\API\V1\DeleteAccountReasonResource;
+use App\Http\Resources\API\V1\FaqResource;
+use App\Http\Resources\FaqResource as ResourcesFaqResource;
 
 use function App\Helpers\setting;
 use function App\Helpers\settings;
@@ -135,4 +140,10 @@ class GeneralController extends Controller
         $clientCommissionText = setting('commission','client_commission_text_'.app()->getLocale());
         return $this->successResponse($clientCommissionText, __('Client Commission Text retrieved successfully'));
     }
+    public function faqs()
+    {
+        $faqs = Faq::all();
+        return $this->successResponse(ResourcesFaqResource::collection($faqs), __('FAQs retrieved successfully'));
+    }
+
 }       

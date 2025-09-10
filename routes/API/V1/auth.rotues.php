@@ -17,11 +17,12 @@ use App\Http\Controllers\API\V1\BlockController;
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
             Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+            Route::post('delete-account', [AuthController::class, 'deleteAccount'])->name('delete-account');
             Route::post('update-profile', [AuthController::class, 'updateProfile'])->name('update-profile');
             Route::get('profile', [AuthController::class, 'getProfile'])->name('profile');
             Route::get('notifications', [AuthController::class, 'getNotifications'])->name('notifications');
             Route::post('notifications/mark-as-read', [AuthController::class, 'markAsRead'])->name('notifications.mark-as-read');
-
+            Route::get('delete-account-reasons', [AuthController::class, 'deleteAccountReasons'])->name('delete-account-reasons');
                 // Block routes
     Route::post('/blocks', [BlockController::class, 'block'])->name('blocks.store');
     Route::delete('/blocks/{id}', [BlockController::class, 'unblock'])->name('blocks.destroy');
