@@ -35,8 +35,9 @@ class AuthService extends BaseService
             if ($this->providerRegistrationService->hasPendingRegistration($data['phone'])) {
                 return $this->errorResponse(__('You have a registration request in review. Please contact support.'));
             }
-            
-            $user = $this->userService->create($data);
+            $data['phone'] = str_replace('0', '', $data['phone']);
+            $data['phone'] = '966' . $data['phone'];
+                $user = $this->userService->create($data);
             $user->assignRole('client');
         }
 
