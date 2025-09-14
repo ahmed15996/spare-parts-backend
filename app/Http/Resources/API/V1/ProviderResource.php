@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\API\V1\ProductResource;
 use App\Http\Resources\API\V1\BrandResource;
 use App\Http\Resources\API\V1\ProviderDayResource;
+use Illuminate\Support\Facades\Auth;
 
 class ProviderResource extends JsonResource
 {
@@ -23,8 +24,12 @@ class ProviderResource extends JsonResource
                 'store_name' => $this->store_name,
                 'logo' => $this->getFirstMediaUrl('logo'),
                 'rating' => $this->getAverageRating(),
-                'is_favourite' => $this->favourites->where('user_id', $request->user()->id)->count() > 0 ? true : false,
+                
             ];
+
+            if(Auth::check()){
+                $data['is_favourite'] = $this->favourites->where('user_id', Auth::user()->id)->count() > 0 ? true : false;
+            }
 
             if($request->route()->getName() == 'client.providers.show'){
                 $data['days'] = ProviderDayResource::collection($this->days);
