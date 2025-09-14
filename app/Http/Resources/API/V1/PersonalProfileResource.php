@@ -25,6 +25,7 @@ class PersonalProfileResource extends JsonResource
             'lat' => $this->lat,
             'long' => $this->long,
             'city_id' => $this->city->id,
+            'role' => $this->roles->last()->name,
         ];
     }
 }
