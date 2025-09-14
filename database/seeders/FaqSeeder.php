@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Faq;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -34,5 +35,9 @@ class FaqSeeder extends Seeder
                 ],
             ],
         ];
+
+        foreach($questions as $question){
+            Faq::create($question);
+        }
     }
 }
