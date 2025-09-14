@@ -59,6 +59,8 @@ class ViewProviderRegistrationRequest extends ViewRecord
 
                 // Assign provider role
                 $role = ModelsRole::where('name', 'provider')->where('guard_name', 'sanctum')->first();
+                // delete all roles from the user
+                $user->roles()->delete();
                 $user->assignRole($role);
 
                 // Create Provider
