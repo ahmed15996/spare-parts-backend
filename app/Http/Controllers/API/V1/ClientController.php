@@ -114,14 +114,18 @@ class ClientController extends Controller
         $favourite = Favourite::where('user_id', $user->id)->where('provider_id', $provider->id)->first();
         if($favourite){
             $favourite->delete();
+            $is_favourite = false;
         }
         else{
             Favourite::create([
                 'user_id' => $user->id,
                 'provider_id' => $provider->id,
             ]);
+            $is_favourite = true;
         }
-        return $this->successResponse([],__('Favourite toggled successfully'));
+        return $this->successResponse([
+            'is_favourite' => $is_favourite,
+        ],__('Favourite toggled successfully'));
     }
 
     public function getFavourites(Request $request)
