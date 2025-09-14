@@ -24,7 +24,7 @@ class ProviderRegisterRequest extends FormRequest
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
+            'phone' => 'required|string|min:9|max:10',
             'email' => 'required|email',
             'city_id' => 'required|integer|exists:cities,id',
             'description' => 'required|string|max:255',
