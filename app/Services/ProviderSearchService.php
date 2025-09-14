@@ -59,8 +59,11 @@ class ProviderSearchService extends BaseSearchService
             $q->where('is_active', true);
         });
 
-        // Add distance calculation and sorting if user has coordinates
-        if($filters['order_by'] == 1){
+        // Apply ordering
+        $orderBy = $filters['order_by'] ?? null;
+        
+        if($orderBy == 1){
+            // Order by nearest (distance)
             if ($userLat && $userLong) {
                 $queryBuilder->select('providers.*')
                     ->selectRaw("
@@ -76,13 +79,22 @@ class ProviderSearchService extends BaseSearchService
                     ->whereNotNull('users.lat')
                     ->whereNotNull('users.long')
                     ->orderBy('distance', 'asc');
-            }else{
-                // If no user coordinates, filter by city (either from filters or user's city)
-                $cityId = $filters['city_id'] ?? $user->city_id;
-                if ($cityId) {
-                    $queryBuilder->where('providers.city_id', $cityId);
-                }
+            } else {
+                // No coordinates, just order by creation date
+                $queryBuilder->orderBy('providers.created_at', 'desc');
             }
+        } elseif($orderBy == 2){
+            // Order by top rated
+            $queryBuilder->leftJoin('reviews', 'providers.id', '=', 'reviews.provider_id')
+                ->select('providers.*')
+                ->selectRaw('AVG(reviews.rating) as average_rating')
+                ->where('reviews.created_at', '>=', now()->subMonths(3))
+                ->groupBy('providers.id')
+                ->orderBy('average_rating', 'desc')
+                ->orderBy('providers.created_at', 'desc');
+        } else {
+            // Default ordering
+            $queryBuilder->orderBy('providers.created_at', 'desc');
         }
 
         return $queryBuilder->paginate($perPage);

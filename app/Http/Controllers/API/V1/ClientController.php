@@ -53,9 +53,10 @@ class ClientController extends Controller
     public function search ( SearchRequest $request){
         $data = $request->validated();
         $providers = $this->providerSearchService->searchProvidersWithLocation($data);
-        return $this->successResponse([
-             ProviderResource::collection($providers),
-        ]);
+        if($providers->isEmpty()){
+            return $this->successResponse([],__('No providers found'));
+        }
+        return $this->paginatedResourceResponse($providers,ProviderResource::class,__('Providers retrieved successfully'));
     }
 
     public function providerShow(Request $request,$id){
