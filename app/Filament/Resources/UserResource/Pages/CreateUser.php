@@ -22,10 +22,27 @@ class CreateUser extends CreateRecord
     {
         return __("Create User");
     }
+    // assign role to user after create
+    protected function afterCreate(): void
+    {
+        if (isset($this->data['role_id'])) {
+            $roleId = $this->data['role_id'];
+            $role = \Spatie\Permission\Models\Role::find($roleId);
+            
+            if ($role) {
+                $this->record->assignRole($role->name);
+            }
+        }
+    }
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['type'] = UserTypeEnum::Admin;
         return $data;
     }
+ 
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('view', ['record' => $this->record]);
+    }
+    // show user after create
 }

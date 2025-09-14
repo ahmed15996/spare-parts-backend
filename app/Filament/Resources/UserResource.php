@@ -6,6 +6,7 @@ use App\Enums\UserTypeEnum;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\Widgets\UserStatsWidget;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\ImageEntry;
@@ -46,6 +47,19 @@ class UserResource extends Resource
                     ->unique(ignoreRecord: true)
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('phone')
+                    ->translateLabel()
+                    ->tel()
+                    ->unique(ignoreRecord: true)
+                    ->required()
+                    ->maxLength(255),
+                // select role 
+                Forms\Components\Select::make('role_id')
+                    ->label(__('Role'))
+                    ->translateLabel()
+                    ->options(Role::whereNotIn('name',['client','provider'])->pluck('name', 'id'))
+                    ->required()
+                    ->dehydrated(false), // Don't save this field directly to the model
                     //fill with current password if editing
                 Forms\Components\TextInput::make('password')
                     ->password()
@@ -233,7 +247,30 @@ class UserResource extends Resource
         });
     }
 
+    public static function mutateFormDataBeforeFill(array $data): array
+    {
+        // Get the current user's role ID for editing
+        if (isset($data['id'])) {
+            $user = User::find($data['id']);
+            if ($user && $user->roles->isNotEmpty()) {
+                $data['role_id'] = $user->roles->first()->id;
+            }
+        }
+        
+        return $data;
+    }
 
-    
-    
+    public static function mutateFormDataBeforeCreate(array $data): array
+    {
+        // Remove role_id from the data that will be saved to the model
+        unset($data['role_id']);
+        return $data;
+    }
+
+    public static function mutateFormDataBeforeSave(array $data): array
+    {
+        // Remove role_id from the data that will be saved to the model
+        unset($data['role_id']);
+        return $data;
+    }
 }

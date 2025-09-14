@@ -16,4 +16,18 @@ class EditUser extends EditRecord
             Actions\DeleteAction::make()->modalHeading(__('Delete User')),
         ];
     }
+
+    protected function afterSave(): void
+    {
+        // Handle role assignment after saving the user
+        if (isset($this->data['role_id'])) {
+            $roleId = $this->data['role_id'];
+            $role = \Spatie\Permission\Models\Role::find($roleId);
+            
+            if ($role) {
+                // Remove all existing roles and assign the new one
+                $this->record->syncRoles([$role->name]);
+            }
+        }
+    }
 }
