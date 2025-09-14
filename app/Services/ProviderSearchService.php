@@ -77,13 +77,11 @@ class ProviderSearchService extends BaseSearchService
                     ->whereNotNull('users.long')
                     ->orderBy('distance', 'asc');
             }else{
-                $queryBuilder->where('providers.city_id', function($q) use ($filters, $user){
-                    if($filters['city_id']){
-                        $q->where('city_id', $filters['city_id']);
-                    }else{
-                        $q->where('city_id', $user->city_id);
-                    }
-                });
+                // If no user coordinates, filter by city (either from filters or user's city)
+                $cityId = $filters['city_id'] ?? $user->city_id;
+                if ($cityId) {
+                    $queryBuilder->where('providers.city_id', $cityId);
+                }
             }
         }
 
