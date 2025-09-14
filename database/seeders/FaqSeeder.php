@@ -12,6 +12,27 @@ class FaqSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $questions = [
+            [
+                'title' => [
+                    'en' => 'What is the best way to contact you?',
+                    'ar' => 'كيف يمكنني التواصل معك؟',
+                ],
+                'description' => [
+                    'en' => 'You can contact us via email or phone.',
+                    'ar' => 'يمكنك التواصل معنا عبر البريد الإلكتروني أو الهاتف.',
+                ],
+            ],
+            [
+                'title' => [
+                    'en' => 'What is the best way to contact you?',
+                    'ar' => 'كيف يمكنني التواصل معك؟',
+                ],
+                'description' => [
+                    'en' => 'You can contact us via email or phone.',
+                    'ar' => 'يمكنك التواصل معنا عبر البريد الإلكتروني أو الهاتف.',
+                ],
+            ],
+        ];
     }
 }
