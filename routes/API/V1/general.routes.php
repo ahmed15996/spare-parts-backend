@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
         Route::get('/provider-commission',[GeneralController::class,'ProviderCommissionText']);
         Route::get('/client-commission',[GeneralController::class,'ClientCommissionText']);
         Route::get('/delete-account-reasons', [DeleteAccountReasonController::class, 'index'])->name('delete-account-reasons');
+        Route::get('/faqs', [GeneralController::class, 'faqs'])->name('faqs');
     });
     Route::group(['as'=>'contacts.','prefix'=>'contacts'], function () {
         Route::post('/', [ContactController::class, 'store'])->name('store');

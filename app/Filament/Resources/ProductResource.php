@@ -47,27 +47,34 @@ class ProductResource extends Resource
                     ->dehydrated(true),
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->label(__('Name'))
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
                     ->required()
+                    ->label(__('Description'))
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('price')
                     ->required()
                     ->numeric()
+                    ->label(__('Price'))
                     ->prefix('$'),
                 Forms\Components\TextInput::make('discount_percentage')
-                    ->numeric(),
+                    ->numeric()
+                    ->label(__('Discount Percentage')),
                 Forms\Components\TextInput::make('stock')
                     ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->label(__('Stock')),
                 Forms\Components\Toggle::make('published')
-                    ->required(),
+                    ->required()
+                    ->label(__('Published')),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->recordUrl(null)
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('Created At'))
@@ -82,30 +89,36 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('provider.store_name')
                     ->label(__('Store Name'))
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->label(__('Store Name')),
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->label(__('Name')),
                 Tables\Columns\TextColumn::make('price')
                     ->label(__('Price'))
-                    ->money()
-                    ->sortable(),
+                    ->money('SAR')
+                    ->sortable()
+                    ->label(__('Price')),
                 Tables\Columns\TextColumn::make('discount_percentage')
                     ->numeric()
                     ->label(__('Discount Percentage'))
-                    ->sortable(),
+                    ->sortable()
+                    ->suffix('%')
+                    ->label(__('Discount Percentage')),
                 Tables\Columns\TextColumn::make('stock')
                     ->numeric()
                     ->label(__('Stock'))
-                    ->sortable(),
+                        ->sortable()
+                    ->label(__('Stock')),
                 Tables\Columns\IconColumn::make('published')
                     ->label(__('Published'))
-                    ->boolean(),
+                    ->boolean()
+                    ->label(__('Published')),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

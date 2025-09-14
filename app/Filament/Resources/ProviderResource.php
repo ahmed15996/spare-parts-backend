@@ -295,12 +295,20 @@ class ProviderResource extends Resource
                             ->label(__('Logo'))
                             ->collection('logo')
                             ->size(200)
-                            ->placeholder(__('No logo uploaded')),
+                            ->placeholder(__('No logo uploaded'))
+                            ->extraAttributes(['target' => '_blank'])
+                            ->url(fn ($record) => $record->getFirstMediaUrl('logo') ?: null)
+                            ->openUrlInNewTab(),
+                            
+
                         Infolists\Components\SpatieMediaLibraryImageEntry::make('commercial_number_image')
                             ->label(__('Commercial Number Image'))
                             ->collection('commercial_number_image')
                             ->size(200)
-                            ->placeholder(__('No document uploaded')),
+                            ->placeholder(__('No document uploaded'))
+                            ->extraAttributes(['target' => '_blank'])
+                            ->url(fn ($record) => $record->getFirstMediaUrl('commercial_number_image') ?: null)
+                            ->openUrlInNewTab(),
                     ])
                     ->columns(2),
 

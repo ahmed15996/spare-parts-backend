@@ -1347,5 +1347,8 @@
     "Failed to delete account. Please contact support.": "فشل في حذف الحساب. يرجى الاتصال بالدعم.",
     "Failed to delete account. Please try again or contact support.": "فشل في حذف الحساب. يرجى المحاولة مرة أخرى أو الاتصال بالدعم.",
     "Error": "خطأ",
-    "Selection Lists":"قوائم الاختيار"
+    "Selection Lists":"قوائم الاختيار",
+    "Status Information":"معلومات الحالة",
+    "No logo uploaded":"لا يوجد تصميم للشعار",
+    "No document uploaded":"لا يوجد مستندات"
 }  
