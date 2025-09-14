@@ -24,6 +24,7 @@ class ProviderResource extends JsonResource
                 'store_name' => $this->store_name,
                 'logo' => $this->getFirstMediaUrl('logo'),
                 'rating' => $this->getAverageRating(),
+                'address' => $this->user->address,
                 
             ];
 
