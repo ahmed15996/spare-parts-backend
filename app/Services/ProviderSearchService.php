@@ -84,14 +84,18 @@ class ProviderSearchService extends BaseSearchService
                 $queryBuilder->orderBy('providers.created_at', 'desc');
             }
         } elseif($orderBy == 2){
-            // Order by top rated
-            $queryBuilder->leftJoin('reviews', 'providers.id', '=', 'reviews.provider_id')
-                ->select('providers.*')
-                ->selectRaw('AVG(reviews.rating) as average_rating')
-                ->where('reviews.created_at', '>=', now()->subMonths(3))
-                ->groupBy('providers.id')
-                ->orderBy('average_rating', 'desc')
-                ->orderBy('providers.created_at', 'desc');
+            // Order by top rated (use subquery to avoid ONLY_FULL_GROUP_BY)
+            $ratingsSub = DB::table('reviews')
+                ->select('provider_id', DB::raw('AVG(rating) as average_rating'))
+                ->where('created_at', '>=', now()->subMonths(3))
+                ->groupBy('provider_id');
+
+            $queryBuilder->select('providers.*')
+                ->leftJoinSub($ratingsSub, 'provider_ratings', function ($join) {
+                    $join->on('providers.id', '=', 'provider_ratings.provider_id');
+                })
+                ->orderByDesc('provider_ratings.average_rating')
+                ->orderByDesc('providers.created_at');
         } else {
             // Default ordering
             $queryBuilder->orderBy('providers.created_at', 'desc');
