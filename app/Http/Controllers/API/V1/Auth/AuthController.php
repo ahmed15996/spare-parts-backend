@@ -46,10 +46,17 @@ class AuthController extends BaseAuthCrontroller
     public function clientRegister(ClientRegisterRequest $request){
         $data = $request->validated();
         $user = $this->authService->clientRegister($data);
-        return $this->successResponse(new ClientResource($user), __('Client registered successfully'));
+        return $this->successResponse( new ClientResource($user), __('Client registered successfully'));
     }
 
-
+    public function resendActiveCode(Request $request){
+        $request->validate([
+            'phone' => 'required|string|max:9|min:9',
+        ]);
+        $data = $request->all();
+            $data['phone'] = $this->authService->normalizePhone($data['phone']);
+        return $this->authService->resendActiveCode($data);
+    }
     
     public function providerRegisterRequest (ProviderRegisterRequest $request){
         $data = $request->validated();

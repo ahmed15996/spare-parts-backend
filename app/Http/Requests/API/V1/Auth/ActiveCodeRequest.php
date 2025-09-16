@@ -3,6 +3,7 @@
 namespace App\Http\Requests\API\V1\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class ActiveCodeRequest extends FormRequest
 {
@@ -22,8 +23,29 @@ class ActiveCodeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone' => 'required|string|max:14',
+            'phone' => 'required|string|max:9|min:9',
             'code' => 'required|integer|digits:4',
         ];
     }
+
+    public function validationData(): array
+    {
+        $data = parent::validationData();
+
+        $rawPhone = (string) ($data['phone'] ?? '');
+
+        // Keep only digits
+        $digitsOnlyPhone = preg_replace('/\D+/', '', $rawPhone) ?? '';
+
+        // If phone starts with 05..., drop the leading 0 so 0512346789 == 512346789
+        if (Str::startsWith($digitsOnlyPhone, '05')) {
+            $digitsOnlyPhone = substr($digitsOnlyPhone, 1);
+        }
+
+        $data['phone'] = $digitsOnlyPhone;
+
+        return $data;
+    }
+
+
 }

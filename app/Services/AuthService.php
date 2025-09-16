@@ -22,8 +22,24 @@ class AuthService extends BaseService
     ) {
     }
 
+    public function normalizePhone(string $rawPhone): string
+    {
+        $digitsOnly = preg_replace('/\D+/', '', $rawPhone) ?? '';
+        if (str_starts_with($digitsOnly, '966')) {
+            return $digitsOnly;
+        }
+        if (str_starts_with($digitsOnly, '05')) {
+            $digitsOnly = substr($digitsOnly, 1);
+        }
+        if (str_starts_with($digitsOnly, '0')) {
+            $digitsOnly = ltrim($digitsOnly, '0');
+        }
+        return '966' . $digitsOnly;
+    }
+
     public function login(array $data)
     {
+        $data['phone'] = $this->normalizePhone($data['phone']);
         $user = $this->userService->findByPhone($data['phone']);
         
         if ($user) {
@@ -35,9 +51,7 @@ class AuthService extends BaseService
             if ($this->providerRegistrationService->hasPendingRegistration($data['phone'])) {
                 return $this->errorResponse(__('You have a registration request in review. Please contact support.'));
             }
-            $data['phone'] = str_replace('0', '', $data['phone']);
-            $data['phone'] = '966' . $data['phone'];
-                $user = $this->userService->create($data);
+            $user = $this->userService->create($data);
             $user->assignRole('client');
         }
 
@@ -50,13 +64,19 @@ class AuthService extends BaseService
 
         return $this->ok([],__('please verify your account'));
     }
+    public function resendActiveCode(array $data)
+    {
+        $data['phone'] = $this->normalizePhone($data['phone']);
+        $user = User::where('phone',$data['phone'])->first();
+        $user->sendActiveCode();
+        return $this->successResponse([],__('Active code sent successfully'));
+    }
     public function verifyActiveCode(array $data)
     {
         // phone roles 
         // - add 966
         // - remove 0 if it's there
-        $data['phone'] = str_replace('0', '', $data['phone']);
-        $data['phone'] = '966' . $data['phone'];
+        $data['phone'] = $this->normalizePhone($data['phone']);
         $user = User::where('phone',$data['phone'])->where('active_code',$data['code'])->first();
         
         if($user){
@@ -95,14 +115,12 @@ class AuthService extends BaseService
 
     public function providerRegisterRequest(array $data)
     {
-        $data['phone'] = str_replace('0', '', $data['phone']);
-        $data['phone'] = '966' . $data['phone'];
+        $data['phone'] = $this->normalizePhone($data['phone']);
         return $this->providerRegistrationService->createRegistrationRequest($data);
     }
     public function clientRegister(array $data)
     {
-        $data['phone'] = str_replace('0', '', $data['phone']);
-        $data['phone'] = '966' . $data['phone'];
+        $data['phone'] = $this->normalizePhone($data['phone']);
         return $this->userService->create($data);
     }
 

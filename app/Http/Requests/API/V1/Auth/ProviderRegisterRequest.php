@@ -3,6 +3,7 @@
 namespace App\Http\Requests\API\V1\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class ProviderRegisterRequest extends FormRequest
 {
@@ -24,8 +25,8 @@ class ProviderRegisterRequest extends FormRequest
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'phone' => 'required|string|min:9|max:10',
-            'email' => 'required|email',
+            'phone' => 'required|string|min:9|max:9|unique:users,phone',
+            'email' => 'required|email|unique:users,email',
             'city_id' => 'required|integer|exists:cities,id',
             'description' => 'required|string|max:255',
             'category_id' => 'required|integer|exists:categories,id',
@@ -46,7 +47,35 @@ class ProviderRegisterRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'phone.unique' => 'This number is used before',
+            'phone.required' => __('validation.required', ['attribute' => __('attributes.phone')]),
+            'phone.min' => __('validation.min.string', ['attribute' => __('attributes.phone'), 'min' => 9]),
+            'phone.max' => __('validation.max.string', ['attribute' => __('attributes.phone'), 'max' => 9]),
+            'phone.unique' => __('validation.unique', ['attribute' => __('attributes.phone')]),
+            'email.required' => __('validation.required', ['attribute' => __('attributes.email')]),
+            'email.email' => __('validation.email', ['attribute' => __('attributes.email')]),
+            'email.unique' => __('validation.unique', ['attribute' => __('attributes.email')]),
         ];
+    }
+
+        /**
+     * Get the data to be validated, normalized as needed.
+     */
+    public function validationData(): array
+    {
+        $data = parent::validationData();
+
+        $rawPhone = (string) ($data['phone'] ?? '');
+
+        // Keep only digits
+        $digitsOnlyPhone = preg_replace('/\D+/', '', $rawPhone) ?? '';
+
+        // If phone starts with 05..., drop the leading 0 so 0512346789 == 512346789
+        if (Str::startsWith($digitsOnlyPhone, '05')) {
+            $digitsOnlyPhone = substr($digitsOnlyPhone, 1);
+        }
+
+        $data['phone'] = $digitsOnlyPhone;
+
+        return $data;
     }
 }

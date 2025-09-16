@@ -3,6 +3,7 @@
 namespace App\Http\Requests\API\V1\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class ClientRegisterRequest extends FormRequest
 {
@@ -30,6 +31,7 @@ class ClientRegisterRequest extends FormRequest
             'city_id' => 'required|integer|exists:cities,id',
             'lat' =>'nullable|numeric|min:-90|max:90',
             'long' => 'nullable|numeric|min:-180|max:180',
+            'address' => 'nullable|string|max:255',
             "avatar" => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
 
 
@@ -42,4 +44,22 @@ class ClientRegisterRequest extends FormRequest
             'email.unique' => __('This email is used before'),
         ];
     }
-}
+
+    public function validationData(): array
+    {
+        $data = parent::validationData();
+
+        $rawPhone = (string) ($data['phone'] ?? '');
+
+        // Keep only digits
+        $digitsOnlyPhone = preg_replace('/\D+/', '', $rawPhone) ?? '';
+
+        // If phone starts with 05..., drop the leading 0 so 0512346789 == 512346789
+        if (Str::startsWith($digitsOnlyPhone, '05')) {
+            $digitsOnlyPhone = substr($digitsOnlyPhone, 1);
+        }
+
+        $data['phone'] = $digitsOnlyPhone;
+
+        return $data;
+    }}
