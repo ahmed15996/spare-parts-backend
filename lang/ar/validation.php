@@ -9,6 +9,16 @@ return [
     'same' => ' :attribute يجب أن يكون مطابق للحقل :other.',
     'phone' => ' :attribute يجب أن يكون رقم هاتف صالح.',
     'phone.unique' => ' :attribute مستخدم من قبل.',
+    'min' => [
+        'string' => ':attribute يجب ألا يقل عن :min أرقام.',
+        'numeric' => ':attribute يجب ألا يقل عن :min.',
+        'array' => ':attribute يجب ألا يقل عن :min عناصر.',
+    ],
+    'max' => [
+        'string' => ':attribute يجب ألا يزيد عن :max أرقام.',
+        'numeric' => ':attribute يجب ألا يزيد عن :max.',
+        'array' => ':attribute يجب ألا يزيد عن :max عناصر.',
+    ],
     "services.required" => 'يجب أن يكون لديك خدمات مختارة.',
     "services.array" => 'يجب أن يكون لديك خدمات مختارة.',
     "services.exists" => 'يجب أن يكون لديك خدمات مختارة.',

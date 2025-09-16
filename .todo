@@ -1,0 +1,10 @@
+for Production : 
+    - update generation of code in User model ( for verify code)
+    - payment integration 
+    - frontend cors 
+    - admin emails just from current domain 
+
+
+
+for dev : 
+- activation code endpoint 

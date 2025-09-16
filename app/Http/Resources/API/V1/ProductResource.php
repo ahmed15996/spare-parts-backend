@@ -32,6 +32,14 @@ class ProductResource extends JsonResource
                 $data['gallery'] = $this->getMedia('products')->map(function($media){
                    return $media->getUrl();
                 })->toArray();
+                $data['provider'] =[
+                    'user_id' => $this->provider->user_id,
+                    'phone' => $this->provider->user->phone,
+                    'address' => $this->provider->address,
+                    'name' => $this->provider->store_name,
+                    'avatar' => $this->provider->getFirstMediaUrl('logo'),
+                    'rating' => $this->provider->getAverageRating(),
+                ];
             }
             return $data;
     }

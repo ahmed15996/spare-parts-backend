@@ -61,9 +61,9 @@ class ClientController extends Controller
 
     public function providerShow(Request $request,$id){
         $provider = $this->providerService->findWithRelations($id, ['days','city','category','products','brands','activeProfileBanners']);
-        return $this->successResponse([
-            ProviderResource::make($provider),
-        ]);
+        return $this->successResponse(
+            ProviderResource::make($provider)
+        );
     }
 
     public function productShow(Request $request,$id,$product_id){
@@ -71,9 +71,7 @@ class ClientController extends Controller
         if(!$product){
             return $this->errorResponse('Product not found',404);
         }
-        return $this->successResponse([
-            ProductResource::make($product),
-        ],__('Product fetched successfully'));
+        return $this->successResponse( ProductResource::make($product),__('Product fetched successfully'));
     }
 
     public function bannserDetails(Request $request,$id){
@@ -81,9 +79,9 @@ class ClientController extends Controller
         if(!$banner){
             return $this->errorResponse('Banner not found',404);
         }
-        return $this->successResponse([
+        return $this->successResponse(
             BannerResource::make($banner),
-        ],__('Banner fetched successfully'));
+        __('Banner fetched successfully'));
     }
 
     public function providerBrands(Request $request,$id){
