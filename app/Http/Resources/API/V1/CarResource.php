@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\API\V1;
 
+use App\Http\Resources\API\V1\BrandModelResource;
+use App\Http\Resources\API\V1\BrandResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,23 +16,15 @@ class CarResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $routeName = $request->route()?->getName();
 
-        if($routeName === 'client.requests.show'){
+
             return [
                 'id' => $this->id,
-                'brand'=>$this->brand?->name,
-                'model'=>$this->brandModel?->name,
-                'manufacture_year'=>$this->manufacture_year,
-                'number'=>$this->number,
+                'brand'=>BrandResource::make($this->brand),
+                'model'=> BrandModelResource::make($this->brandModel),
+                'manufacture_year'=>$this->manufacture_year??null,
+                'number'=>$this->number??null,
             ];
-        }
-        return [
-           'id' => $this->id,
-           'brand_id'=>$this->brandModel?->brand_id,
-           'brand_model_id'=>$this->brandModel?->id,
-           'manufacture_year'=>$this->manufacture_year,
-           'number'=>$this->number,
-        ];
+
     }
 }
