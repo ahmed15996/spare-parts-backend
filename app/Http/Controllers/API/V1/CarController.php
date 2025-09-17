@@ -28,9 +28,9 @@ class CarController extends Controller
         if($cars->isEmpty()){
             return $this->successResponse([], __('No cars found'));
         }
-        return $this->successResponse([
+        return $this->successResponse(
             CarResource::collection($cars),
-        ], __('Cars fetched successfully'));
+         __('Cars fetched successfully'));
     }
 
     /**
@@ -50,9 +50,9 @@ class CarController extends Controller
             return $this->errorResponse(__('Unauthorized'), 403);
         }
         
-        return $this->successResponse([
+        return $this->successResponse(
             CarResource::make($car),
-        ], __('Car fetched successfully'));
+         __('Car fetched successfully'));
     }
 
     /**
@@ -67,9 +67,9 @@ class CarController extends Controller
         
         $car = $this->carService->createWithBusinessLogic($carData);
         
-        return $this->successResponse([
+        return $this->successResponse(
             CarResource::make($car),
-        ], __('Car created successfully'));
+         __('Car created successfully'));
     }
 
     /**
@@ -104,9 +104,9 @@ class CarController extends Controller
         // Refresh the car model to get updated data
         $car->refresh();
         
-        return $this->successResponse([
+        return $this->successResponse(
             CarResource::make($car),
-        ], __('Car updated successfully'));
+       __('Car updated successfully'));
     }
 
     /**
