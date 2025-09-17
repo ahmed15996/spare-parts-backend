@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\API\V1\ProductResource;
 use App\Http\Resources\API\V1\BrandResource;
 use App\Http\Resources\API\V1\ProviderDayResource;
+use App\Http\Resources\API\V1\CategoryResource;
 use Illuminate\Support\Facades\Auth;
 
 class ProviderResource extends JsonResource
@@ -26,6 +27,7 @@ class ProviderResource extends JsonResource
                 'phone' => $this->user->phone,
                 'rating' => $this->getAverageRating(),
                 'address' => $this->user->address,
+                'category' => CategoryResource::make($this->category),
                 
             ];
 

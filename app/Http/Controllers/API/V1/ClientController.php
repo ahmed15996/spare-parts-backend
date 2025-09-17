@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Resources\API\V1\BannerResource;
 use App\Http\Resources\API\V1\ProviderResource;
+use App\Http\Resources\API\V1\ProviderBreadcramb;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\V1\Auth\SearchRequest;
@@ -89,14 +90,23 @@ class ClientController extends Controller
         if(!$provider){
             return $this->errorResponse('Provider not found',404);
         }
-        return $this->successResponse(
-            BrandResource::collection($provider->brands),__('Brands fetched successfully'));
+            return $this->successResponse([
+                'brands' => BrandResource::collection($provider->brands),
+                'provider' => ProviderBreadcramb::make($provider),
+            ],__('Brands fetched successfully'));
+        
     }
 
     public function providerProducts(Request $request,$id){
         $provider = $this->providerService->findWithRelations($id, ['products']);
         if(!$provider){
             return $this->errorResponse(__('Provider not found'),404);
+        }
+        if($request->route()->getName() == 'client.providers.products.index'){
+            return $this->successResponse([
+                'products' => ProductResource::collection($provider->products),
+                'provider' => ProviderBreadcramb::make($provider),
+            ],__('Products fetched successfully'));
         }
         return $this->successResponse(
             ProductResource::collection($provider->products),
