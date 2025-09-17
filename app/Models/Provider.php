@@ -83,7 +83,8 @@ class Provider extends Model implements HasMedia
 
     public function activeProfileBanners()
     {
-        return $this->hasMany('App\Models\Banner')->where('status', 1)->where('type', 2);
+        return $this->hasMany('App\Models\Banner')->where('status', 2)
+        ->whereIn('type', [2,3]);
     }
 
     public function hasActiveSubscription()
