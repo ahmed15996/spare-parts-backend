@@ -89,9 +89,8 @@ class ClientController extends Controller
         if(!$provider){
             return $this->errorResponse('Provider not found',404);
         }
-        return $this->successResponse([
-            BrandResource::collection($provider->brands),
-        ],__('Brands fetched successfully'));
+        return $this->successResponse(
+            BrandResource::collection($provider->brands),__('Brands fetched successfully'));
     }
 
     public function providerProducts(Request $request,$id){
@@ -99,9 +98,9 @@ class ClientController extends Controller
         if(!$provider){
             return $this->errorResponse(__('Provider not found'),404);
         }
-        return $this->successResponse([
+        return $this->successResponse(
             ProductResource::collection($provider->products),
-        ],__('Products fetched successfully'));
+       __('Products fetched successfully'));
     }
 
     public function toggleFavourite(Request $request,$id){
