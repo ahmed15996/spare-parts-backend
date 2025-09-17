@@ -108,8 +108,8 @@ class CommissionController extends Controller
 
     public function products(Request $request){
         $products = $this->productSearchService->search($request->all());
-        return $this->successResponse([
+        return $this->successResponse(
             ProductResource::collection($products),
-        ],__('Products fetched successfully'));
+        __('Products fetched successfully'));
     }
 }
