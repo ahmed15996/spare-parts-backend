@@ -18,8 +18,13 @@ class RequestController extends Controller
     {
     }
     public function index(Request $request){
-        $requests = $this->requestService->getWithScopes()->where('user_id', Auth::id());
-        return $this->successResponse(RequestResource::collection($requests), __('Requests retrieved successfully'));
+        try{
+            $requests = $this->requestService->getWithScopes()->where('user_id', Auth::id());
+            return $this->successResponse(RequestResource::collection($requests), __('Requests retrieved successfully'));
+        }catch(\Exception $e){
+            Log::debug($e->getMessage());
+            return $this->errorResponse(__('Failed to retrieve requests'), 500);
+        }
     }
     public function store(StoreRequest $request)
     {
@@ -35,8 +40,7 @@ class RequestController extends Controller
     public function show($id)
     {
         try{
-            $request = $this->requestService->findWithRelations($id, ['car','city','category','car.brandModel','car.brand']);
-            
+            $request = $this->requestService->findWithRelations($id, ['car','city','category','car.brandModel','car.brand']);            
             if (!$request) {
                 return $this->errorResponse(__('Request not found'), 404);
             }
