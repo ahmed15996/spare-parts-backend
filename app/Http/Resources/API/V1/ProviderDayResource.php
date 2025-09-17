@@ -18,12 +18,11 @@ class ProviderDayResource extends JsonResource
             'id' => $this->id,
             'name' => $this->day->name,
             'is_closed' => $this->is_closed,
+            'from' => $this->from??null,
+            'to' => $this->to??null,
         ];
 
-        if($this->is_closed){
-            $data['from'] = null;
-            $data['to'] = null;
-        }
+        
 
         return $data;
     }
