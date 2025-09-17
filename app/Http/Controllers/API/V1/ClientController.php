@@ -138,8 +138,8 @@ class ClientController extends Controller
                 return $provider;
             });
             
-        return $this->successResponse([
+        return $this->successResponse(
             ProviderResource::collection($providers),
-        ], __('Favourites retrieved successfully'));
+     __('Favourites retrieved successfully'));
     }
 }
