@@ -23,7 +23,7 @@ class RequestResource extends JsonResource
             'number' => $this->number,
             'category'=> $this->category->name,
             'city' => $this->city->name,
-            'car_type'=> $this->car->brandModel->brand->name  . ' ' . $this->car->manufacture_year
+            'car' => CarResource::make($this->car)
         ];
 
         if($request && $request->route() && ($request->route()->getName() == 'api.conversations.conversation.messages') || ($request->route()->getName() == 'api.conversations.index')){
@@ -35,7 +35,6 @@ class RequestResource extends JsonResource
         
         if($request && $request->route() && $request->route()->getName() == 'client.requests.show'){
             $data['description'] = $this->description;
-            $data['car'] = CarResource::make($this->car);
             $data['offers'] = OfferResource::collection($this->offers);
 
         }
