@@ -28,9 +28,7 @@ class BannerResource extends JsonResource
         $data['original_price'] = $this->original_price;
         $data['discount_price'] = $this->discount_price;
         $data['discount_percentage'] = $this->discount_percentage;
-        if($this->status == BannerStatus::Rejected){
-            $data['rejection_reason'] = $this->rejection_reason;
-        }
+        $data['rejection_reason'] = $this->rejection_reason ?? null;
        }
         return $data;
     }
