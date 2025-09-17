@@ -22,8 +22,8 @@ class FilterOffersRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'city_id' => 'required|integer|exists:cities,id',
-            'order_by' => 'required|integer|in:1,2',
+            'city_id' => 'nullable|integer|exists:cities,id',
+            'order_by' => 'nullable|integer|in:1,2',
         ];
     }
 }

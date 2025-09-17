@@ -180,7 +180,7 @@ class OfferService extends BaseService
         $query = $this->offer->with(['provider.user', 'provider.city']);
 
         // Filter by provider city_id to avoid ambiguous column when joining tables
-        if(!empty($data['city_id'])){
+        if(isset($data['city_id']) && !empty($data['city_id'])){
             $query->whereHas('provider', function($q) use ($data){
                 $q->where('city_id', $data['city_id']);
             });
@@ -192,7 +192,7 @@ class OfferService extends BaseService
         });
 
         // Handle ordering
-        if($data['order_by'] == 1){
+        if(isset($data['order_by']) && $data['order_by'] == 1){
             // Order by nearest provider (user lat, long)
             if ($userLat && $userLong) {
                 $query->select('offers.*')
@@ -213,14 +213,14 @@ class OfferService extends BaseService
             } else {
                 // If user doesn't have coordinates, filter by user's city
                 $query->whereHas('provider', function($q) use ($user, $data) {
-                    if(!empty($data['city_id'])){
+                    if(isset($data['city_id']) && !empty($data['city_id'])){
                         $q->where('city_id', $data['city_id']);
                     } else {
                         $q->where('city_id', $user->city_id);
                     }
                 });
             }
-        } elseif($data['order_by'] == 2){
+    } elseif(isset($data['order_by']) &&    $data['order_by'] == 2){
             // Order by provider rating (for future implementation)
             $query->orderBy('created_at', 'desc'); // Default ordering for now
             // TODO: Implement rating-based ordering when rating system is ready
