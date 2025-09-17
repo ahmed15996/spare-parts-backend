@@ -23,15 +23,15 @@ class OfferResource extends JsonResource
             'city' => $this->city?->name,
             'user_id' => $this->provider?->user_id,// id of provider user for chat 
             'provider' => [
+                'id' => $this->provider?->id,
                 'name' => $this->provider?->store_name,
                 'avatar' => $this->provider?->getFirstMediaUrl('logo') ,
                 'user_id' => $this->provider?->user_id,
-                
+
             ]
         ];
 
         if($routeName === 'client.requests.offers.show'){
-            $data['provider_id'] = $this->provider_id;
             $data['description'] = $this->description;
             $data['has_delivery'] = $this->has_delivery;
         }
