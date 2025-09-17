@@ -179,9 +179,11 @@ class OfferService extends BaseService
         // Start building the query with relationships
         $query = $this->offer->with(['provider.user', 'provider.city']);
 
-        // Filter by city_id
+        // Filter by provider city_id to avoid ambiguous column when joining tables
         if(!empty($data['city_id'])){
-            $query->where('city_id', $data['city_id']);
+            $query->whereHas('provider', function($q) use ($data){
+                $q->where('city_id', $data['city_id']);
+            });
         }
 
         // Apply default filters (only active providers)
