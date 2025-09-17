@@ -25,9 +25,7 @@ class ProductController extends Controller
         if($products->isEmpty()){
             return $this->errorResponse(__('No products found'), 404);
         }
-        return $this->successResponse([
-            ProductResource::collection($products),
-        ], __('Products fetched successfully'));
+        return $this->successResponse(ProductResource::collection($products), __('Products fetched successfully'));
     }
 
     public function show($id)
@@ -39,9 +37,9 @@ class ProductController extends Controller
             return $this->errorResponse(__('Product not found'), 404);
         }
 
-        return $this->successResponse([
+        return $this->successResponse(
             ProductResource::make($product),
-        ], __('Product fetched successfully'));
+        __('Product fetched successfully'));
     }
 
     public function store(StoreProductRequest $request)
