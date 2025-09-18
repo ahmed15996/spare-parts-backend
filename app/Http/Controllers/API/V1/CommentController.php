@@ -27,16 +27,6 @@ class CommentController extends Controller
         $post = Post::findOrFail($postId);
         $user = Auth::user();
 
-        // Check if user already commented on this post
-        $existingComment = Comment::where('post_id', $postId)
-            ->where('author_id', $user->getKey())
-            ->where('author_type', get_class($user))
-            ->first();
-
-        if ($existingComment) {
-            return $this->errorResponse(__('You have already commented on this post'), 422);
-        }
-
         try{
 
         $comment = $this->comments->addToPost($user, $post, $data);

@@ -19,6 +19,10 @@ class PostResource extends JsonResource
         }
         $isApproved = $statusValue === PostStatus::Approved->value;
         $isRejected = $statusValue === PostStatus::Rejected->value;
+        $isLiked = false;
+        if ($user) {
+            $isLiked = $this->likes()->where('user_id', $user->getKey())->where('value', 1)->exists();
+        }
 
         $isOwner = false;
         if ($user) {
@@ -30,6 +34,8 @@ class PostResource extends JsonResource
             'content' => $this->content,
             'created_at' => Carbon::parse($this->created_at)->format('d/m/Y'),
             'status' => $statusValue,
+            'is_author' => $isOwner,
+            'is_liked' => $isLiked,
         ];
 
         // Owner-specific rules

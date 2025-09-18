@@ -9,9 +9,12 @@ class CommentResource extends JsonResource
 {
     public function toArray($request)
     {
+        $user = $request->user();
+        $isAuthor = $this->author_id === $user->getKey() && $this->author_type === get_class($user);
         return [
             'id' => $this->id,
             'content' => $this->content,
+            'is_author' => $isAuthor,
             'author' => [
                 'id' => $this->author->id,
                 'name' => $this->author->name,
