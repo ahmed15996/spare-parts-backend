@@ -21,6 +21,9 @@ class OfferResource extends JsonResource
             'status' => $this->status,
             'price' => $this->price,
             'city' => $this->city?->name,
+            'request_id'=>$this->request->id,
+            'description' => $this->description,
+            'has_delivery' => $this->has_delivery,
             'user_id' => $this->provider?->user_id,// id of provider user for chat 
             'provider' => [
                 'id' => $this->provider?->id,
@@ -30,12 +33,6 @@ class OfferResource extends JsonResource
 
             ]
         ];
-
-        if($routeName === 'client.requests.offers.show'){
-            $data['description'] = $this->description;
-            $data['has_delivery'] = $this->has_delivery;
-        }
-
         return $data;
     }
 }
