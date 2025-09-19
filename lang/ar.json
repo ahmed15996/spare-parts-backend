@@ -1357,5 +1357,7 @@
     "Status Information":"معلومات الحالة",
     "No logo uploaded":"لا يوجد تصميم للشعار",
     "No document uploaded":"لا يوجد مستندات",
-    "Create User":"إنشاء مستخدم"
+    "Create User":"إنشاء مستخدم",
+    "Comments fetched successfully":"تم استرجاع التعليقات بنجاح",
+    "Failed to fetch comments":"فشل في استرجاع التعليقات"
 }  

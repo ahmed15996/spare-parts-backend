@@ -37,6 +37,7 @@ use Illuminate\Support\Facades\Route;
         Route::get('/{id}', [PostController::class, 'show'])->name('show');
         Route::delete('/{id}', [PostController::class, 'destroy'])->name('destroy');
 
+        Route::get('/{id}/comments', [CommentController::class, 'index'])->name('comments.index');
         Route::post('/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
         Route::delete('/{id}/comments/{comment_id}', [CommentController::class, 'destroy'])->name('comments.destroy');
 

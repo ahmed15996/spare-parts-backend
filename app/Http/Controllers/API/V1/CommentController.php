@@ -18,6 +18,18 @@ class CommentController extends Controller
     {
         $this->comments = $comments;
     }
+
+    /**
+     * Get all comments for a post
+     */
+    public function index($postId){
+        $post = Post::find($postId);
+        if(!$post){
+            return $this->errorResponse(__('Post not found'), 404);
+        }
+        $comments = $post->comments;
+        return $this->successResponse(CommentResource::collection($comments), __('Comments fetched successfully'));
+    }
     public function store($postId, Request $request)
     {
         $data = $request->validate([
@@ -35,6 +47,7 @@ class CommentController extends Controller
             return $this->handleException($e, __('Failed to add comment'));
         }
     }
+
 
     public function destroy($postId, $commentId)
     {

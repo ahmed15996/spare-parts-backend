@@ -20,7 +20,7 @@ class CommentResource extends JsonResource
                 'name' => $this->author->name,
                 'avatar' => $this->author->role == 'client' ? $this->author->getFirstMediaUrl('avatar') : $this->author->getFirstMediaUrl('logo'),
             ],
-            'created_at' => Carbon::parse($this->created_at)->format('H:i d/m/Y'),
+            'created_at' => Carbon::parse($this->created_at)->diffForHumans(),
         ];
     }
 }
