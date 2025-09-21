@@ -78,11 +78,16 @@ class ChatController extends Controller
         try{
             $data = $request->validated();
             $data['sender_id'] = Auth::id();
-            $receiver_id = $data['receiver_id'];
-            $conversation = $this->conversationService->startConversation($receiver_id);
-            $data['conversation_id'] = $conversation->id;
-    
-            unset($data['receiver_id']);
+            $receiver_id = $data['receiver_id'] ?? null;
+            // if conversation_id exist ust it directly 
+            if(!isset($data['conversation_id'])){
+                $conversation = $this->conversationService->startConversation($receiver_id);
+                $data['conversation_id'] = $conversation->id;
+                unset($data['receiver_id']);
+            }
+            if(!isset($data['receiver_id'])){
+                unset($data['receiver_id']);
+            }
             $this->messageService->createWithBusinessLogic($data);
             return $this->ok(
                 [],

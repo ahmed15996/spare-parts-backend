@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
         Route::get('/days', [GeneralController::class, 'days'])->name('days');
         Route::get('/onboarding', [GeneralController::class, 'onboarding'])->name('onboarding');
         Route::get('/privacy',[GeneralController::class,'privacy']);
+        Route::get('/terms',[GeneralController::class,'terms']);
         Route::get('/about-us',[GeneralController::class,'aboutUs']);
         Route::get('/provider-commission',[GeneralController::class,'ProviderCommissionText']);
         Route::get('/client-commission',[GeneralController::class,'ClientCommissionText']);

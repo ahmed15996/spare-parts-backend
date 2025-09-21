@@ -125,6 +125,11 @@ class GeneralController extends Controller
         $privacy = setting('content','privacy_'.app()->getLocale());
         return $this->successResponse($privacy, __('Privacy retrieved successfully'));
     }
+    public function terms()
+    {
+        $terms = setting('content','terms_'.app()->getLocale());
+        return $this->successResponse($terms, __('Terms retrieved successfully'));
+    }
     public function aboutUs()
     {
         $aboutUs = setting('content','about_us_'.app()->getLocale());

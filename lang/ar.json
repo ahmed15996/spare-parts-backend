@@ -1363,5 +1363,8 @@
     "open-:to":"مفتوح الان -:to",
     "closed":"مغلق",
     "open now":"مفتوح الان",
-    "closed now":"مغلق الان"
+    "closed now":"مغلق الان",
+    "Suggestion":"اقتراح",
+    "Terms retrieved successfully":"تم استرجاع الشروط بنجاح",
+    "Failed to retrieve terms":"فشل في استرجاع الشروط"
 }  

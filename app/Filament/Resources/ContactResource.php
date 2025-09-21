@@ -46,12 +46,18 @@ class ContactResource extends Resource
                     ->color('info')
                     ->copyable(),
                     
-                Tables\Columns\TextColumn::make('is_read')
+                Tables\Columns\TextColumn::make('image.pngis_read')
                     ->label(__('Read'))
                     ->sortable()
                     ->icon(fn($record) => $record->is_read ? 'heroicon-o-check-circle' : 'heroicon-o-x-circle')
                     ->color(fn($record) => $record->is_read ? 'success' : 'danger'),
                     
+                Tables\Columns\TextColumn::make('type')
+                    ->label(__('Type'))
+                    ->sortable()
+                    ->icon(fn($record) => $record->type == 0 ? 'heroicon-o-user' : 'heroicon-o-store')
+                    ->color(fn($record) => $record->type == 0 ? 'success' : 'danger')
+                    ->formatStateUsing(fn($state) => $state == 0 ? __('Suggestion') : __('Report')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('Received At'))
                     ->dateTime('M j, Y H:i')

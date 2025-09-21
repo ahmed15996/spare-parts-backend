@@ -26,10 +26,31 @@ class ManageContent extends SettingsPage
                         'italic',
                         'underline',
                         'orderedList',
+                        'bulletList',           ])
+                    ->required(),
+                Forms\Components\RichEditor::make('about_us_en')
+                    ->label('About Us En')
+                    ->translateLabel()
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'underline',
+                        'orderedList',
                         'bulletList',
                     ])
                     ->required(),
-                Forms\Components\RichEditor::make('about_us_en')
+                Forms\Components\RichEditor::make('terms_ar')
+                    ->label('Terms Ar')
+                    ->translateLabel()
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'underline',
+                        'orderedList',
+                        'bulletList',
+                    ])
+                    ->required(),
+                Forms\Components\RichEditor::make('terms_en')
                     ->label('About Us En')
                     ->translateLabel()
                     ->toolbarButtons([
@@ -53,6 +74,17 @@ class ManageContent extends SettingsPage
                     ->required(),
                 Forms\Components\RichEditor::make('privacy_en')
                     ->label('Privacy En')
+                    ->translateLabel()
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'underline',
+                        'orderedList',
+                        'bulletList',
+                    ])
+                    ->required(),
+                Forms\Components\RichEditor::make('terms_en')
+                    ->label('Terms En')
                     ->translateLabel()
                     ->toolbarButtons([
                         'bold',

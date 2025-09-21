@@ -14,7 +14,8 @@ class SendMessageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'receiver_id' => 'required|integer|exists:users,id',
+            'receiver_id' => 'nullable|integer|exists:users,id',
+            'conversation_id' => 'nullable|integer|exists:conversations,id',
             'type' => 'required|integer|in:'.implode(',', MessageType::values()),
             'content' => 'required_if:type,'.MessageType::Text->value,
             'file' => 'required_if:type,'.MessageType::File->value.'|file|mimes:jpeg,png,jpg,pdf,doc,docx,xls,xlsx,ppt,pptx|max:2048',
