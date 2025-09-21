@@ -70,6 +70,7 @@ trait ApiResponseTrait
                 'total' => $paginator->total(),
                 'from' => $paginator->firstItem(),
                 'to' => $paginator->lastItem(),
+                'next_page_url' => $paginator->nextPageUrl(),
                 'has_more_pages' => $paginator->hasMorePages(),
             ],
         ];

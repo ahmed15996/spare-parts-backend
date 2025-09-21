@@ -53,7 +53,8 @@ class ClientController extends Controller
 
     public function search ( SearchRequest $request){
         $data = $request->validated();
-        $providers = $this->providerSearchService->searchProvidersWithLocation($data);
+        $data['per_page'] = $request->query('per_page', 9);
+        $providers = $this->providerSearchService->searchProvidersWithLocation($data,$data['per_page']);
         if($providers->isEmpty()){
         return $this->paginatedResourceResponse($providers,ProviderResource::class,__('No providers found'));
         }
