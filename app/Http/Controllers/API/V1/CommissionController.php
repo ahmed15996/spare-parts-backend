@@ -6,6 +6,7 @@ use App\Enums\CommissionType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\V1\StoreClientCommessionRequest;
 use App\Http\Requests\API\V1\StoreProviderCommessionRequest;
+use App\Http\Resources\API\V1\CommissionResource;
 use App\Models\Commission;
 use App\Models\CommissionProduct;
 use App\Models\Product;
@@ -35,9 +36,7 @@ class CommissionController extends Controller
             'value' => $amount * $clientCommissionPercentage / 100,
         ]);
         
-        return $this->successResponse([
-            'commission_id' => $commission->id,
-        ], __('The commission due has been calculated and is :value and please pay it',['value'=>$commission->value]));
+        return $this->successResponse(CommissionResource::make($commission), __('The commission due has been calculated and is :value and please pay it',['value'=>$commission->value]));
 
     }
     public function providerCommission(StoreProviderCommessionRequest $request){
@@ -89,12 +88,7 @@ class CommissionController extends Controller
                 ]);
             }
 
-            return $this->successResponse([
-                'commission'=>[
-                    'id'=>$commission->id,
-                    'value'=> $commission->value
-                ]
-            ], __('The commission due has been calculated and is :value and please pay it',[ 'value' => $commission->value ]));
+            return $this->successResponse(CommissionResource::make($commission), __('The commission due has been calculated and is :value and please pay it',[ 'value' => $commission->value ]));
         });
     }
     protected function calcProviderCommission($products){
