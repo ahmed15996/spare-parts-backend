@@ -83,17 +83,7 @@ class ManageContent extends SettingsPage
                         'bulletList',
                     ])
                     ->required(),
-                Forms\Components\RichEditor::make('terms_en')
-                    ->label('Terms En')
-                    ->translateLabel()
-                    ->toolbarButtons([
-                        'bold',
-                        'italic',
-                        'underline',
-                        'orderedList',
-                        'bulletList',
-                    ])
-                    ->required(),
+               
                 // ...
             ]);
     }
