@@ -33,7 +33,9 @@ class BannerResource extends JsonResource
                     'name' => $this->provider->store_name,
                     'avatar' => $this->provider->getFirstMediaUrl('logo'),
                     'rating' => $this->provider->getAverageRating(),
+                    'open_status' => $this->provider->isCurrentlyOpen(),
                     'days' => ProviderDayResource::collection($this->provider->days),
+                    
                 ];
             }
 

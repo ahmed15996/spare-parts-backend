@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -124,27 +125,29 @@ class Provider extends Model implements HasMedia
     }
 
     /**
-     * Check if provider is currently open
+     * Check if provider is currently open and return status with closing time
      */
-    public function isCurrentlyOpen(): bool
+    public function isCurrentlyOpen()
     {
         $now = now();
         $currentDay = $now->format('N'); // 1 (Monday) through 7 (Sunday)
         
-        // Convert to match your day IDs (assuming 1=Sunday, 2=Monday, etc.)
-        $dayId = $currentDay == 7 ? 1 : $currentDay + 1;
+        // Convert to match your day IDs (1=Saturday, 2=Sunday, 3=Monday, etc.)
+        $dayId = $currentDay == 6 ? 1 : ($currentDay == 7 ? 2 : $currentDay + 2);
         
         $dayProvider = $this->days()
             ->where('day_id', $dayId)
             ->first();
 
         if (!$dayProvider || $dayProvider->is_closed) {
-            return false;
+            return __('closed');
         }
 
         // Check if current time is within working hours
         $currentTime = $now->format('H:i');
-        return $currentTime >= $dayProvider->from && $currentTime <= $dayProvider->to;
+        $isOpen = $currentTime >= $dayProvider->from && $currentTime <= $dayProvider->to;
+        
+        return $isOpen ? __('open-:to',['to'=> Carbon::parse($dayProvider->to)->format('H:i')]) : __('closed');
     }
 
     /**

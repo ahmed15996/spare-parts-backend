@@ -55,7 +55,7 @@ class ClientController extends Controller
         $data = $request->validated();
         $providers = $this->providerSearchService->searchProvidersWithLocation($data);
         if($providers->isEmpty()){
-            return $this->successResponse([],__('No providers found'));
+        return $this->paginatedResourceResponse($providers,ProviderResource::class,__('No providers found'));
         }
         return $this->paginatedResourceResponse($providers,ProviderResource::class,__('Providers retrieved successfully'));
     }

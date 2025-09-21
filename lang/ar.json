@@ -1359,5 +1359,7 @@
     "No document uploaded":"لا يوجد مستندات",
     "Create User":"إنشاء مستخدم",
     "Comments fetched successfully":"تم استرجاع التعليقات بنجاح",
-    "Failed to fetch comments":"فشل في استرجاع التعليقات"
+    "Failed to fetch comments":"فشل في استرجاع التعليقات",
+    "open-:to":"مفتوح الان -:to",
+    "closed":"مغلق"
 }  
