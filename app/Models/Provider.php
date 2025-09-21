@@ -127,7 +127,7 @@ class Provider extends Model implements HasMedia
     /**
      * Check if provider is currently open and return status with closing time
      */
-    public function isCurrentlyOpen()
+    public function isCurrentlyOpen(): array
     {
         $now = now();
         $currentDay = $now->format('N'); // 1 (Monday) through 7 (Sunday)
@@ -140,14 +140,22 @@ class Provider extends Model implements HasMedia
             ->first();
 
         if (!$dayProvider || $dayProvider->is_closed) {
-            return __('closed');
+            return [
+                'is_open' => false,
+                'text' => __('closed now'),
+                'to' => null,
+            ];
         }
 
         // Check if current time is within working hours
         $currentTime = $now->format('H:i');
         $isOpen = $currentTime >= $dayProvider->from && $currentTime <= $dayProvider->to;
         
-        return $isOpen ? __('open-:to',['to'=> Carbon::parse($dayProvider->to)->format('H:i')]) : __('closed');
+        return [
+            'is_open' => $isOpen,
+            'text' => __('open now'),
+            'to' => $isOpen ? Carbon::parse($dayProvider->to)->format('H:i') : null,
+        ];
     }
 
     /**

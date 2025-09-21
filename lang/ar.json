@@ -1361,5 +1361,7 @@
     "Comments fetched successfully":"تم استرجاع التعليقات بنجاح",
     "Failed to fetch comments":"فشل في استرجاع التعليقات",
     "open-:to":"مفتوح الان -:to",
-    "closed":"مغلق"
+    "closed":"مغلق",
+    "open now":"مفتوح الان",
+    "closed now":"مغلق الان"
 }  
