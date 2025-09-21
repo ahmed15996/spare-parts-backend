@@ -16,8 +16,8 @@ class BlockResource extends JsonResource
 
         if ($blocked && method_exists($blocked, 'hasRole')) {
             if ($blocked->hasRole('provider')) {
-                $blockedData['store_name'] = $blocked->provider ? $blocked->provider->store_name : null;
-                $blockedData['logo'] = $blocked->provider && method_exists($blocked->provider, 'getFirstMediaUrl') ? $blocked->provider->getFirstMediaUrl('logo') : null;
+                $blockedData['name'] = $blocked->provider ? $blocked->provider->store_name : null;
+                $blockedData['avatar'] = $blocked->provider && method_exists($blocked->provider, 'getFirstMediaUrl') ? $blocked->provider->getFirstMediaUrl('logo') : null;
             } else {
                 $blockedData['name'] = trim($blocked->first_name . ' ' . $blocked->last_name);
                 $blockedData['avatar'] = method_exists($blocked, 'getFirstMediaUrl') ? $blocked->getFirstMediaUrl('avatar') : null;
