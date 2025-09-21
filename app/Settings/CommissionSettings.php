@@ -3,6 +3,7 @@
 namespace App\Settings;
 
 use Spatie\LaravelSettings\Settings;
+use Illuminate\Support\Facades\Cache;
 
 class CommissionSettings extends Settings
 {
@@ -16,5 +17,21 @@ class CommissionSettings extends Settings
     public static function group(): string
     {
         return 'commission';
+    }
+    //forget the cache after save 
+    public function save(): self
+    {
+        parent::save();
+        Cache::forget('all_settings');
+        
+        // Clear specific commission settings cache
+        Cache::forget('setting_commission_client_commission');
+        Cache::forget('setting_commission_provider_commission');
+        Cache::forget('setting_commission_client_commission_text_ar');
+        Cache::forget('setting_commission_client_commission_text_en');
+        Cache::forget('setting_commission_provider_commission_text_ar');
+        Cache::forget('setting_commission_provider_commission_text_en');
+        
+        return $this;
     }
 }
