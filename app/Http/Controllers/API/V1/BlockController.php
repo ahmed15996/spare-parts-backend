@@ -74,7 +74,7 @@ class BlockController extends Controller
         $user = Auth::user();
         
         $blocks = Block::where('blocker_id', $user->id)
-            ->with(['blocked.provider'])
+            ->with(['blocked.provider.media', 'blocked.media'])
             ->orderBy('created_at', 'desc')
             ->get();
 

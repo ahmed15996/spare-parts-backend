@@ -20,7 +20,7 @@ class BlockResource extends JsonResource
                 $blockedData['avatar'] = $blocked->provider && method_exists($blocked->provider, 'getFirstMediaUrl') ? $blocked->provider->getFirstMediaUrl('logo') : null;
             } else {
                 $blockedData['name'] = trim($blocked->first_name . ' ' . $blocked->last_name);
-                $blockedData['avatar'] =  $blocked->getFirstMediaUrl('avatar') ?? null;
+                $blockedData['avatar'] = $blocked->getFirstMediaUrl('avatar') ?? null;
             }
         }
 
