@@ -11,7 +11,6 @@ class BlockResource extends JsonResource
     {
         $blocked = $this->blocked;
         $blockedData = [
-            'id' => $blocked->id ?? null,
         ];
 
         if ($blocked && method_exists($blocked, 'hasRole')) {
