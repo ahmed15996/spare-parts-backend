@@ -68,10 +68,6 @@ class ReviewController extends Controller
                 return $this->errorResponse(__('Provider not found'), 404);
             }
             
-            // Check if user has already reviewed this provider
-            if ($this->reviewService->userHasReviewedProvider(Auth::id(), $provider->id)) {
-                return $this->errorResponse(__('You have already reviewed this provider'), 409);
-            }
             
             $data = $request->validated();
             $data['user_id'] = Auth::id();
