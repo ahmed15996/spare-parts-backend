@@ -65,10 +65,6 @@ class ReviewService extends BaseService
         // Add your business logic here before creating
         $this->validateBusinessRules($data);
         
-        // Check if user has already reviewed this provider
-        if ($this->userHasReviewedProvider($data['user_id'], $data['provider_id'])) {
-            throw new \Exception('You have already reviewed this provider');
-        }
 
         // Validate provider exists
         $provider = Provider::find($data['provider_id']);
