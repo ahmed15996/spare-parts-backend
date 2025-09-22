@@ -62,17 +62,20 @@ trait ApiResponseTrait
         $response = [
             'status' => true,
             'message' => $message,
-            'data' => $paginator->items(),
-            'pagination' => [
-                'current_page' => $paginator->currentPage(),
-                'last_page' => $paginator->lastPage(),
-                'per_page' => $paginator->perPage(),
-                'total' => $paginator->total(),
-                'from' => $paginator->firstItem(),
-                'to' => $paginator->lastItem(),
-                'next_page_url' => $paginator->nextPageUrl(),
-                'has_more_pages' => $paginator->hasMorePages(),
-            ],
+             'data' => (object)[
+                'data' => $paginator->items(),
+                'pagination' => (object)[
+                    'current_page' => $paginator->currentPage(),
+                    'last_page' => $paginator->lastPage(),
+                    'per_page' => $paginator->perPage(),
+                    'total' => $paginator->total(),
+                    'from' => $paginator->firstItem(),
+                    'to' => $paginator->lastItem(),
+                    'next_page_url' => $paginator->nextPageUrl(),
+                    'prev_page_url' => $paginator->previousPageUrl(),
+                    'has_more_pages' => $paginator->hasMorePages(),
+                ],
+             ]
         ];
 
         return response()->json(array_filter($response, fn($value) => !is_null($value)));
