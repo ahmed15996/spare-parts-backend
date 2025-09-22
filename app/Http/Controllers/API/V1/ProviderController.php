@@ -93,9 +93,9 @@ class ProviderController extends Controller
         if(!$request){
             return $this->errorResponse(__('Request not found'), 404);
         }
-        return $this->successResponse([
+        return $this->successResponse(
             ProviderRequestResource::make($request),
-        ], __('Request retrieved successfully'));
+         __('Request retrieved successfully'));
        }catch(\Exception $e){
         Log::debug($e->getMessage());
         return $this->errorResponse(__('Failed to retrieve request'), 500);
@@ -131,9 +131,9 @@ class ProviderController extends Controller
             if($offers->isEmpty()){
                 return $this->successResponse([], __('No offers found'));
             }
-            return $this->successResponse([
+            return $this->successResponse(
                 ProviderOfferResource::collection($offers),
-            ], __('Offers retrieved successfully'));
+            __('Offers retrieved successfully'));
         }catch(\Exception $e){
             Log::debug($e->getMessage());
             return $this->errorResponse(__('Failed to retrieve offers'), 500);
@@ -147,9 +147,9 @@ class ProviderController extends Controller
             if(!$offer){
                 return $this->errorResponse(__('Offer not found'), 404);
             }
-            return $this->successResponse([
+            return $this->successResponse(
                 ProviderOfferResource::make($offer),
-            ], __('Offer retrieved successfully'));
+             __('Offer retrieved successfully'));
         }catch(\Exception $e){
             Log::debug($e->getMessage());
             return $this->errorResponse(__('Failed to retrieve offer'), 500);

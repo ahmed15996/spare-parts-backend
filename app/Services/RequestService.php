@@ -186,23 +186,34 @@ class RequestService extends BaseService
 
     public function getProviderRequests(Provider $provider , HttpRequest $request){
         $perPage = $request->query('per_page', 10);
-        $day = $request->query('day', 'today');
+        $date = $request->query('date', 'today');
 
-        $query = $this->request;
+        $query = $this->request->with('offers');
+        // execlude requests that i've sent offers for them        
 
+        
+        
         $query->where('category_id', $provider->category_id);
         $query->where('city_id', $provider->city_id);
         $query->whereHas('car', function($q) use ($provider){
             $q->whereHas('brand',function($q) use ($provider){
-                $q->whereIn('id', $provider->brands->pluck('id'));
+                $q->whereIn('brands.id', $provider->brands->pluck('id'));
             });
-            
         });
 
-        if($day == 'today'){
-            $query->whereDate('created_at', today());
-        }
+        $query->whereDoesntHave('offers', function($q) use ($provider){
+            $q->where('provider_id', $provider->id);
+        });
 
+
+
+
+        if($date == 'today'){
+            $query->whereDate('created_at', today());
+        }else{
+            $query->whereDate('created_at', $date);
+        }
+        
         return $query->paginate($perPage);
 
     }
