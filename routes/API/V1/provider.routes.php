@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
     //# General endpoints 
     Route::group(['as'=>'provider.','prefix'=>'provider','middleware' => ['auth:sanctum','role:provider']], function () {
         Route::get('/packages', [ProviderController::class, 'packages'])->name('packages');
-        
+        Route::get('/reviews', [ProviderController::class, 'getProviderReviews'])->name('reviews');
         // Working days routes
         Route::get('/days', [ProviderController::class, 'days'])->name('days');
         Route::post('/days', [ProviderController::class, 'updateDays'])->name('days.update');

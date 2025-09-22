@@ -26,6 +26,9 @@ use App\Services\OfferService;
 use App\Services\ProviderDaysService;
 use App\Http\Resources\API\V1\Provider\Offers\ProviderOfferResource;
 use App\Http\Resources\API\V1\Provider\ProviderDayResource;
+use App\Services\ReviewService;
+use App\Http\Resources\API\V1\ReviewResource;
+
 class ProviderController extends Controller
 {
     public function __construct(
@@ -34,7 +37,8 @@ class ProviderController extends Controller
         protected RequestService $requestService,
         protected ProviderService $providerService,
         protected OfferService $offerService,
-        protected ProviderDaysService $providerDaysService
+        protected ProviderDaysService $providerDaysService,
+        protected ReviewService $reviewService
     ) {
     }
     public function packages()
@@ -70,6 +74,30 @@ class ProviderController extends Controller
         }catch(\Exception $e){
             Log::debug($e->getMessage());
             return $this->errorResponse(__('Failed to retrieve provider statistics'), 500);
+        }
+    }
+    public function getProviderReviews()
+    {
+        try {
+            // Check if provider exists
+            $provider = Auth::user()->provider;            
+            
+            $reviews = $this->reviewService->getProviderReviews($provider->id, ['user']);
+            
+            return $this->successResponse(
+                [
+                    'provider' =>[
+                        'name' => $provider->store_name,
+                        'avatar' => $provider->getFirstMediaUrl('logo'),
+                        'rating' => $provider->getAverageRating(),
+                    ],
+                    'reviews' => ReviewResource::collection($reviews),
+                ],
+                __('Provider reviews retrieved successfully')
+            );
+        } catch (\Exception $e) {
+            Log::debug($e->getMessage());
+            return  $this->errorResponse(__('Failed to retrieve provider reviews'), 500);
         }
     }
 
