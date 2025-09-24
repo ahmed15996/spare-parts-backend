@@ -19,7 +19,10 @@ class BannerResource extends JsonResource
             'id' => $this->id,
             'number' => $this->number,
             'description' => $this->description,
-            'status' => $this->status->label(),
+            'status' => [
+                'id' => $this->status->id,
+                'label' => $this->status->label(),
+            ],
         ];
 
        if($request->route()->getName() == 'provider.banners.show'){
