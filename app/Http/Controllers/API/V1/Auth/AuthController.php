@@ -104,7 +104,7 @@ class AuthController extends BaseAuthCrontroller
         if($notifications->isNotEmpty()){
             return $this->paginatedResourceResponse($notifications, NotificationResource::class, __('Notifications retrieved successfully'));
         }
-        return $this->errorResponse(__('No notifications found'));
+        return $this->paginatedResourceResponse($notifications, NotificationResource::class, __('Notifications retrieved successfully'));
     }
     public function markAsRead(Request $request){
         $notifications = $this->notificationService->markAsRead(Auth::user()->id,$request->notification_ids);
