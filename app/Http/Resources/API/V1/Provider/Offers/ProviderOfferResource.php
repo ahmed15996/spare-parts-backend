@@ -23,16 +23,8 @@ class ProviderOfferResource extends JsonResource
             'description' => $this->description,
             'has_delivery' => $this->has_delivery,
             'request' => ProviderRequestResource::make($this->request),
-            'user' => [
-                'id' =>$this->request->user_id,
-                'name' => $this->request->user->first_name . ' ' . $this->request->user->last_name,
-                'avatar' => $this->request->user->getFirstMediaUrl('avatar'),
-            ] 
         ];
 
-        if($request->route()->getName() == 'provider.offers.show'){
-            unset($data['user']);
-        }
         return $data;
     }
 }
