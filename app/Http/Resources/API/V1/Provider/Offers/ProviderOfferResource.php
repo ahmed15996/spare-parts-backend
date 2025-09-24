@@ -17,7 +17,6 @@ class ProviderOfferResource extends JsonResource
 
         $data = [
             'id' => $this->id,
-            'request_number' => $this->request->number,
             'price' => $this->price,
             'city' => $this->city->name,
             'description' => $this->description,
