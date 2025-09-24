@@ -25,7 +25,7 @@ class PostController extends Controller
         $per_page = $request->query('per_page', 15);
         $posts = $this->posts->listFeed($per_page);
         if($posts->isEmpty()){
-            return $this->successResponse([], __('No posts found'));
+            return $this->paginatedResourceResponse($posts, PostResource::class, __('Posts fetched successfully'));
         }
 
         return $this->paginatedResourceResponse($posts, PostResource::class, __('Posts fetched successfully'));
