@@ -74,7 +74,7 @@ class LikeController extends Controller
         try{
             $likers = $this->likes->likersOfPost($post, $per_page);
             if($likers->isEmpty()){
-                return $this->successResponse([], __('No likers found'), 200);
+            return $this->paginatedResourceResponse($likers, LikerResource::class, __('Likers fetched successfully'));
             }
             return $this->paginatedResourceResponse($likers, LikerResource::class, __('Likers fetched successfully'));
         }catch(\Exception $e){
