@@ -52,6 +52,9 @@ class PostController extends Controller
     public function show($id)
     {
         $post = $this->posts->findWithMeta($id);
+        if(!$post){
+            return $this->notFound(__('Post not found'));
+        }
         return $this->successResponse(PostResource::make($post->load(['comments.author'])), __('Post fetched successfully'));
     }
 
