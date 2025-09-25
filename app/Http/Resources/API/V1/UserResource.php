@@ -30,6 +30,7 @@ class UserResource extends JsonResource
         if($role->name == 'provider'){
             $data += [
                 'id'=>$this->id,
+                'provider_id' => $this->provider->id,
                 'store_name' => $this->provider->store_name,
                 'address' => $this->provider->address,
                 'avatar' => $this->getFirstMediaUrl('logo'),
