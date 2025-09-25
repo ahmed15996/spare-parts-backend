@@ -46,7 +46,13 @@ class ProviderSearchService extends BaseSearchService
 
         // Apply category filter
         if (!empty($filters['category_id'])) {
-            $queryBuilder->where('providers.category_id', $filters['category_id']);
+            if($filters['category_id'] == 1){
+                // Category 1 means all categories (1, 2, 3) 
+                $queryBuilder->whereIn('providers.category_id', [1, 2, 3]);
+            } else {
+                // Specific category filtering
+                $queryBuilder->where('providers.category_id', $filters['category_id']);
+            }
         }
 
         // Apply city filter
@@ -111,7 +117,13 @@ class ProviderSearchService extends BaseSearchService
     {
         // Apply category filter
         if ($request->has('category_id') && !empty($request->query('category_id'))) {
-            $queryBuilder->where('providers.category_id', $request->query('category_id'));
+            if($request->query('category_id') == 1){
+                // Category 1 means all categories (1, 2, 3) 
+                $queryBuilder->whereIn('providers.category_id', [1, 2, 3]);
+            } else {
+                // Specific category filtering
+                $queryBuilder->where('providers.category_id', $request->query('category_id'));
+            }
         }
 
         // Apply city filter

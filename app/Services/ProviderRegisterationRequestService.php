@@ -125,7 +125,12 @@ class ProviderRegisterationRequestService extends BaseService
         }
 
         if (isset($filters['category_id'])) {
-            $query->where('category_id', $filters['category_id']);
+            if($filters['category_id'] == 1) {
+                // Category 1 means all categories (1, 2, 3)
+                $query->whereIn('category_id', [1, 2, 3]);
+            } else {
+                $query->where('category_id', $filters['category_id']);
+            }
         }
 
         return $query->with(['city', 'category'])->get();

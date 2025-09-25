@@ -129,7 +129,13 @@ class RequestService extends BaseService
     protected function afterCreate(Request $request): void
     {
         $recipients  =  User::with('provider')->whereHas('provider',function($q) use ($request){
-            $q->where('category_id', $request->category_id)->where('city_id', $request->city_id);
+            // Apply category filter: category 1 means all categories (1, 2, 3)
+            if($request->category_id == 1) {
+                $q->whereIn('category_id', [1, 2, 3]);
+            } else {
+                $q->where('category_id', $request->category_id);
+            }
+            $q->where('city_id', $request->city_id);
         })->get();
        
         try{
@@ -193,7 +199,12 @@ class RequestService extends BaseService
 
         
         
-        $query->where('category_id', $provider->category_id);
+        // Apply category filter: if provider's category is 1, show all requests from categories 1, 2, 3
+        if($provider->category_id == 1) {
+            $query->whereIn('category_id', [1, 2, 3]);
+        } else {
+            $query->where('category_id', $provider->category_id);
+        }
         $query->where('city_id', $provider->city_id);
         $query->whereHas('car', function($q) use ($provider){
             $q->whereHas('brand',function($q) use ($provider){
