@@ -52,7 +52,7 @@ class PostController extends Controller
     public function show($id)
     {
         $post = $this->posts->findWithMeta($id);
-        return new PostResource($post->load(['comments.author']));
+        return $this->successResponse(PostResource::make($post->load(['comments.author'])), __('Post fetched successfully'));
     }
 
     public function destroy($id)
