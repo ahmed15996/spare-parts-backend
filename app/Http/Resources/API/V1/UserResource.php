@@ -33,7 +33,7 @@ class UserResource extends JsonResource
                 'provider_id' => $this->provider->id,
                 'store_name' => $this->provider->store_name,
                 'address' => $this->address,
-                'avatar' => $this->getFirstMediaUrl('logo'),
+                'avatar' => $this->provider->getFirstMediaUrl('logo'),
                 'has_active_subscription' => $this->provider->subscriptions->where('is_active', true)->count() > 0 ? true : false,
 
 
