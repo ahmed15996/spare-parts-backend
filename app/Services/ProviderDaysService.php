@@ -35,15 +35,10 @@ class ProviderDaysService
                         'is_closed' => $dayData['is_closed'],
                     ];
 
-                    // Only set time fields if day is open
-                    if (!$dayData['is_closed']) {
-                        $updateData['from'] = $dayData['from'];
-                        $updateData['to'] = $dayData['to'];
-                    } else {
-                        // Clear time fields if day is closed
-                        $updateData['from'] = null;
-                        $updateData['to'] = null;
-                    }
+                    $updateData['from'] = $dayData['from'];
+                    $updateData['to'] = $dayData['to'];
+                    $updateData['is_closed'] = $dayData['is_closed'];
+                    
 
                     $dayProvider->update($updateData);
                 }
