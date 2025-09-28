@@ -148,8 +148,8 @@ class UserService extends BaseService
                 $user->clearMediaCollection('avatar');
                 $user->addMedia($avatar)->toMediaCollection('avatar');
             }else{
-                $user->clearMediaCollection('logo');
-                $user->addMedia($avatar)->toMediaCollection('logo');
+                $user->provider->clearMediaCollection('logo');
+                $user->provider->addMedia($avatar)->toMediaCollection('logo');
             }
         }
         
