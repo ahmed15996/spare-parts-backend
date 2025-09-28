@@ -50,7 +50,6 @@ class ReportService extends BaseService
 
     protected function afterCreate(Report $report): void
     {
-        // TODO: Send notification to admin
 
         $this->sendAdminNotification(__('New report'), __('A new report has been received'), [
             Action::make('view')

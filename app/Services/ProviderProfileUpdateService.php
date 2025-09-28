@@ -223,8 +223,6 @@ class ProviderProfileUpdateService extends BaseService
      */
     protected function notifyAdminsOfPendingRequest(ProviderProfileUpdateRequest $updateRequest)
     {
-        // TODO: Implement notification logic
-        // You can use Laravel notifications or your existing notification system
        
        $this->sendAdminNotification('تسجيل طلب تحديث ملف المزود', 'تم إرسال طلب تحديث ملف المزود جديد', [
          Action::make('view')
@@ -241,8 +239,6 @@ class ProviderProfileUpdateService extends BaseService
      */
     protected function notifyProviderOfApproval(Provider $provider)
     {
-        // TODO: Implement notification logic
-        // Send notification to provider about approval
         $provider->user->customNotifications()->create([
             'title'=>[
                 'ar'=>'تمت الموافقة على طلب تحديث ملف المزود',
@@ -262,8 +258,6 @@ class ProviderProfileUpdateService extends BaseService
      */
     protected function notifyProviderOfRejection(Provider $provider, ?string $reason)
     {
-        // TODO: Implement notification logic
-        // Send notification to provider about rejection with reason
         $provider->user->customNotifications()->create([
             'title'=>[
                 'ar'=>'تم رفض طلب تحديث ملف المزود',

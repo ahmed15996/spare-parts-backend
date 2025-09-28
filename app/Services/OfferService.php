@@ -222,9 +222,7 @@ class OfferService extends BaseService
             }
     } elseif(isset($data['order_by']) &&    $data['order_by'] == 2){
             // Order by provider rating (for future implementation)
-            $query->orderBy('created_at', 'desc'); // Default ordering for now
-            // TODO: Implement rating-based ordering when rating system is ready
-            // $query->orderBy('provider.rating', 'desc');
+            $query->orderBy('provider.rating', 'desc');
         } else {
             // Default ordering by creation date
             $query->orderBy('created_at', 'desc');

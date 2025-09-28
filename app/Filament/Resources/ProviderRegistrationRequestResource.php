@@ -139,7 +139,6 @@ class ProviderRegistrationRequestResource extends Resource
                     
                 Forms\Components\Section::make(__('Location Information'))
                     ->schema([
-                        //TODO: refactor to map 
                         Forms\Components\TextInput::make('lat')
                             ->label(__('Latitude'))
                             ->required()
