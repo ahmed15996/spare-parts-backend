@@ -101,6 +101,9 @@ class UserService extends BaseService
         //update if exist
         if($exist){
             $exist->update($data);
+            if($avatar){
+                $exist->addMedia($avatar)->toMediaCollection('avatar');
+            }
             return $exist;
         }
         $user = $this->user->create($data);
