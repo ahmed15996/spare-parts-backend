@@ -20,7 +20,7 @@ class PersonalProfileResource extends JsonResource
             'last_name' => $this->last_name,
             'email' => $this->email,
             'phone' => $this->phone,
-            'avatar' =>  $this->hasRole('client') ? $this->getFirstMediaUrl('avatar') : $this->getFirstMediaUrl('logo'),
+            'avatar' =>  $this->hasRole('client') ? $this->getFirstMediaUrl('avatar') : $this->provider->getFirstMediaUrl('logo'),
             'address' => $this->address,
             'lat' => $this->lat,
             'long' => $this->long,
