@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 //# Public client endpoints (no authentication required)
 Route::group(['as'=>'client.','prefix'=>'client'], function () {
     Route::get('/home', [ClientController::class, 'home'])->name('home');
+    Route::get('home/nearest-providers', [ClientController::class, 'nearestProviders'])->name('home.nearest-providers');
     Route::get('/banners/{banner_id}', [ClientController::class, 'bannserDetails'])->name('banners.show');
     
     Route::group(['prefix'=>'providers','as'=>'providers.'],function(){

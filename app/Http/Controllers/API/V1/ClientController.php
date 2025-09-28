@@ -50,6 +50,16 @@ class ClientController extends Controller
         ]);
 
     }
+    public function nearestProviders(Request $request){
+        $user = Auth::user();
+        if($user && $user->lat && $user->long){
+            $providers = $this->providerService->getNearestProviders($user->lat, $user->long);
+        }
+        else{
+            $providers = $this->providerService->getActiveProviders();
+        }
+        return $this->successResponse(ProviderResource::collection($providers));
+    }
 
     public function search ( SearchRequest $request){
         $data = $request->validated();
