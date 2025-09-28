@@ -35,4 +35,33 @@ class UpdateProfileRequest extends FormRequest
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
+
+    public function validationData(): array
+    {
+        $data = parent::validationData();
+
+        // Normalize phone if provided
+        if (isset($data['phone']) && !empty($data['phone'])) {
+            $rawPhone = (string) $data['phone'];
+            
+            // Normalize phone using the same logic as AuthService
+            $digitsOnly = preg_replace('/\D+/', '', $rawPhone) ?? '';
+            
+            if (str_starts_with($digitsOnly, '966')) {
+                $normalizedPhone = $digitsOnly;
+            } else {
+                if (str_starts_with($digitsOnly, '05')) {
+                    $digitsOnly = substr($digitsOnly, 1);
+                }
+                if (str_starts_with($digitsOnly, '0')) {
+                    $digitsOnly = ltrim($digitsOnly, '0');
+                }
+                $normalizedPhone = '966' . $digitsOnly;
+            }
+            
+            $data['phone'] = $normalizedPhone;
+        }
+
+        return $data;
+    }
 }

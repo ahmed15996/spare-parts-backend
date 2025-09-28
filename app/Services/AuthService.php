@@ -126,7 +126,11 @@ class AuthService extends BaseService
 
     public function updateProfile(array $data, User $user)
     {
-       return $this->userService->updateWithBusinessLogic($user,$data);
-
+        // Normalize phone if provided
+        if (isset($data['phone']) && !empty($data['phone'])) {
+            $data['phone'] = $this->normalizePhone($data['phone']);
+        }
+        
+        return $this->userService->updateWithBusinessLogic($user,$data);
     }
 }
