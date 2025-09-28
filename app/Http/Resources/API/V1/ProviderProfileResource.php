@@ -25,9 +25,10 @@ class ProviderProfileResource extends JsonResource
                  'description' => $this->description,
                  'city_id' => $this->city_id,
                  'category_id' => $this->category_id,
+                 'brands' => $this->brands->pluck('id'),// brands ids
                  'commercial_number' => $this->commercial_number,
                  'location' => $this->location,
-                  'logo' => $this->getFirstMediaUrl('logo'),
+                 'logo' => $this->getFirstMediaUrl('logo'),
                  'commercial_number_image' => $this->getFirstMediaUrl('commercial_number_image'),
                  'lat' => $this->user->lat,
                  'long' => $this->user->long,
