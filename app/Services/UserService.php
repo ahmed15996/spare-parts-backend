@@ -144,7 +144,13 @@ class UserService extends BaseService
         }
         $updated = $this->update($user, $data);
         if($avatar){
-            $user->addMedia($avatar)->toMediaCollection('avatar');
+            if($user->hasRole('client')){
+                $user->clearMediaCollection('avatar');
+                $user->addMedia($avatar)->toMediaCollection('avatar');
+            }else{
+                $user->clearMediaCollection('logo');
+                $user->addMedia($avatar)->toMediaCollection('logo');
+            }
         }
         
         // if ($updated) {
