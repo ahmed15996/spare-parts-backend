@@ -35,8 +35,6 @@ class UserResource extends JsonResource
                 'address' => $this->address,
                 'avatar' => $this->provider->getFirstMediaUrl('logo'),
                 'has_active_subscription' => $this->provider->subscriptions->where('is_active', true)->count() > 0 ? true : false,
-
-
             ];
         }
         return $data;
