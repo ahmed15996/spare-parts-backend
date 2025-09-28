@@ -243,6 +243,18 @@ class ProviderProfileUpdateService extends BaseService
     {
         // TODO: Implement notification logic
         // Send notification to provider about approval
+        $provider->user->customNotifications()->create([
+            'title'=>[
+                'ar'=>'تمت الموافقة على طلب تحديث ملف المزود',
+                'en'=>'Provider profile update request approved',
+            ],
+            'body'=>[
+                'ar'=>'تمت الموافقة على طلب تحديث ملف المزود',
+                'en'=>'Provider profile update request approved',
+            ],
+            'metadata'=>[]
+
+        ]);
     }
 
     /**
@@ -252,5 +264,17 @@ class ProviderProfileUpdateService extends BaseService
     {
         // TODO: Implement notification logic
         // Send notification to provider about rejection with reason
+        $provider->user->customNotifications()->create([
+            'title'=>[
+                'ar'=>'تم رفض طلب تحديث ملف المزود',
+                'en'=>'Provider profile update request rejected',
+            ],
+            'body'=>[
+                'ar'=>'تم رفض طلب تحديث ملف المزود بسبب السبب التالي: '.$reason,
+                'en'=>'Provider profile update request rejected with the following reason: '.$reason,
+            ],
+            'metadata'=>[]
+
+        ]);
     }
 }
