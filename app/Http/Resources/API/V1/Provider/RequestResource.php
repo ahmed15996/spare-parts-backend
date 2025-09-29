@@ -30,7 +30,7 @@ class RequestResource extends JsonResource
         ];
 
         
-        if($request->route()->getName() == 'provider.requests.show'){
+        if($request->route()->getName() == 'provider.requests.show' || $request->route()->getName() == 'provider.offers.show'){
             $data['city'] = $this->city->name;
             $data['category'] = $this->category->name;
             $data['car_type'] = $this->car->brandModel->brand->name  . ' ' . $this->car->manufacture_year;
