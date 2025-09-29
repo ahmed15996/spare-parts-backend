@@ -109,6 +109,22 @@ class Provider extends Model implements HasMedia
     }
 
     /**
+     * Get the hidden requests for this provider.
+     */
+    public function hiddenRequests()
+    {
+        return $this->hasMany(ProviderHiddenRequest::class);
+    }
+
+    /**
+     * Get the requests that this provider has hidden.
+     */
+    public function hiddenRequestsList()
+    {
+        return $this->belongsToMany(Request::class, 'provider_hidden_requests');
+    }
+
+    /**
      * Get the average rating for this provider (last 3 months)
      */
     public function getAverageRating(): float

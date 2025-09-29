@@ -1097,6 +1097,8 @@
     "Please provide a reason for rejection (optional)":"يرجى تقديم السبب للرفض (اختياري)",
     "Yes, Reject":"نعم, رفض",
     "Invalid conversation id":"رقم المحادثة غير صالح",
+    "Request hidden successfully":"تم إخفاء الطلب بنجاح",
+    "Request unhidden successfully":"تم إلغاء إخفاء الطلب بنجاح",
     "Faq Information":"معلومات الأسئلة الشائعة",
     "Sort Order":"ترتيب العرض",
     "FAQs":"الأسئلة الشائعة",

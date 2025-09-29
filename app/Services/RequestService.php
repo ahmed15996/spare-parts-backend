@@ -216,8 +216,10 @@ class RequestService extends BaseService
             $q->where('provider_id', $provider->id);
         });
 
-
-
+        // Exclude requests that the provider has hidden
+        $query->whereDoesntHave('hiddenByProviders', function($q) use ($provider){
+            $q->where('provider_id', $provider->id);
+        });
 
         if($date == 'today'){
             $query->whereDate('created_at', today());
@@ -227,5 +229,48 @@ class RequestService extends BaseService
         
         return $query->paginate($perPage);
 
+    }
+
+    /**
+     * Toggle hide/unhide request for a provider
+     */
+    public function toggleHideRequest($provider, $requestId)
+    {
+        // Find the request
+        $request = $this->findWithRelations($requestId, ['user']);
+        
+        if (!$request) {
+            return [
+                'success' => false,
+                'message' => __('Request not found'),
+                'status_code' => 404
+            ];
+        }
+
+        // Check if request is already hidden
+        $hiddenRequest = \App\Models\ProviderHiddenRequest::where('provider_id', $provider->id)
+            ->where('request_id', $request->id)
+            ->first();
+
+        if ($hiddenRequest) {
+            // Unhide the request
+            $hiddenRequest->delete();
+            return [
+                'success' => true,
+                'message' => __('Request unhidden successfully'),
+                'status_code' => 200
+            ];
+        } else {
+            // Hide the request
+            \App\Models\ProviderHiddenRequest::create([
+                'provider_id' => $provider->id,
+                'request_id' => $request->id,
+            ]);
+            return [
+                'success' => true,
+                'message' => __('Request hidden successfully'),
+                'status_code' => 200
+            ];
+        }
     }
 }

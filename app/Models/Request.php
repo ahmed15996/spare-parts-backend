@@ -35,4 +35,12 @@ class Request extends Model
     {
         return $this->hasMany('App\Models\Offer', 'request_id');
     }
+
+    /**
+     * Get the providers that have hidden this request.
+     */
+    public function hiddenByProviders()
+    {
+        return $this->belongsToMany(Provider::class, 'provider_hidden_requests');
+    }
 }

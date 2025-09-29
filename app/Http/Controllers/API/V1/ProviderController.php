@@ -28,6 +28,7 @@ use App\Http\Resources\API\V1\Provider\Offers\ProviderOfferResource;
 use App\Http\Resources\API\V1\Provider\ProviderDayResource;
 use App\Services\ReviewService;
 use App\Http\Resources\API\V1\ReviewResource;
+use App\Models\ProviderHiddenRequest;
 
 class ProviderController extends Controller
 {
@@ -236,6 +237,26 @@ class ProviderController extends Controller
         } catch (\Exception $e) {
             Log::debug($e->getMessage());
             return $this->errorResponse(__('Failed to check availability'), 500);
+        }
+    }
+
+    /**
+     * Hide/Unhide a request from the provider's suggested list
+     */
+    public function hideRequest($id)
+    {
+        try {
+            $provider = Auth::user()->provider;
+            $result = $this->requestService->toggleHideRequest($provider, $id);
+            
+            if ($result['success']) {
+                return $this->successResponse([], $result['message']);
+            }
+            
+            return $this->errorResponse($result['message'], $result['status_code']);
+        } catch (\Exception $e) {
+            Log::debug($e->getMessage());
+            return $this->errorResponse(__('Failed to process request'), 500);
         }
     }
 }

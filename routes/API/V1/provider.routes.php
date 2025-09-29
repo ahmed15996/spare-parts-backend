@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
             Route::get('/{id}', [ProviderController::class, 'request'])->name('show');
             Route::get('/{id}/offers', [ProviderController::class, 'requestOffers'])->name('offers');
             Route::post('/{id}/offers', [ProviderController::class, 'sendOffer'])->name('send-offer');
+            Route::post('/{id}/hide', [ProviderController::class, 'hideRequest'])->name('hide');
         });
 
         Route::group(['prefix'=>'offers','as'=>'offers.'],function(){
