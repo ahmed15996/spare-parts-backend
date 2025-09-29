@@ -5,10 +5,10 @@ use Illuminate\Support\Facades\Log;
 
 
 // Web broadcasting routes (for web interface with sessions)
+Broadcast::routes(['middleware' => ['auth:sanctum']]);
 Broadcast::routes(['middleware' => ['web', 'auth']]);
 
 // API broadcasting routes (for mobile apps with Sanctum tokens)
-Broadcast::routes(['middleware' => ['api', 'auth:sanctum'], 'prefix' => 'api']);
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });

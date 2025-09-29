@@ -50,7 +50,7 @@
             //  Wait for Echo to be initialized
             document.addEventListener('DOMContentLoaded', function() {
                 // Check if Echo is properly initialized before using it
-                if (window.Echo && typeof window.Echo.private === 'function') {
+                if (window.Echo && typeof window.Echo.channel === 'function') {
                     try {
                         console.log('Setting up Echo listeners for user {{ auth()->id() }}');
                         
@@ -61,13 +61,13 @@
                             });
                             
                         // Try private channels (these require authentication)
-                        window.Echo.private('user.{{ auth()->id() }}')
+                        window.Echo.channel('user.{{ auth()->id() }}')
                             .listen('.message.sent', function(e) {
                                 console.log('new message sent for user ', e);
                             });
                             
                         // must be listen of the currently open conversation
-                        window.Echo.private('conversations.1')
+                        window.Echo.channel('conversations.7')
                             .listen('.message.sent', function(e) {
                                 console.log('new message sent for conversation ', e);
                             });

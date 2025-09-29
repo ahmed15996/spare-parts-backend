@@ -2,6 +2,7 @@
 
 namespace Modules\Chat\Events;
 
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -22,25 +23,18 @@ class MessageSent implements ShouldBroadcast
     /**
      * Get the channels the event should be broadcast on.
      */
-    public function broadcastOn(): array
+    public function broadcastOn()
     {
         // Ensure conversation relation is available
         $this->message->loadMissing('conversation.users');
 
-        $channels = [
-            new PrivateChannel('conversations.'.$this->message->conversation_id),
-        ];
-
-        foreach ($this->message->conversation->users as $participant) {
-            $channels[] = new PrivateChannel('user.'.$participant->id);
-        }
-
-        return $channels;
+        return   new Channel('conversations.'.$this->message->conversation_id);
+        
     }
 
     public function broadcastAs()
     {
-        return 'message.sent';
+        return 'NewMessageSent';
     }
 
     public function broadcastWith(): array
