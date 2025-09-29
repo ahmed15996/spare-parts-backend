@@ -25,7 +25,7 @@ class MessageSenderResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'avatar' => $this->getFirstMediaUrl('logo'),
+            'avatar' => $this->provider->getFirstMediaUrl('logo'),
        ];
        return [];
     }  
