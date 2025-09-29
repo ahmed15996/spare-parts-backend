@@ -67,7 +67,7 @@
                             });
                             
                         // must be listen of the currently open conversation
-                        window.Echo.channel('conversations.7')
+                        window.Echo.channel('conversations.1')
                             .listen('.NewMessageSent', function(e) {
                                 console.log('new message sent for conversation ', e);
                             });
