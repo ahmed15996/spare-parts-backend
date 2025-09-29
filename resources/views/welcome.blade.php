@@ -62,13 +62,13 @@
                             
                         // Try private channels (these require authentication)
                         window.Echo.channel('user.{{ auth()->id() }}')
-                            .listen('.message.sent', function(e) {
+                            .listen('.NewMessageSent', function(e) {
                                 console.log('new message sent for user ', e);
                             });
                             
                         // must be listen of the currently open conversation
                         window.Echo.channel('conversations.7')
-                            .listen('.message.sent', function(e) {
+                            .listen('.NewMessageSent', function(e) {
                                 console.log('new message sent for conversation ', e);
                             });
                     } catch (error) {
