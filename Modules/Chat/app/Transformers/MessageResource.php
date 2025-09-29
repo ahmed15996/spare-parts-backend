@@ -29,11 +29,11 @@ class MessageResource extends JsonResource
 
         $data =  [
             'id' => $this->id,
+            'type' => $type->value,
             'content' => $this->content,
             'sender' => new MessageSenderResource($this->sender),
-            'conversation_id' => $this->conversation_id,
+            'reciver'=> new MessageSenderResource($this->conversation->getOtherUser($this->sender_id)),
             'created_at' => Carbon::parse($this->created_at)->format('H:i'),
-            'type' => $type->value,
         ];
 
         if($type == MessageType::Offer && isset($this->metadata['offer_id'])){
@@ -59,7 +59,6 @@ class MessageResource extends JsonResource
 
         if($request &&$request->route() && $request->route()->getName() == 'api.conversations.index'){
             unset($data['sender']);
-            unset($data['conversation_id']);
         }
 
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use InvalidArgumentException;
 use Modules\Chat\Services\ConversationService;
 use Modules\Chat\Services\MessageService;
 use Modules\Chat\Http\Requests\StartConversationRequest;
@@ -56,6 +57,7 @@ class ChatController extends Controller
     public function getConversationMessages($id){
         try{
             $limit = request()->get('per_page', 10);
+
             $messages = $this->conversationService->getMessages($id, $limit);
             $this->conversationService->markConversationAsRead($id, Auth::id());
 
@@ -64,12 +66,20 @@ class ChatController extends Controller
                 MessageResource::class,
                 __('Messages fetched successfully')
             );
-        }catch(\Exception $e){
+        }
+        catch(InvalidArgumentException $e){
+            return $this->errorResponse(
+                __('Invalid conversation id'),
+                400
+            );
+        }
+        
+        catch(\Exception $e){
             Log::debug($e->getMessage(),$e->getTrace());
 
             return $this->errorResponse(
                 __('Failed to fetch messages'),
-                $e->getMessage()
+                500
             );
         }
     }

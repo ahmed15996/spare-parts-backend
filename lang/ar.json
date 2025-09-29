@@ -1096,6 +1096,7 @@
     "Are you sure you want to reject this profile update request?":"هل أنت متأكد أنك تريد رفض طلب تحديث ملف المزود؟",
     "Please provide a reason for rejection (optional)":"يرجى تقديم السبب للرفض (اختياري)",
     "Yes, Reject":"نعم, رفض",
+    "Invalid conversation id":"رقم المحادثة غير صالح",
     "Faq Information":"معلومات الأسئلة الشائعة",
     "Sort Order":"ترتيب العرض",
     "FAQs":"الأسئلة الشائعة",

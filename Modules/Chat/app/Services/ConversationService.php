@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Modules\Chat\Services\MessageService ;
 use Modules\Chat\Events\MessageSent;
 use Modules\Chat\Models\Message;
+use InvalidArgumentException;
 
 class ConversationService extends BaseService
 {
@@ -77,6 +78,9 @@ class ConversationService extends BaseService
      */
     public function getMessages($conversation_id , $limit = 10){
         $conversation = $this->conversation->find($conversation_id);
+        if(!$conversation){
+            throw new InvalidArgumentException(__('Invalid conversation id'));
+        }
         $messages = $conversation->messages()->orderBy('messages.created_at', 'desc')->paginate($limit);
         return $messages;
     }
@@ -92,6 +96,10 @@ class ConversationService extends BaseService
             },
             'lastMessage.sender'
         ])->find($conversation_id);
+
+        if(!$conversation){
+            throw new InvalidArgumentException(__('Invalid conversation id'));
+        }
 
         // Check if the other user is blocked by the current user
         if ($conversation) {
