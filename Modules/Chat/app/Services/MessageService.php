@@ -64,7 +64,6 @@ class MessageService extends BaseService
             $message->conversation->last_message_id = $message->id;
             $message->conversation->save();
         }
-
         // Broadcast event
         broadcast(new MessageSent($message));
 

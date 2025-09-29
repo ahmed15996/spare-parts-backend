@@ -24,6 +24,21 @@ use App\Http\Controllers\API\V1\BlockController;
             Route::get('notifications', [AuthController::class, 'getNotifications'])->name('notifications');
             Route::post('notifications/mark-as-read', [AuthController::class, 'markAsRead'])->name('notifications.mark-as-read');
             Route::get('delete-account-reasons', [AuthController::class, 'deleteAccountReasons'])->name('delete-account-reasons');
+
+            // Route::get('broadcasting/test', function() {
+            //     return response()->json([
+            //         'authenticated' => true,
+            //         'user_id' => auth()->id(),
+            //         'user_name' => auth()->user()->first_name . ' ' . auth()->user()->last_name,
+            //         'guard' => 'sanctum',
+            //         'conversations_count' => auth()->user()->conversations()->count(),
+            //         'broadcasting_auth_url' => url('/api/broadcasting/auth'),
+            //         'channels' => [
+            //             'user' => 'private-user.' . auth()->id(),
+            //             'conversation_example' => 'private-conversations.1'
+            //         ]
+            //     ]);
+            // })->name('broadcasting.test');
                 // Block routes
     Route::post('/blocks', [BlockController::class, 'block'])->name('blocks.store');
     Route::delete('/blocks/{id}', [BlockController::class, 'unblock'])->name('blocks.destroy');

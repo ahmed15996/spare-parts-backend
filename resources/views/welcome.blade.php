@@ -29,7 +29,7 @@
         <!-- Authentication Status -->
         <div style="padding: 20px; background: #f0f0f0; margin: 20px; border-radius: 5px;">
             @if(auth()->check())
-                <p><strong>Logged in as:</strong> {{ auth()->user()->name }} (ID: {{ auth()->user()->id }})</p>
+                <p><strong>Logged in as:</strong> {{ auth()->user()->first_name }} {{ auth()->user()->last_name }} (ID: {{ auth()->user()->id }})</p>
                 <p><strong>Email:</strong> {{ auth()->user()->email }}</p>
             @else
                 <p><strong>Not logged in</strong></p>
@@ -47,18 +47,37 @@
         @endphp
         @auth
         <script>
-            // Wait for Echo to be initialized
+            //  Wait for Echo to be initialized
             document.addEventListener('DOMContentLoaded', function() {
-                window.Echo.private('user.{{ auth()->id() }}')
-                    .listen('.message.sent', function(e) {
-                        console.log('new message sent for user ', e);
-                    });
-                    // must be listen of the currently open conversation
-                    window.Echo.private('conversations.1')
-                    .listen('.message.sent', function(e) {
-                        console.log('new message sent for conversation ', e);
-                    });
-                    
+                // Check if Echo is properly initialized before using it
+                if (window.Echo && typeof window.Echo.private === 'function') {
+                    try {
+                        console.log('Setting up Echo listeners for user {{ auth()->id() }}');
+                        
+                        // Test with a simple public channel first
+                        window.Echo.channel('test-channel')
+                            .listen('.test.event', function(e) {
+                                console.log('Test event received:', e);
+                            });
+                            
+                        // Try private channels (these require authentication)
+                        window.Echo.private('user.{{ auth()->id() }}')
+                            .listen('.message.sent', function(e) {
+                                console.log('new message sent for user ', e);
+                            });
+                            
+                        // must be listen of the currently open conversation
+                        window.Echo.private('conversations.1')
+                            .listen('.message.sent', function(e) {
+                                console.log('new message sent for conversation ', e);
+                            });
+                    } catch (error) {
+                        console.error('Error setting up Echo listeners:', error);
+                        console.log('Will continue without real-time features');
+                    }
+                } else {
+                    console.warn('Echo is not properly initialized. Real-time features are disabled.');
+                }
             });
         </script>
         @endauth
