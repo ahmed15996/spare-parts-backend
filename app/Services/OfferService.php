@@ -220,9 +220,9 @@ class OfferService extends BaseService
                     }
                 });
             }
-    } elseif(isset($data['order_by']) &&    $data['order_by'] == 2){
-            // Order by provider rating (for future implementation)
-            $query->orderBy('provider.rating', 'desc');
+        } elseif(isset($data['order_by']) &&    $data['order_by'] == 2){
+            // Order by provider rating - will be sorted in PHP after query for performance
+            // This avoids complex SQL joins and subqueries
         } else {
             // Default ordering by creation date
             $query->orderBy('created_at', 'desc');
@@ -237,6 +237,28 @@ class OfferService extends BaseService
     public function getFilteredOffers(array $data, $perPage = 8)
     {
         $query = $this->filterOffers($data);
+        
+        // Handle rating sort in PHP for better performance
+        if(isset($data['order_by']) && $data['order_by'] == 2) {
+            $offers = $query->get();
+            $sorted = $offers->sortByDesc(function($offer) {
+                return $offer->provider->getAverageRating();
+            });
+            
+            // Convert to paginated result
+            $currentPage = request('page', 1);
+            $total = $sorted->count();
+            $items = $sorted->forPage($currentPage, $perPage)->values();
+            
+            return new \Illuminate\Pagination\LengthAwarePaginator(
+                $items,
+                $total,
+                $perPage,
+                $currentPage,
+                ['path' => request()->url(), 'pageName' => 'page']
+            );
+        }
+        
         return $query->paginate($perPage);
     }
 
@@ -246,6 +268,15 @@ class OfferService extends BaseService
     public function getFilteredOffersList(array $data)
     {
         $query = $this->filterOffers($data);
+        
+        // Handle rating sort in PHP for better performance
+        if(isset($data['order_by']) && $data['order_by'] == 2) {
+            $offers = $query->get();
+            return $offers->sortByDesc(function($offer) {
+                return $offer->provider->getAverageRating();
+            })->values();
+        }
+        
         return $query->get();
     }
 
