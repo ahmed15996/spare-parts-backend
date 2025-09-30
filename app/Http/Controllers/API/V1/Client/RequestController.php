@@ -63,9 +63,11 @@ class RequestController extends Controller
         }
     }
 
-    public function filterOffers(FilterOffersRequest $request){
+    public function filterOffers(FilterOffersRequest $request,$id){
         try{
-            $offers = $this->offerService->getFilteredOffers($request->validated());
+            $data = $request->validated();
+            $data['request_id'] = $id;
+            $offers = $this->offerService->getFilteredOffers($data);
             return $this->successResponse(OfferResource::collection($offers), __('Offers retrieved successfully'));
         }catch(\Exception $e){
             Log::debug($e->getMessage());

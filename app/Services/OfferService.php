@@ -177,7 +177,7 @@ class OfferService extends BaseService
         $userLong = $user->long ?? null;
 
         // Start building the query with relationships
-        $query = $this->offer->with(['provider.user', 'provider.city']);
+        $query = $this->offer->with(['provider.user', 'provider.city'])->where('request_id', $data['request_id']);
 
         // Filter by provider city_id to avoid ambiguous column when joining tables
         if(isset($data['city_id']) && !empty($data['city_id'])){
