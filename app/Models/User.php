@@ -162,7 +162,12 @@ class User extends Model implements FilamentUser, HasMedia, Authenticatable, Aut
             return $this->first_name . ' ' . $this->last_name;
         }
         if($this->hasRole('provider')){
-            return $this->provider->store_name;
+            // Check if provider relationship exists and has store_name
+            if($this->provider && $this->provider->store_name) {
+                return $this->provider->store_name;
+            }
+            // Fallback to full name if provider doesn't exist or has no store_name
+            return $this->first_name . ' ' . $this->last_name;
         }
         return $this->first_name . ' ' . $this->last_name;
     }
