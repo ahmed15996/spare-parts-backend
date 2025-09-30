@@ -150,5 +150,18 @@ class GeneralController extends Controller
         $faqs = Faq::all();
         return $this->successResponse(ResourcesFaqResource::collection($faqs), __('FAQs retrieved successfully'));
     }
-
+    public function media()
+    {
+        $media = [
+            'linked_in' => setting('media','linked_in'),
+            'facebook' => setting('media','facebook'),
+            'twitter' => setting('media','twitter'),
+            'tiktok' => setting('media','tiktok'),
+            'instagram' => setting('media','instagram'),
+            'snapchat' => setting('media','snapchat'),
+            'app_store' => setting('media','app_store'),
+            'google_play' => setting('media','google_play'),
+        ];
+        return $this->successResponse($media, __('Media links retrieved successfully'));
+    }
 }       
