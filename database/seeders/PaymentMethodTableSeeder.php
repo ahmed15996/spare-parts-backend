@@ -15,22 +15,6 @@ class PaymentMethodTableSeeder extends Seeder
     {
         
         $methods = [
-            // [
-            // 'name' => [
-            //             'ar' => 'الدفع نقداً',
-            //             'en' => 'Cash on delivery',
-            //         ],
-            //         'image' => 'cach.png',
-            // ],
-            // [
-            //     'name' => [
-            //         'ar' => 'محفطتي',
-            //         'en' => 'My wallet',
-            //     ],
-            //     'image' => 'wallet.png',
-            // ]
-            ,
-            
             [
                 'name' => [
                     'ar' => 'ابل باي',
@@ -45,28 +29,7 @@ class PaymentMethodTableSeeder extends Seeder
                 ],
                 'image' => 'visa.png',
             ],
-            // [
-            //     'name' => [
-            //         'ar' => 'مدى',
-            //         'en' => 'Mada',
-            //     ],
-            //     'image' => 'mada.png',
-            // ],
-            
-            // [
-            //     'name' => [
-            //         'ar' => 'تابي',
-            //         'en' => 'Tabby',
-            //     ],
-            //     'image' => 'tabby.png',
-            // ],
-            // [
-            //     'name' => [
-            //         'ar' => 'تمارا',
-            //         'en' => 'Tamara',
-            //     ],
-            //     'image' => 'tamara.png',
-            // ],
+           
         ];
 
         foreach ($methods as $methodData) {
