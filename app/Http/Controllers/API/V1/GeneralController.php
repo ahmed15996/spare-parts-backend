@@ -18,6 +18,7 @@ use App\Models\Day;
 use App\Models\DeleteAccountReason;
 use App\Models\Package;
 use App\Models\Onboarding;
+use App\Models\PaymentMethod;
 use App\Models\Faq;
 use App\Services\CategoryService;
 use App\Services\CityService;
@@ -26,6 +27,7 @@ use App\Enums\BannerType;
 use App\Http\Resources\API\V1\DeleteAccountReasonResource;
 use App\Http\Resources\API\V1\FaqResource;
 use App\Http\Resources\FaqResource as ResourcesFaqResource;
+use App\Http\Resources\API\V1\PaymentMethodsResource;
 
 use function App\Helpers\setting;
 use function App\Helpers\settings;
@@ -59,6 +61,11 @@ class GeneralController extends Controller
             return $this->handleException($e, __('Failed to retrieve brands'));
         }
     }
+        public function paymentMethods()
+    {
+        $paymentMethods = PaymentMethod::all();
+        return $this->successResponse(PaymentMethodsResource::collection($paymentMethods), __('Payment Methods retrieved successfully'));
+    }   
 
     public function cities()
     {
