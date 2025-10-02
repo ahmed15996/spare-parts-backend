@@ -89,9 +89,15 @@ class ChatController extends Controller
             $data = $request->validated();
             $data['sender_id'] = Auth::id();
             $receiver_id = $data['receiver_id'] ?? null;
-            // if conversation_id exist ust it directly 
+            // if conversation_id exist use it directly 
             if(!isset($data['conversation_id'])){
                 $conversation = $this->conversationService->startConversation($receiver_id);
+                if (!$conversation) {
+                    return $this->errorResponse(
+                        __('Cannot start conversation. User may be blocked or unavailable.'),
+                        403
+                    );
+                }
                 $data['conversation_id'] = $conversation->id;
                 unset($data['receiver_id']);
             }
