@@ -13,10 +13,18 @@ class ConversationResource extends JsonResource
     public function toArray(Request $request): array
     {
         $authUserId = Auth::id();
+        $otherUser = $authUserId ? $this->getOtherUser($authUserId) : null;
+        $lastMessage = $this->lastMessage;
 
         $data=  [
             'id' => $this->id,
+            'other_user' => $otherUser ? new MessageSenderResource($otherUser) : null,
+            'last_message' => $lastMessage ? new MessageResource($lastMessage) : null,
         ];
+        if($request->route()->getName() == 'api.conversations.start-conversation'){
+            unset($data['last_message']);
+            unset($data['other_user']);
+        }
 
         return $data;
     }
