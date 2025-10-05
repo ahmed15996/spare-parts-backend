@@ -39,7 +39,7 @@ class ChatController extends Controller
 
     public function startConversation(StartConversationRequest $request){
         try{
-           $conversation = $this->conversationService->startConversation($request->validated());
+           $conversation = $this->conversationService->startConversation($request->validated('receiver_id'));
             return $this->ok(
                 ConversationResource::make($conversation),
                 __('Conversation started successfully')
