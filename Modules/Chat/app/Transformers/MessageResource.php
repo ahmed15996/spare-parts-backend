@@ -59,6 +59,7 @@ class MessageResource extends JsonResource
 
         if($request &&$request->route() && $request->route()->getName() == 'api.conversations.index'){
             unset($data['sender']);
+            unset($data['reciver']);
         }
 
 
