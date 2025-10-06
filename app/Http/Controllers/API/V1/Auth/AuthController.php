@@ -46,7 +46,9 @@ class AuthController extends BaseAuthCrontroller
     public function clientRegister(ClientRegisterRequest $request){
         $data = $request->validated();
         $user = $this->authService->clientRegister($data);
-        return $this->successResponse( new ClientResource($user), __('Client registered successfully'));
+        return $this->successResponse( [
+            'token' => $user->createToken('auth_token')->plainTextToken, // return latest created plaintext token 
+            'user' => new ClientResource($user)], __('Client registered successfully'));
     }
 
     public function resendActiveCode(Request $request){
