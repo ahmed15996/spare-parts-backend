@@ -27,6 +27,9 @@ if(!function_exists('setting')){
     {
         return Cache::rememberForever("setting_{$group}_{$name}", function () use ($group, $name) {
             switch ($group) {
+                case 'general':
+                    $settings = app(GeneralSettings::class);
+                    break;
                 case 'commission':
                     $settings = app(CommissionSettings::class);
                     break;

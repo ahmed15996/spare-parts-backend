@@ -8,6 +8,9 @@ use App\Models\Subscription;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
+use function App\Helpers\setting;
+use function App\Helpers\settings;
+
 class ProviderService extends BaseService
 {
     protected $provider;
@@ -214,5 +217,22 @@ class ProviderService extends BaseService
     public function updateDays(Provider $provider, array $days): bool
     {
         return $provider->days()->update($days);
+    }
+    
+    public function SubscribeToPackage(Provider $provider, Package $package)
+    {
+        if($provider->subscriptions()->where('is_active', true)->exists()){
+            throw new \Exception(__('Provider already has an active subscription'));
+        }
+        // if price has discount, calculate the price
+        $finalPrice = $package->final_price;
+        $subscription = $provider->subscriptions()->create([
+            'package_id' => $package->id,
+            'start_date' => now(),
+            'end_date' => now()->addDays($package->duration),
+            'is_active' => true,
+            'total' => $finalPrice ? $finalPrice : $package->price,
+        ]);
+        return $subscription;
     }
 }

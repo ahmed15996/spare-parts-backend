@@ -259,4 +259,25 @@ class ProviderController extends Controller
             return $this->errorResponse(__('Failed to process request'), 500);
         }
     }
+
+    // subscribe to a package
+    public function subscribeToPackage(Request $request, $id){
+        $provider = Auth::user()->provider;
+        $package = Package::find($id);
+        if(!$package){
+            return $this->errorResponse(__('Package not found'), 404);
+        }
+        try{
+
+            $this->providerService->subscribeToPackage($provider, $package);
+        return $this->successResponse([], __('Subscribed to package successfully'));
+        }
+        catch(\Illuminate\Validation\ValidationException $e){
+            return $this->errorResponse($e->getMessage(), 422);
+        }
+        catch(\Exception $e){
+            Log::debug($e->getMessage());
+            return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
 }

@@ -6,6 +6,7 @@ use App\Enums\BannerType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Spatie\Translatable\HasTranslations;
+use function App\Helpers\setting;
 
 class Package extends Model 
 {
@@ -32,5 +33,17 @@ class Package extends Model
         static::deleted(function () {
             Cache::forget('packages');
         });
+    }
+
+    public function getFinalPriceAttribute()
+    {
+        $finalPrice = $this->price;
+        if($this->discount && $this->discount > 0){
+            $finalPrice = $this->price - $this->discount;
+        }
+        if(setting('general', 'packages_discount') && setting('general', 'packages_discount') > 0){
+            $finalPrice = $finalPrice - ( $this->price * setting('general', 'packages_discount') / 100);
+        }
+        return $finalPrice;
     }
 }

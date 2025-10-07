@@ -31,8 +31,10 @@ class PersonalProfileResource extends JsonResource
         
         if($this->hasRole('provider')){
             $data['provider_id'] = $this->provider->id;
+            $data['has_active_sub']= $this->provider->hasActiveSubscription();
         }else{
             $data['provider_id'] = null;
+            $data['has_active_sub'] = null;
         }
 
         return $data;
