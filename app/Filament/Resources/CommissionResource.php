@@ -63,19 +63,9 @@ class CommissionResource extends Resource
                         $user = $record->user;
                         if (!$user) return __('Unknown');
                         
-                        // If user has provider role, show provider data
-                        if ($user->hasRole('provider') && $user->provider) {
-                            return $user->provider->store_name ? 
-                                (is_array($user->provider->store_name) ? 
-                                    ($user->provider->store_name['ar'] ?? $user->provider->store_name['en'] ?? '') : 
-                                    $user->provider->store_name) : 
-                                $user->first_name . ' ' . $user->last_name;
-                        }
-                        
-                        // Otherwise show user data
-                        return $user->first_name . ' ' . $user->last_name;
+                        // Use the name attribute from User model which handles provider/client logic
+                        return $user->name;
                     })
-                    ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('amount')
@@ -112,6 +102,38 @@ class CommissionResource extends Resource
                 
                 Tables\Filters\TernaryFilter::make('payed')
                     ->label(__('Paid')),
+
+                Tables\Filters\Filter::make('search')
+                    ->form([
+                        \Filament\Forms\Components\TextInput::make('query')
+                            ->label(__('Search'))
+                            ->placeholder(__('Search by name, email, or phone...'))
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['query'],
+                            fn (Builder $query, $search): Builder => $query->whereHas('user', function ($userQuery) use ($search) {
+                                $userQuery->where(function ($q) use ($search) {
+                                    // Search in basic user fields
+                                    $q->where('first_name', 'like', "%{$search}%")
+                                      ->orWhere('last_name', 'like', "%{$search}%")
+                                      ->orWhere('email', 'like', "%{$search}%")
+                                      ->orWhere('phone', 'like', "%{$search}%")
+                                      // Search in provider store names
+                                      ->orWhereHas('provider', function ($providerQuery) use ($search) {
+                                          $providerQuery->where('store_name->ar', 'like', "%{$search}%")
+                                                      ->orWhere('store_name->en', 'like', "%{$search}%");
+                                      });
+                                });
+                            })
+                        );
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if (! $data['query']) {
+                            return null;
+                        }
+                        return __('Search') . ': ' . $data['query'];
+                    }),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -166,17 +188,8 @@ class CommissionResource extends Resource
                                 $user = $record->user;
                                 if (!$user) return __('Unknown');
                                 
-                                // If user has provider role, show provider data
-                                if ($user->hasRole('provider') && $user->provider) {
-                                    return $user->provider->store_name ? 
-                                        (is_array($user->provider->store_name) ? 
-                                            ($user->provider->store_name['ar'] ?? $user->provider->store_name['en'] ?? '') : 
-                                            $user->provider->store_name) : 
-                                        $user->first_name . ' ' . $user->last_name;
-                                }
-                                
-                                // Otherwise show user data
-                                return $user->first_name . ' ' . $user->last_name;
+                                // Use the name attribute from User model
+                                return $user->name;
                             }),
                         
                         Infolists\Components\TextEntry::make('user.email')
