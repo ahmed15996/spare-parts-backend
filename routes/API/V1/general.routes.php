@@ -5,6 +5,7 @@ use App\Http\Controllers\API\V1\ContactController;
 use App\Http\Controllers\API\V1\GeneralController;
 use App\Http\Controllers\API\V1\PostController;
 use App\Http\Controllers\API\V1\CommentController;
+use App\Http\Controllers\API\V1\CommissionController;
 use App\Http\Controllers\API\V1\LikeController;
 use App\Http\Controllers\DeleteAccountReasonController;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,9 @@ use Illuminate\Support\Facades\Route;
     });
     Route::group(['as'=>'contacts.','prefix'=>'contacts'], function () {
         Route::post('/', [ContactController::class, 'store'])->name('store');
+    });
+    Route::group(['as'=>'commissions.','prefix'=>'commissions', 'middleware' => 'auth:sanctum'], function () {
+        Route::post('/{id}/mark-as-paid', [CommissionController::class, 'markAsPaid'])->name('mark-as-paid');
     });
 
     //# Posts endpoints (authenticated users)

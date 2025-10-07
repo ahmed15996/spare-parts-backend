@@ -106,4 +106,19 @@ class CommissionController extends Controller
             ProductResource::collection($products),
         __('Products fetched successfully'));
     }
+
+    public function markAsPaid(Request $request, $id){
+        $commission = Commission::find($id);
+        if(!$commission){
+            return $this->errorResponse(__('Commission not found'),404);
+        }
+        if($commission->user_id !== Auth::user()->id){
+            return $this->errorResponse(__('Unauthorized'),403);
+        }
+        if($commission->payed){
+            return $this->errorResponse(__('Commission already paid'),400);
+        }
+        $commission->update(['payed' => true]);
+        return $this->successResponse([],__('Commission marked as paid'),200);
+    }
 }
