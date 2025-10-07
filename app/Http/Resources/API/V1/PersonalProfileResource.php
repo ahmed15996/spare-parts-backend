@@ -15,7 +15,7 @@ class PersonalProfileResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $data =  [
             'id' => $this->id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
@@ -28,5 +28,13 @@ class PersonalProfileResource extends JsonResource
             'city_id' => $this->city->id,
             'role' => $this->roles->last()->name,
         ];
+        
+        if($this->hasRole('provider')){
+            $data['provider_id'] = $this->provider->id;
+        }else{
+            $data['provider_id'] = null;
+        }
+
+        return $data;
     }
 }
