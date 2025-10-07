@@ -21,6 +21,8 @@ class Package extends Model
         'name' => 'array',
         'description' => 'array',
         'banner_type' => BannerType::class,
+        'price' => 'decimal:2',
+        'discount' => 'integer',
     ];
 
     public static function boot()
@@ -35,15 +37,22 @@ class Package extends Model
         });
     }
 
-    public function getFinalPriceAttribute()
+    public function getFinalPriceAttribute(): float
     {
-        $finalPrice = $this->price;
+        $finalPrice = (float) $this->price;
+        
+        // Apply package-specific discount
         if($this->discount && $this->discount > 0){
-            $finalPrice = $this->price - $this->discount;
+            $finalPrice = $finalPrice - (float) $this->discount;
         }
-        if(setting('general', 'packages_discount') && setting('general', 'packages_discount') > 0){
-            $finalPrice = $finalPrice - ( $this->price * setting('general', 'packages_discount') / 100);
+        
+        // Apply global packages discount percentage
+        $globalDiscount = setting('general', 'packages_discount');
+        if($globalDiscount && $globalDiscount > 0){
+            $finalPrice = $finalPrice - ($finalPrice * (float) $globalDiscount / 100);
         }
-        return $finalPrice;
+        
+        // Ensure price never goes below 0
+        return max(0, round($finalPrice, 2));
     }
 }
