@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Exceptions\BusinessLogicException;
 use App\Http\Resources\API\V1\BannerResource;
 use App\Http\Resources\API\V1\ProviderResource;
 use Illuminate\Http\Request;
@@ -272,11 +273,14 @@ class ProviderController extends Controller
             $this->providerService->subscribeToPackage($provider, $package);
         return $this->successResponse([], __('Subscribed to package successfully'));
         }
+        catch(BusinessLogicException $e){
+            return $this->badRequest($e->getMessage());
+        }
         catch(\Illuminate\Validation\ValidationException $e){
             return $this->errorResponse($e->getMessage(), 422);
         }
         catch(\Exception $e){
-            Log::debug($e->getMessage());
+            Log::debug($e->getTraceAsString());
             return $this->errorResponse($e->getMessage(), 500);
         }
     }

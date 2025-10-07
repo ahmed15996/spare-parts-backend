@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\BusinessLogicException;
 use App\Models\Package;
 use App\Models\Provider;
 use App\Models\Subscription;
@@ -222,7 +223,7 @@ class ProviderService extends BaseService
     public function SubscribeToPackage(Provider $provider, Package $package)
     {
         if($provider->subscriptions()->where('is_active', true)->exists()){
-            throw new \Exception(__('Provider already has an active subscription'));
+            throw new BusinessLogicException(__('Provider already has an active subscription'));
         }
         // if price has discount, calculate the price
         $finalPrice = $package->final_price;

@@ -20,9 +20,9 @@ class PackageResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'price' => $this->price,
+            'price' => $this->finalPrice,
             'banner_type' => $this->banner_type->label(),
-            'discount' => $this->discount? $this->discount :setting('general', 'packages_discount')??0,
+            'discount' => setting('general', 'packages_discount')??0,
         ];
     }
 }
