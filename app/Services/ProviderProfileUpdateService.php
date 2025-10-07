@@ -49,19 +49,16 @@ class ProviderProfileUpdateService extends BaseService
         ];
         
         // Only add fields that are provided
-        $fieldsToCheck = ['description', 'city_id', 'category_id', 'commercial_number', 'location', 'brands'];
+        $fieldsToCheck = ['description', 'city_id', 'category_id', 'commercial_number', 'location', 'brands', 'lat', 'long', 'address'];
         foreach ($fieldsToCheck as $field) {
             if (isset($data[$field]) && $data[$field] !== null) {
                 $updateData[$field] = $data[$field];
             }
         }
         
-        // Process store_name translations if provided
+        // Process store_name if provided
         if (isset($data['store_name']) && !empty($data['store_name'])) {
-            $updateData['store_name'] = [
-                'ar' => $data['store_name']['ar'],
-                'en' => $data['store_name']['en'] ?? null,
-            ];
+            $updateData['store_name'] = $data['store_name'];
         }
 
                     // Create the update request
@@ -108,6 +105,7 @@ class ProviderProfileUpdateService extends BaseService
             $providerUpdateData = [];
             
             if ($updateRequest->store_name !== null) {
+                // Convert simple string to translatable format for Provider model
                 $providerUpdateData['store_name'] = $updateRequest->store_name;
             }
             if ($updateRequest->description !== null) {
@@ -131,11 +129,27 @@ class ProviderProfileUpdateService extends BaseService
                 $provider->update($providerUpdateData);
             }
 
+            // Handle lat, long, address changes - update in users table
+            $userUpdateData = [];
+            if ($updateRequest->lat !== null) {
+                $userUpdateData['lat'] = $updateRequest->lat;
+            }
+            if ($updateRequest->long !== null) {
+                $userUpdateData['long'] = $updateRequest->long;
+            }
+            if ($updateRequest->address !== null) {
+                $userUpdateData['address'] = $updateRequest->address;
+            }
+
+            // Update user data if there are location changes
+            if (!empty($userUpdateData)) {
+                $provider->user->update($userUpdateData);
+            }
+
             // Update brands relationship if provided
             if ($updateRequest->brands !== null) {
-                $brands = is_array($updateRequest->brands) 
-                    ? $updateRequest->brands 
-                    : json_decode($updateRequest->brands, true);
+                // The brands attribute is automatically converted to array by the model accessor
+                $brands = is_array($updateRequest->brands) ? $updateRequest->brands : [];
                 $provider->brands()->sync($brands);
             }
 

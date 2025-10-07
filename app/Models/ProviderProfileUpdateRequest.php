@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\Translatable\HasTranslations;
 
 class ProviderProfileUpdateRequest extends Model implements HasMedia
 {
-    use InteractsWithMedia, HasTranslations;
+    use InteractsWithMedia;
 
     protected $fillable = [
         'provider_id',
@@ -17,6 +16,9 @@ class ProviderProfileUpdateRequest extends Model implements HasMedia
         'description',
         'city_id',
         'commercial_number',
+        'lat',
+        'long',
+        'address',
         'location',
         'status',
         'brands',
@@ -25,8 +27,6 @@ class ProviderProfileUpdateRequest extends Model implements HasMedia
         'processed_by',
         'admin_notes'
     ];
-
-    public $translatable = ['store_name'];
 
     protected $casts = [
         'store_name' => 'array',

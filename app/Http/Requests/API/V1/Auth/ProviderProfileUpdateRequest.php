@@ -35,6 +35,9 @@ class ProviderProfileUpdateRequest extends FormRequest
             'brands.*' => 'required_with:brands|integer|exists:brands,id',
             'commercial_number_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'lat' => 'nullable|numeric|min:-90|max:90',
+            'long' => 'nullable|numeric|min:-180|max:180',
+            'address' => 'nullable|string|max:255',
         ];
     }
 

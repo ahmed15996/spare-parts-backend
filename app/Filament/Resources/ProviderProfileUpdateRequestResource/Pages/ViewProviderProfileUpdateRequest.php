@@ -59,7 +59,7 @@ class ViewProviderProfileUpdateRequest extends ViewRecord
 
     public function infolist(Infolist $infolist): Infolist
     {
-        $provider = $this->record->provider;
+        $provider = $this->record->provider->load('user');
         
         return $infolist
             ->schema([
@@ -139,47 +139,40 @@ class ViewProviderProfileUpdateRequest extends ViewRecord
                                         $ar = $provider->getTranslation('store_name', 'ar');
                                         $en = $provider->getTranslation('store_name', 'en');
                                         
-                                        $text = '';
+                                        $parts = [];
                                         if ($ar) {
-                                            $text .= "AR: " . $ar . "\n";
+                                            $parts[] = "AR " . $ar;
                                         }
                                         if ($en) {
-                                            $text .= "EN: " . $en;
+                                            $parts[] = "EN " . $en;
                                         }
                                         
-                                        return $text ? nl2br(trim($text)) : '-';
+                                        return !empty($parts) ? implode('<br>', $parts) : '-';
                                     })
                                     ->html(),
                                     
-                                Infolists\Components\TextEntry::make('requested_store_name')
+                                Infolists\Components\TextEntry::make('store_name')
                                     ->label(__('Requested Store Name'))
                                     ->formatStateUsing(function () {
-                                        $storeNameData = $this->record->store_name;
-                                        if (!$storeNameData) return __('No change requested');
+                                        $ar = $this->record['store_name']['ar'];
+                                        $en = $this->record['store_name']['en'];
                                         
-                                        // If it's a string, decode it
-                                        if (is_string($storeNameData)) {
-                                            $storeNameData = json_decode($storeNameData, true);
+                                        $parts = [];
+                                        if ($ar) {
+                                            $parts[] = "AR " . $ar;
+                                        }
+                                        if ($en) {
+                                            $parts[] = "EN " . $en;
                                         }
                                         
-                                        if (!is_array($storeNameData)) return __('No change requested');
-                                        
-                                        $text = '';
-                                        if (isset($storeNameData['ar']) && $storeNameData['ar']) {
-                                            $text .= "AR: " . $storeNameData['ar'] . "\n";
-                                        }
-                                        if (isset($storeNameData['en']) && $storeNameData['en']) {
-                                            $text .= "EN: " . $storeNameData['en'];
-                                        }
-                                        
-                                        return $text ? nl2br(trim($text)) : __('No change requested');
+                                        return !empty($parts) ? implode('<br>', $parts) : __('No change requested');
                                     })
                                     ->html()
                                     ->color(fn () => 
                                         $this->record->store_name && $this->isFieldChanged('store_name') ? 'warning' : null
                                     ),
-                            ])
-                            ->visible(fn () => $this->record->store_name !== null),
+                                ]),
+                            // ->visible(fn () => $this->record->getRawOriginal('store_name') !== null),
                             
                         // Description Comparison
                         Infolists\Components\Grid::make(2)
@@ -267,6 +260,39 @@ class ViewProviderProfileUpdateRequest extends ViewRecord
                             ])
                             ->visible(fn () => $this->record->location !== null && $this->isFieldChanged('location')),
                             
+                        // Address Comparison
+                        Infolists\Components\Grid::make(2)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('provider.user.address')
+                                    ->label(__('Current address'))
+                                    ->formatStateUsing(function ($state) use ($provider) {
+                                        // Try multiple ways to get the address
+                                        $address = $state ?? $provider->user?->address ?? null;
+                                        
+                                        if ($address) {
+                                            return "Address: {$address}";
+                                        }
+                                       
+                                        return __('No address set');
+                                    }),
+                                    
+                                Infolists\Components\TextEntry::make('address')
+                                    ->label(__('Requested address'))
+                                    ->formatStateUsing(function () {
+                                        $address = $this->record->address;
+                                        
+                                        if ($address) {
+                                                return "Address: {$address}";
+                                        }
+                                       
+                                        return __('No change requested');
+                                    })
+                                    ->color(fn () => 
+                                        ($this->record->address) && 
+                                        ($this->isFieldChanged('address')) ? 'warning' : null
+                                    ),
+                            ])
+                            ->visible(fn () => $this->record->address !== null || $provider->user?->address !== null),
                         // Brands Comparison
                         Infolists\Components\Grid::make(2)
                             ->schema([
@@ -397,18 +423,31 @@ class ViewProviderProfileUpdateRequest extends ViewRecord
 
     protected function isFieldChanged(string $field): bool
     {
-        $provider = $this->record->provider;
+        $provider = $this->record->provider->load('user');
         
         return match($field) {
-            'store_name' => json_encode($provider->store_name) !== json_encode($this->record->store_name),
+            'store_name' => $this->checkStoreNameChanged($provider),
             'description' => $provider->description !== $this->record->description,
             'category_id' => $provider->category_id !== $this->record->category_id,
             'city_id' => $provider->city_id !== $this->record->city_id,
             'commercial_number' => $provider->commercial_number !== $this->record->commercial_number,
             'location' => $provider->location !== $this->record->location,
+            'address' => $provider->user->address !== $this->record->address,
+            'lat' => $provider->user->lat !== $this->record->lat,
+            'long' => $provider->user->long !== $this->record->long,
             'brands' => !$this->areBrandsEqual($provider),
             default => false
         };
+    }
+
+    protected function checkStoreNameChanged($provider): bool
+    {
+        // Provider store_name is translatable (array), request store_name is simple string
+        $currentStoreNameAr = $provider->getTranslation('store_name', 'ar');
+        $requestedStoreName = $this->record->store_name;
+        
+        // Compare the Arabic version with the requested store name
+        return $currentStoreNameAr !== $requestedStoreName;
     }
 
     protected function areBrandsEqual($provider): bool
@@ -430,6 +469,9 @@ class ViewProviderProfileUpdateRequest extends ViewRecord
                ($this->record->city_id !== null && $this->isFieldChanged('city_id')) ||
                ($this->record->commercial_number !== null && $this->isFieldChanged('commercial_number')) ||
                ($this->record->location !== null && $this->isFieldChanged('location')) ||
+               ($this->record->address !== null && $this->isFieldChanged('address')) ||
+               ($this->record->lat !== null && $this->isFieldChanged('lat')) ||
+               ($this->record->long !== null && $this->isFieldChanged('long')) ||
                ($this->record->brands !== null && $this->isFieldChanged('brands')) ||
                $this->record->getFirstMediaUrl('logo') !== '' ||
                $this->record->getFirstMediaUrl('commercial_number_image') !== '';
