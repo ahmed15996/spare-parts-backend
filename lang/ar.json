@@ -1117,6 +1117,7 @@
     "Subscribed to package successfully":"تم الاشتراك في الباقة بنجاح",
     "Failed to subscribe to package":"فشل في الاشتراك في الباقة",
     "Provider already has an active subscription":"المزود لديه باقة نشطة بالفعل",
+    "You cannot send message to this user. User may be blocked.":"لا يمكنك إرسال رسالة إلى هذا المستخدم. قد تكون محظوراً.",
     "Title is required in all languages":"العنوان مطلوب بجميع اللغات",
     "Description is required in all languages":"الوصف مطلوب بجميع اللغات",
     "Title is required in English":"العنوان مطلوب بالإنجليزية",

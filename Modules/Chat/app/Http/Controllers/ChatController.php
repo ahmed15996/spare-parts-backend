@@ -94,8 +94,8 @@ class ChatController extends Controller
                 $conversation = $this->conversationService->startConversation($receiver_id);
                 if (!$conversation) {
                     return $this->errorResponse(
-                        __('Cannot start conversation. User may be blocked or unavailable.'),
-                        403
+                        __('You cannot send message to this user. User may be blocked.'),
+                        400
                     );
                 }
                 $data['conversation_id'] = $conversation->id;
