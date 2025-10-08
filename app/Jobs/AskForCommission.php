@@ -26,13 +26,21 @@ class AskForCommission implements ShouldQueue
      */
     public function handle(): void
     {
+
+        $this->sendCommissionForProviders();
+        $this->sendCommissionForClients();
+
+        
+    }
+
+    public function sendCommissionForProviders(){
         Log::info('Sending commission notification...');
         try{
             //1) get all provider users 
-         $users = User::whereHas('roles', function($query){
+         $providers  = User::whereHas('roles', function($query){
             $query->where('name', 'provider');
          })->get();
-         Log::info('Users found: ' . $users->count());
+         Log::info('Providers found: ' . $providers->count());
         //2) create db notification for them to ask them about commission 
          $data = [
             'title'=>[
@@ -49,8 +57,8 @@ class AskForCommission implements ShouldQueue
             ];
 
         Log::info('Creating notification...');
-        foreach($users as $user){
-            $user->customNotifications()->create($data);
+        foreach($providers as $provider){
+            $provider->customNotifications()->create($data);
         }
         Log::info('Notification created successfully');
         }catch(\Exception $e){
@@ -58,5 +66,41 @@ class AskForCommission implements ShouldQueue
         }
 
         Log::info('Commission notification sent successfully');
+
+    }
+    public function sendCommissionForClients(){
+        Log::info('Sending commission notification...');
+        try{
+            //1) get all provider users 
+         $clients  = User::whereHas('roles', function($query){
+            $query->where('name', 'client');
+         })->get();
+         Log::info('Clients found: ' . $clients->count());
+        //2) create db notification for them to ask them about commission 
+         $data = [
+            'title'=>[
+                'ar'=>'هل تم بالشراء من خلال التطبيق؟',
+                'en'=>'Did you buy through the app?'
+            ],
+            'body'=>[
+                'ar'=>'نريد أن نعرف ما إذا كنت قد شريت من خلال التطبيق أم لا. يرجى الإجابة على السؤال التالي:',
+                'en'=>'We want to know if you buy through the app or not. Please answer the following question:',
+            ],
+            'metadata'=>[
+                'type'=>'ask_for_commission_client',
+            ]
+            ];
+
+        Log::info('Creating notification...');
+        foreach($clients as $client){
+            $client->customNotifications()->create($data);
+        }
+        Log::info('Notification created successfully');
+        }catch(\Exception $e){
+            Log::error('Error sending commission notification: ' . $e->getMessage());
+        }
+
+        Log::info('Commission notification sent successfully');
+
     }
 }
