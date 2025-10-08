@@ -20,7 +20,7 @@ class NotificationResource extends JsonResource
             'body' => $this->body,
             'metadata' => $this->metadata ==[] ?null : $this->metadata  ,
             'is_read' => $this->is_read,
-            'created_at' => $this->created_at->format('d/m/Y'),
+            'created_at' => $this->created_at->format('H:i A'),
         ];
     }
 }
