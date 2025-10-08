@@ -104,9 +104,10 @@ class ChatController extends Controller
             if(!isset($data['receiver_id'])){
                 unset($data['receiver_id']);
             }
-            $this->messageService->createWithBusinessLogic($data);
-            return $this->ok(
-                [],
+          $message=  $this->messageService->createWithBusinessLogic($data);
+            return $this->successResponse(
+                MessageResource::make($message),
+                
                 __('Message sent successfully')
             );
         }catch(\Exception $e){

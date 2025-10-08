@@ -52,6 +52,7 @@ class MessageService extends BaseService
         }
 
         $this->afterCreate($message);
+        $message->load('sender');
         return $message;
     }
 
