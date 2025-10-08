@@ -18,7 +18,8 @@ class SendMessageRequest extends FormRequest
             'conversation_id' => 'nullable|integer|exists:conversations,id',
             'type' => 'required|integer|in:'.implode(',', MessageType::values()),
             'content' => 'required_if:type,'.MessageType::Text->value,
-            'file' => 'required_if:type,'.MessageType::File->value.'|file|mimes:jpeg,png,jpg,pdf,doc,docx,xls,xlsx,ppt,pptx|max:2048',
+            'files' => 'required_if:type,'.MessageType::File->value.'|array|max:5',
+            'files.*' => 'file|mimes:jpeg,png,jpg,pdf,doc,docx,xls,xlsx,ppt,pptx|max:10240',
             'offer_id' => 'required_if:type,'.MessageType::Offer->value.'|integer|exists:offers,id',
         ];
     }
