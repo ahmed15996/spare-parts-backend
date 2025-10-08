@@ -63,10 +63,10 @@ class ConversationService extends BaseService
     {
         $current_user_id = Auth::id();
         
-        // Check if either user has blocked the other
-        if (\App\Models\Block::isBlocked($current_user_id, $receiver_id) || \App\Models\Block::isBlocked($receiver_id, $current_user_id)) {
-            return null; // Don't start conversation if either user is blocked
-        }
+        // // Check if either user has blocked the other
+        // if (\App\Models\Block::isBlocked($current_user_id, $receiver_id) || \App\Models\Block::isBlocked($receiver_id, $current_user_id)) {
+        //     return null; // Don't start conversation if either user is blocked
+        // }
 
         $conversation = Conversation::getOrCreate($current_user_id, $receiver_id);
         $this->afterCreate($conversation);
