@@ -55,7 +55,7 @@ class ContactResource extends Resource
                 Tables\Columns\TextColumn::make('type')
                     ->label(__('Type'))
                     ->sortable()
-                    ->icon(fn($record) => $record->type == 0 ? 'heroicon-o-user' : 'heroicon-o-store')
+                    ->icon(fn($record) => $record->type == 0 ? 'heroicon-o-user' : 'heroicon-o-flag')
                     ->color(fn($record) => $record->type == 0 ? 'success' : 'danger')
                     ->formatStateUsing(fn($state) => $state == 0 ? __('Suggestion') : __('Report')),
                 Tables\Columns\TextColumn::make('created_at')

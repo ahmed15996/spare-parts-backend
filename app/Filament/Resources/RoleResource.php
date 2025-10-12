@@ -18,6 +18,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Unique;
+use Illuminate\Database\Eloquent\Builder;
 
 class RoleResource extends Resource implements HasShieldPermissions
 {
@@ -193,6 +194,10 @@ class RoleResource extends Resource implements HasShieldPermissions
     {
         return 200;
     }
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->whereNotIn('name',['client','provider']);
+    }
 
     public static function getSubNavigationPosition(): SubNavigationPosition
     {
@@ -220,4 +225,5 @@ class RoleResource extends Resource implements HasShieldPermissions
     {
         return Utils::isResourceGloballySearchable() && count(static::getGloballySearchableAttributes()) && static::canViewAny();
     }
+
 }
