@@ -58,7 +58,24 @@ class CommissionController extends Controller
                 return $this->errorResponse(__('No valid products provided'), 422);
             }
 
-            $prices = Product::whereIn('id', array_keys($byProduct))->pluck('price', 'id');
+            // Get products with their current stock and prices
+            $products = Product::whereIn('id', array_keys($byProduct))->get(['id', 'price', 'stock']);
+            $prices = $products->pluck('price', 'id');
+            $stocks = $products->pluck('stock', 'id');
+
+            // Check if sufficient stock is available for all products
+            foreach ($byProduct as $pid => $pcs) {
+                $currentStock = (int) ($stocks[$pid] ?? 0);
+                if ($currentStock < $pcs) {
+                    $product = $products->firstWhere('id', $pid);
+                    $productName = $product ? "Product ID: {$pid}" : "Product ID: {$pid}";
+                    return $this->errorResponse(__('Insufficient stock for :product. Available: :available, Requested: :requested', [
+                        'product' => $productName,
+                        'available' => $currentStock,
+                        'requested' => $pcs
+                    ]), 422);
+                }
+            }
             $perProductValue = [];
             foreach ($byProduct as $pid => $pcs) {
                 $price = (float) ($prices[$pid] ?? 0);
@@ -86,6 +103,11 @@ class CommissionController extends Controller
                     'pieces' => $pcs,
                     'value' => $productCommission,
                 ]);
+            }
+
+            // Decrease stock for each product
+            foreach ($byProduct as $pid => $pcs) {
+                Product::where('id', $pid)->decrement('stock', $pcs);
             }
 
             return $this->successResponse(CommissionResource::make($commission), __('The commission due has been calculated and is :value and please pay it',[ 'value' => $commission->value ]));
