@@ -1458,5 +1458,14 @@
     "Delete Brands and Associated Models?": "حذف الماركات والموديلات المرتبطة؟",
     "The selected brands have :models_count model(s) with :cars_count car(s) in total. Do you want to delete the brands along with all models and cars?": "الماركات المحددة تحتوي على :models_count موديل (موديلات) مع :cars_count سيارة (سيارات) إجمالاً. هل تريد حذف الماركات مع جميع الموديلات والسيارات؟",
     "The selected brands have :count model(s) in total. Do you want to delete the brands along with all models?": "الماركات المحددة تحتوي على :count موديل (موديلات) إجمالاً. هل تريد حذف الماركات مع جميع الموديلات؟",
-    "Are you sure you want to delete the selected brands?": "هل أنت متأكد من حذف الماركات المحددة؟"
+    "Are you sure you want to delete the selected brands?": "هل أنت متأكد من حذف الماركات المحددة؟",
+    "Delete Day and Remove Provider Associations?": "حذف اليوم وإزالة ارتباطات المزودين؟",
+    "Delete Day?": "حذف اليوم؟",
+    "This day is associated with :count provider(s). Do you want to delete the day and remove these associations?": "هذا اليوم مرتبط بـ :count مزود (مزودين). هل تريد حذف اليوم وإزالة هذه الارتباطات؟",
+    "Are you sure you want to delete this day?": "هل أنت متأكد من حذف هذا اليوم؟",
+    "Provider Associations Removed": "تم إزالة ارتباطات المزودين",
+    ":count provider association(s) have been removed.": "تم إزالة :count ارتباط (ارتباطات) مزود.",
+    "Delete Days and Remove Provider Associations?": "حذف الأيام وإزالة ارتباطات المزودين؟",
+    "The selected days are associated with :count provider(s) in total. Do you want to delete the days and remove these associations?": "الأيام المحددة مرتبطة بـ :count مزود (مزودين) إجمالاً. هل تريد حذف الأيام وإزالة هذه الارتباطات؟",
+    "Are you sure you want to delete the selected days?": "هل أنت متأكد من حذف الأيام المحددة؟"
 }  

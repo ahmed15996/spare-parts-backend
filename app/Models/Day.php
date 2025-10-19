@@ -15,7 +15,7 @@ class Day extends Model
 
     public function providers()
     {
-        return $this->belongsToMany('App\Models\Provider');
+        return $this->belongsToMany('App\Models\Provider')->withTimestamps()->withPivot('from', 'to', 'is_closed');
     }
 
 }

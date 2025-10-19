@@ -82,11 +82,65 @@ class DayResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\DeleteAction::make()
+                //     ->requiresConfirmation()
+                //     ->modalHeading(fn (Day $record) => $record->providers()->count() > 0 
+                //         ? __('Delete Day and Remove Provider Associations?')
+                //         : __('Delete Day?'))
+                //     ->modalDescription(fn (Day $record) => $record->providers()->count() > 0 
+                //         ? __('This day is associated with :count provider(s). Do you want to delete the day and remove these associations?', ['count' => $record->providers()->count()])
+                //         : __('Are you sure you want to delete this day?'))
+                //     ->modalSubmitActionLabel(__('Yes, Delete'))
+                //     ->before(function (Day $record) {
+                //         // Detach all associated providers (remove pivot table records)
+                //         if ($record->providers()->count() > 0) {
+                //             $providersCount = $record->providers()->count();
+                //             $record->providers()->detach();
+                            
+                //             \Filament\Notifications\Notification::make()
+                //                 ->title(__('Provider Associations Removed'))
+                //                 ->body(__(':count provider association(s) have been removed.', ['count' => $providersCount]))
+                //                 ->warning()
+                //                 ->send();
+                //         }
+                //     }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->requiresConfirmation()
+                        ->modalHeading(__('Delete Days and Remove Provider Associations?'))
+                        ->modalDescription(function ($records) {
+                            $totalProviders = 0;
+                            foreach ($records as $record) {
+                                $totalProviders += $record->providers()->count();
+                            }
+                            
+                            if ($totalProviders > 0) {
+                                return __('The selected days are associated with :count provider(s) in total. Do you want to delete the days and remove these associations?', ['count' => $totalProviders]);
+                            }
+                            
+                            return __('Are you sure you want to delete the selected days?');
+                        })
+                        ->modalSubmitActionLabel(__('Yes, Delete All'))
+                        ->before(function ($records) {
+                            // Detach all associated providers for each day
+                            $totalProvidersDetached = 0;
+                            foreach ($records as $record) {
+                                if ($record->providers()->count() > 0) {
+                                    $totalProvidersDetached += $record->providers()->count();
+                                    $record->providers()->detach();
+                                }
+                            }
+                            
+                            if ($totalProvidersDetached > 0) {
+                                \Filament\Notifications\Notification::make()
+                                    ->title(__('Provider Associations Removed'))
+                                    ->body(__(':count provider association(s) have been removed.', ['count' => $totalProvidersDetached]))
+                                    ->warning()
+                                    ->send();
+                            }
+                        }),
                 ]),
             ])
             ->defaultSort('id', 'asc');
