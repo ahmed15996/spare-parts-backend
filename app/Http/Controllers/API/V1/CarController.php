@@ -65,6 +65,10 @@ class CarController extends Controller
         $carData = $request->validated();
         $carData['user_id'] = $user->id;
         
+        // max cars per user is 5
+        if($user->cars()->count() >= 5){
+            return $this->errorResponse(__('You have reached the maximum number of cars'), 400);
+        }
         $car = $this->carService->createWithBusinessLogic($carData);
         
         return $this->successResponse(
