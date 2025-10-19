@@ -126,7 +126,7 @@ class CommissionController extends Controller
         $data = $request->all();
         $data['provider_id'] = Auth::user()->provider->id;
         $per_page = $request->query('per_page', 9);
-        $products = $this->productSearchService->search($data);
+        $products = $this->productSearchService->search($data ,$per_page);
         return $this->successResponse(
             ProductResource::collection($products),
         __('Products fetched successfully'));
