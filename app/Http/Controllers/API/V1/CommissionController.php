@@ -123,7 +123,9 @@ class CommissionController extends Controller
     }
 
     public function products(Request $request){
-        $products = $this->productSearchService->search($request->all());
+        $data = $request->all();
+        $data['provider_id'] = Auth::user()->provider->id;
+        $products = $this->productSearchService->search($data);
         return $this->successResponse(
             ProductResource::collection($products),
         __('Products fetched successfully'));

@@ -39,6 +39,11 @@ class ProductSearchService extends BaseSearchService
             }
         }
 
+        // Apply provider filter
+        if (!empty($filters['provider_id'])) {
+            $queryBuilder->where('provider_id', $filters['provider_id']);
+        }
+
         return $queryBuilder->paginate($perPage);
     }
 
