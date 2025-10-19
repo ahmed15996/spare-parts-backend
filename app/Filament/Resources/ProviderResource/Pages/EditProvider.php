@@ -13,6 +13,7 @@ class EditProvider extends EditRecord
     protected static string $resource = ProviderResource::class;
     
     protected array $userData = [];
+    protected array $brandsData = [];
 
     protected function getHeaderActions(): array
     {
@@ -47,6 +48,10 @@ class EditProvider extends EditRecord
             $data['store_name.en'] = $storeNameData['en'] ?? '';
         }
         
+        // Load brands data - Filament will handle this automatically via relationship
+        // but we ensure it's loaded
+        $data['brands'] = $this->record->brands->pluck('id')->toArray();
+        
         return $data;
     }
 
@@ -58,6 +63,10 @@ class EditProvider extends EditRecord
         
         // Store user data for later use
         $this->userData = $userData;
+        
+        // Extract brands data for later syncing
+        $this->brandsData = $data['brands'] ?? [];
+        unset($data['brands']);
         
         return $data;
     }
@@ -93,8 +102,11 @@ class EditProvider extends EditRecord
                 ]);
             }
             
+            // Sync brands with the provider
+            $record->brands()->sync($this->brandsData ?? []);
+            
             // Refresh the record to get updated relationships
-            return $record->fresh(['user', 'category', 'city']);
+            return $record->fresh(['user', 'category', 'city', 'brands']);
         });
     }
 }

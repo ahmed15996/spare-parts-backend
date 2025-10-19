@@ -123,6 +123,22 @@ class ProviderResource extends Resource
                             ->dehydrateStateUsing(function ($state) {
                                 return $state == 0 ? null : $state;
                             }),
+                        Forms\Components\Select::make('brands')
+                            ->label(__('Brands'))
+                            ->multiple()
+                            ->relationship('brands', 'name')
+                            ->options(function () {
+                                return Brand::all()->mapWithKeys(function ($brand) {
+                                    $name = is_array($brand->name) 
+                                        ? ($brand->name[app()->getLocale()] ?? $brand->name['ar'] ?? $brand->name['en'] ?? '')
+                                        : $brand->name;
+                                    return [$brand->id => $name];
+                                });
+                            })
+                            ->searchable()
+                            ->preload()
+                            ->helperText(__('Select the brands this provider works with'))
+                            ->columnSpanFull(),
                         Forms\Components\Textarea::make('description')
                             ->label(__('Description'))
                             ->required()
@@ -432,6 +448,6 @@ class ProviderResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->with(['user', 'category', 'city']);
+        return parent::getEloquentQuery()->with(['user', 'category', 'city', 'brands']);
     }
 }

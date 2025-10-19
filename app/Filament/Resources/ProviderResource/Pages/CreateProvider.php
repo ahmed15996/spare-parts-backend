@@ -17,6 +17,7 @@ class CreateProvider extends CreateRecord
     protected static string $resource = ProviderResource::class;
     
     protected array $userData = [];
+    protected array $brandsData = [];
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
@@ -54,6 +55,10 @@ class CreateProvider extends CreateRecord
         
         // Store user data for later use
         $this->userData = $userData;
+        
+        // Extract brands data for later syncing
+        $this->brandsData = $data['brands'] ?? [];
+        unset($data['brands']);
         
         return $data;
     }
@@ -112,6 +117,11 @@ class CreateProvider extends CreateRecord
             
             // Create and return the provider record
             $provider = Provider::create($data);
+            
+            // Sync brands with the provider
+            if (!empty($this->brandsData)) {
+                $provider->brands()->sync($this->brandsData);
+            }
             
             // Send notification based on whether password was generated or set by admin
             if ($generatedPassword) {
