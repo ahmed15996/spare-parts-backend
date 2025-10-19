@@ -58,7 +58,7 @@ class PostResource extends Resource
                 Tables\Columns\ImageColumn::make('first_post_media_url')->label(__('Image'))->circular()->size(48),
                 Tables\Columns\TextColumn::make('author.name')->label(__('Author'))->searchable(),
                 Tables\Columns\TextColumn::make('comments_count')->label(__('Comments'))->sortable(),
-                Tables\Columns\IconColumn::make('likes_count')->label(__('Likes'))->state(fn ($record) => $record->likes()->where('value', 1)->count())->icon('heroicon-o-hand-thumb-up')->sortable(false),
+                Tables\Columns\TextColumn::make('likes_count')->label(__('Likes'))->getStateUsing(fn ($record) => $record->likes()->where('value', 1)->count())->sortable(false),
                 Tables\Columns\BadgeColumn::make('status')->label(__('Status'))
                     ->colors([
                         'warning' => function ($state) { $value = is_int($state) ? $state : (int) $state; if ($value === 0) $value = PostStatus::Pending->value; return $value === PostStatus::Pending->value; },
