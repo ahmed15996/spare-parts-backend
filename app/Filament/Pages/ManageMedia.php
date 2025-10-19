@@ -3,12 +3,14 @@
 namespace App\Filament\Pages;
 
 use App\Settings\MediaSettings;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
 
-    class ManageMedia extends SettingsPage
+class ManageMedia extends SettingsPage
 {
+    use HasPageShield;
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
 
     protected static string $settings = MediaSettings::class;
