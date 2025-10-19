@@ -40,6 +40,10 @@ class PackageResource extends Resource
     {
         return __('Packages');
     }
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Subscriptions & Packages');
+    }
 
     public static function form(Form $form): Form
     {

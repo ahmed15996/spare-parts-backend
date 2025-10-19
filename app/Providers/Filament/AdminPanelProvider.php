@@ -83,6 +83,9 @@ class AdminPanelProvider extends PanelProvider
                     ->label('Users')
                     ->collapsed(),
                 NavigationGroup::make()
+                    ->label('Subscriptions & Packages')
+                    ->collapsed(),
+                NavigationGroup::make()
                     ->label('Roles')
                     ->collapsed(),
                 NavigationGroup::make()
