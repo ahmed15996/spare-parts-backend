@@ -20,7 +20,6 @@ class ListBrandModels extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\LocaleSwitcher::make(),
             Actions\CreateAction::make()
                 ->label(__('Create') . ' ' . __('Brand Model')),
             Actions\LocaleSwitcher::make(),

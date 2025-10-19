@@ -309,5 +309,16 @@
     "Email": "Email",
     "Phone": "Phone",
     "open now": "open now",
-    "closed now": "closed now"
+    "closed now": "closed now",
+    "Delete Brand Model and Associated Cars?": "Delete Brand Model and Associated Cars?",
+    "Delete Brand Model?": "Delete Brand Model?",
+    "This brand model has :count associated car(s). Do you want to delete the brand model along with all associated cars?": "This brand model has :count associated car(s). Do you want to delete the brand model along with all associated cars?",
+    "Are you sure you want to delete this brand model?": "Are you sure you want to delete this brand model?",
+    "Yes, Delete": "Yes, Delete",
+    "Cars Deleted": "Cars Deleted",
+    ":count associated car(s) have been deleted.": ":count associated car(s) have been deleted.",
+    "Delete Brand Models and Associated Cars?": "Delete Brand Models and Associated Cars?",
+    "The selected brand models have :count associated car(s) in total. Do you want to delete the brand models along with all associated cars?": "The selected brand models have :count associated car(s) in total. Do you want to delete the brand models along with all associated cars?",
+    "Are you sure you want to delete the selected brand models?": "Are you sure you want to delete the selected brand models?",
+    "Yes, Delete All": "Yes, Delete All"
 }

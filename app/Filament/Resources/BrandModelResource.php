@@ -107,11 +107,65 @@ class BrandModelResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->modalHeading(fn (BrandModel $record) => $record->cars()->count() > 0 
+                        ? __('Delete Brand Model and Associated Cars?')
+                        : __('Delete Brand Model?'))
+                    ->modalDescription(fn (BrandModel $record) => $record->cars()->count() > 0 
+                        ? __('This brand model has :count associated car(s). Do you want to delete the brand model along with all associated cars?', ['count' => $record->cars()->count()])
+                        : __('Are you sure you want to delete this brand model?'))
+                    ->modalSubmitActionLabel(__('Yes, Delete'))
+                    ->before(function (BrandModel $record) {
+                        // Delete all associated cars if they exist
+                        if ($record->cars()->count() > 0) {
+                            $carsCount = $record->cars()->count();
+                            $record->cars()->delete();
+                            
+                            \Filament\Notifications\Notification::make()
+                                ->title(__('Cars Deleted'))
+                                ->body(__(':count associated car(s) have been deleted.', ['count' => $carsCount]))
+                                ->warning()
+                                ->send();
+                        }
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->requiresConfirmation()
+                        ->modalHeading(__('Delete Brand Models and Associated Cars?'))
+                        ->modalDescription(function ($records) {
+                            $totalCars = 0;
+                            foreach ($records as $record) {
+                                $totalCars += $record->cars()->count();
+                            }
+                            
+                            if ($totalCars > 0) {
+                                return __('The selected brand models have :count associated car(s) in total. Do you want to delete the brand models along with all associated cars?', ['count' => $totalCars]);
+                            }
+                            
+                            return __('Are you sure you want to delete the selected brand models?');
+                        })
+                        ->modalSubmitActionLabel(__('Yes, Delete All'))
+                        ->before(function ($records) {
+                            // Delete all associated cars for each brand model
+                            $totalCarsDeleted = 0;
+                            foreach ($records as $record) {
+                                if ($record->cars()->count() > 0) {
+                                    $totalCarsDeleted += $record->cars()->count();
+                                    $record->cars()->delete();
+                                }
+                            }
+                            
+                            if ($totalCarsDeleted > 0) {
+                                \Filament\Notifications\Notification::make()
+                                    ->title(__('Cars Deleted'))
+                                    ->body(__(':count associated car(s) have been deleted.', ['count' => $totalCarsDeleted]))
+                                    ->warning()
+                                    ->send();
+                            }
+                        }),
                 ]),
             ]);
     }
