@@ -103,10 +103,7 @@ class FaqResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->label(__('Title'))
                     ->searchable()
-                    ->sortable()
-                    ->getStateUsing(function (Faq $record): string {
-                        return $record->getTranslatedTitle();
-                    }),
+                    ->sortable(),
                 
                 Tables\Columns\IconColumn::make('active')
                     ->label(__('Active'))
