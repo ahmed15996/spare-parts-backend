@@ -61,7 +61,7 @@ class FaqResource extends Resource
                                 },
                             ]),
                         
-                        Forms\Components\RichEditor::make('description')
+                        Forms\Components\Textarea::make('description')
                             ->label(__('Description'))
                             ->required()
                             ->translateLabel()
@@ -76,14 +76,7 @@ class FaqResource extends Resource
                                     };
                                 },
                             ])
-                            ->toolbarButtons([
-                                'bold',
-                                'italic',
-                                'underline',
-                                'orderedList',
-                                'bulletList',
-                                'link',
-                            ]),
+                            ->rows(4),
                     ])
                     ->columns(1),
                 
@@ -93,11 +86,11 @@ class FaqResource extends Resource
                             ->label(__('Active'))
                             ->default(true),
                         
-                        Forms\Components\TextInput::make('sort_order')
-                            ->label(__('Sort Order'))
-                            ->numeric()
-                            ->default(0)
-                            ->helperText(__('Lower numbers appear first')),
+                        // Forms\Components\TextInput::make('sort_order')
+                        //     ->label(__('Sort Order'))
+                        //     ->numeric()
+                        //     ->default(0)
+                        //     ->helperText(__('Lower numbers appear first')),
                     ])
                     ->columns(2),
             ]);
