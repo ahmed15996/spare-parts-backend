@@ -13,7 +13,6 @@ class EditProvider extends EditRecord
     protected static string $resource = ProviderResource::class;
     
     protected array $userData = [];
-    protected array $brandsData = [];
 
     protected function getHeaderActions(): array
     {
@@ -48,9 +47,7 @@ class EditProvider extends EditRecord
             $data['store_name.en'] = $storeNameData['en'] ?? '';
         }
         
-        // Load brands data - Filament will handle this automatically via relationship
-        // but we ensure it's loaded
-        $data['brands'] = $this->record->brands->pluck('id')->toArray();
+        // Brands will be loaded automatically by Filament via the relationship field
         
         return $data;
     }
@@ -61,52 +58,40 @@ class EditProvider extends EditRecord
         $userData = $data['user'] ?? [];
         unset($data['user']);
         
-        // Store user data for later use
+        // Store user data for later use in afterSave
         $this->userData = $userData;
         
-        // Extract brands data for later syncing
-        $this->brandsData = $data['brands'] ?? [];
-        unset($data['brands']);
+        // Handle store_name translation data properly
+        if (isset($data['store_name.ar']) || isset($data['store_name.en'])) {
+            $data['store_name'] = [
+                'ar' => $data['store_name.ar'] ?? '',
+                'en' => $data['store_name.en'] ?? '',
+            ];
+            unset($data['store_name.ar'], $data['store_name.en']);
+        }
+        
+        // Don't touch brands - let Filament handle the relationship automatically
         
         return $data;
     }
 
-    protected function handleRecordUpdate(Model $record, array $data): Model
+    protected function afterSave(): void
     {
-        return DB::transaction(function () use ($record, $data) {
-            // Handle store_name translation data properly
-            if (isset($data['store_name.ar']) || isset($data['store_name.en'])) {
-                $data['store_name'] = [
-                    'ar' => $data['store_name.ar'] ?? '',
-                    'en' => $data['store_name.en'] ?? '',
-                ];
-                unset($data['store_name.ar'], $data['store_name.en']);
-            }
-            
-            // Update the provider record first
-            $record->update($data);
-            
-            // Update the user record with the form data
-            $userData = $this->userData ?? [];
-            
-            if ($record->user && !empty($userData)) {
-                $record->user->update([
-                    'first_name' => $userData['first_name'] ?? $record->user->first_name,
-                    'last_name' => $userData['last_name'] ?? $record->user->last_name,
-                    'email' => $userData['email'] ?? $record->user->email,
-                    'phone' => $userData['phone'] ?? $record->user->phone,
-                    'is_active' => $userData['is_active'] ?? $record->user->is_active,
-                    'lat' => $userData['lat'] ?? $record->user->lat,
-                    'long' => $userData['long'] ?? $record->user->long,
-                    'city_id' => $data['city_id'] ?? $record->user->city_id,
-                ]);
-            }
-            
-            // Sync brands with the provider
-            $record->brands()->sync($this->brandsData ?? []);
-            
-            // Refresh the record to get updated relationships
-            return $record->fresh(['user', 'category', 'city', 'brands']);
-        });
+        // Update the user record after the provider is saved
+        // This runs after Filament has synced all relationships including brands
+        $userData = $this->userData ?? [];
+        
+        if ($this->record->user && !empty($userData)) {
+            $this->record->user->update([
+                'first_name' => $userData['first_name'] ?? $this->record->user->first_name,
+                'last_name' => $userData['last_name'] ?? $this->record->user->last_name,
+                'email' => $userData['email'] ?? $this->record->user->email,
+                'phone' => $userData['phone'] ?? $this->record->user->phone,
+                'is_active' => $userData['is_active'] ?? $this->record->user->is_active,
+                'lat' => $userData['lat'] ?? $this->record->user->lat,
+                'long' => $userData['long'] ?? $this->record->user->long,
+                'city_id' => $this->record->city_id ?? $this->record->user->city_id,
+            ]);
+        }
     }
 }
