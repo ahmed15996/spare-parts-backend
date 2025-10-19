@@ -57,7 +57,7 @@ class PostService extends BaseService
     {
         return $this->post->newQuery()
             ->withCount(['comments', 'likes as likes_count' => function ($q) { $q->where('value', 1); }])
-            ->findOrFail($id);
+            ->find($id);
     }
 
     public function accept(Post $post): bool
