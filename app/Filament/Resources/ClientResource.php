@@ -116,6 +116,10 @@ class ClientResource extends Resource
                     ->placeholder(__('Not specified')),
                 Tables\Columns\IconColumn::make('is_active')
                     ->label(__('Active'))
+                    ->translateLabel()
+                    ->state(function ($state) {
+                        return $state ? __('Active') : __('Inactive');
+                    })
                     ->boolean(),
                
                 Tables\Columns\TextColumn::make('created_at')
