@@ -75,6 +75,16 @@ class ProviderResource extends Resource
                             ->required()
                             ->maxLength(255),
                         
+                        Forms\Components\TextInput::make('user.password')
+                            ->label(__('Password'))
+                            ->password()
+                            ->dehydrateStateUsing(fn ($state) => !empty($state) ? \Illuminate\Support\Facades\Hash::make($state) : null)
+                            ->dehydrated(fn ($state) => !empty($state))
+                            ->helperText(__('Leave blank to generate a random password'))
+                            ->maxLength(255)
+                            ->revealable()
+                            ->visible(fn ($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord),
+                        
                         Forms\Components\TextInput::make('user.lat')
                             ->label(__('Latitude'))
                             ->numeric()
@@ -122,7 +132,7 @@ class ProviderResource extends Resource
                             ->required()
                             ->maxLength(255),
                            
-                        Forms\Components\Textarea::make('address')
+                        Forms\Components\Textarea::make('location')
                             ->label(__('Address'))
                             ->required()
                             ->columnSpanFull(),
