@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
 
 class ClientResource extends Resource
@@ -116,10 +117,6 @@ class ClientResource extends Resource
                     ->placeholder(__('Not specified')),
                 Tables\Columns\IconColumn::make('is_active')
                     ->label(__('Active'))
-                    ->translateLabel()
-                    ->state(function ($state) {
-                        return $state ? __('Active') : __('Inactive');
-                    })
                     ->boolean(),
                
                 Tables\Columns\TextColumn::make('created_at')
@@ -139,11 +136,69 @@ class ClientResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->modalHeading(__('Delete Client')),
+                Tables\Actions\DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->modalHeading(__('Delete Client and All Associated Data?'))
+                    ->modalDescription(__('This will delete the client and all associated data. Are you sure you want to continue?'))
+                    ->modalSubmitActionLabel(__('Yes, Delete'))
+                    ->before(function (User $record) {
+                        // Delete all associated data
+                        $record->cars()->delete();
+                        $record->requests()->delete();
+                        $record->posts()->delete();
+                        $record->reviews()->delete();
+                        $record->favourites()->delete();
+                        $record->reports()->delete();
+                        $record->fcmTokens()->delete();
+                        $record->blockedUsers()->delete(); // Blocks where this user is the blocker
+                        $record->blockedByUsers()->delete(); // Blocks where this user is blocked
+                        
+                        // Delete comments manually to avoid relationship issues
+                        DB::table('comments')->where('author_id', $record->id)->where('author_type', 'App\Models\User')->delete();
+                        
+                        \Filament\Notifications\Notification::make()
+                            ->title(__('Client Deleted'))
+                            ->body(__('Client and all associated data have been deleted.'))
+                            ->warning()
+                            ->send();
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->requiresConfirmation()
+                        ->modalHeading(__('Delete Clients and All Associated Data?'))
+                        ->modalDescription(__('This will delete the selected clients and all associated data. Are you sure you want to continue?'))
+                        ->modalSubmitActionLabel(__('Yes, Delete All'))
+                        ->before(function ($records) {
+                            $userIds = [];
+                            
+                            foreach ($records as $record) {
+                                $userIds[] = $record->id;
+                                
+                                // Delete all associated data
+                                $record->cars()->delete();
+                                $record->requests()->delete();
+                                $record->posts()->delete();
+                                $record->reviews()->delete();
+                                $record->favourites()->delete();
+                                $record->reports()->delete();
+                                $record->fcmTokens()->delete();
+                                $record->blockedUsers()->delete();
+                                $record->blockedByUsers()->delete();
+                            }
+                            
+                            // Delete comments manually to avoid relationship issues
+                            if (!empty($userIds)) {
+                                DB::table('comments')->whereIn('author_id', $userIds)->where('author_type', 'App\Models\User')->delete();
+                            }
+                            
+                            \Filament\Notifications\Notification::make()
+                                ->title(__('Clients Deleted'))
+                                ->body(__('Selected clients and all associated data have been deleted.'))
+                                ->warning()
+                                ->send();
+                        }),
                 ]),
             ]);
     }
@@ -195,10 +250,6 @@ class ClientResource extends Resource
                         Infolists\Components\TextEntry::make('updated_at')
                             ->label(__('Updated At'))
                             ->dateTime(),
-                        Infolists\Components\TextEntry::make('roles.name')
-                            ->label(__('Roles'))
-                            ->badge()
-                            ->separator(','),
                     ])
                     ->columns(2),
             ]);
@@ -225,8 +276,11 @@ class ClientResource extends Resource
     {
         return parent::getEloquentQuery()
             ->whereHas('roles', function ($query) {
-                $query->where('name', 'client');
+                $query->
+                where('guard_name', 'sanctum')
+                 ->where('name', 'client');
             })
-            ->with(['city']);
+            ->with(['city'])
+            ->orderBy('created_at', 'desc');
     }
 }

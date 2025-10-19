@@ -233,11 +233,184 @@ class ProviderResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->modalHeading(__('Delete Provider and All Associated Data?'))
+                    ->modalDescription(function (Provider $record) {
+                        $counts = [
+                            'products' => $record->products()->count(),
+                            'offers' => $record->offers()->count(),
+                            'posts' => $record->posts()->count(),
+                            'reviews' => $record->reviews()->count(),
+                            'subscriptions' => $record->subscriptions()->count(),
+                            'banners' => $record->banners()->count(),
+                        ];
+                        
+                        $total = array_sum($counts);
+                        
+                        if ($total > 0) {
+                            $details = [];
+                            if ($counts['products'] > 0) $details[] = __(':count product(s)', ['count' => $counts['products']]);
+                            if ($counts['offers'] > 0) $details[] = __(':count offer(s)', ['count' => $counts['offers']]);
+                            if ($counts['posts'] > 0) $details[] = __(':count post(s)', ['count' => $counts['posts']]);
+                            if ($counts['reviews'] > 0) $details[] = __(':count review(s)', ['count' => $counts['reviews']]);
+                            if ($counts['subscriptions'] > 0) $details[] = __(':count subscription(s)', ['count' => $counts['subscriptions']]);
+                            if ($counts['banners'] > 0) $details[] = __(':count banner(s)', ['count' => $counts['banners']]);
+                            
+                            return __('This provider has associated data: :details. All this data will be permanently deleted. Do you want to continue?', [
+                                'details' => implode(', ', $details)
+                            ]);
+                        }
+                        
+                        return __('Are you sure you want to delete this provider? This will also delete the associated user account.');
+                    })
+                    ->modalSubmitActionLabel(__('Yes, Delete'))
+                    ->before(function (Provider $record) {
+                        $counts = [
+                            'products' => $record->products()->count(),
+                            'offers' => $record->offers()->count(),
+                            'posts' => $record->posts()->count(),
+                            'comments' => $record->comments()->count(),
+                            'reviews' => $record->reviews()->count(),
+                            'subscriptions' => $record->subscriptions()->count(),
+                            'banners' => $record->banners()->count(),
+                            'favourites' => $record->favourites()->count(),
+                            'reports' => $record->reports()->count(),
+                        ];
+                        
+                        // Store the total count for the notification
+                        session()->put('provider_deleted_count_' . $record->id, array_sum($counts));
+                        
+                        // Delete all associated data (but NOT the user yet)
+                        $record->products()->delete();
+                        $record->offers()->delete();
+                        $record->posts()->delete();
+                        $record->comments()->delete();
+                        $record->reviews()->delete();
+                        $record->subscriptions()->delete();
+                        $record->banners()->delete();
+                        $record->favourites()->delete();
+                        $record->reports()->delete();
+                        $record->hiddenRequests()->delete();
+                        $record->days()->delete(); // DayProvider pivot records
+                        
+                        // Detach many-to-many relationships
+                        $record->brands()->detach();
+                        
+                        // Store user ID to delete after provider is deleted
+                        session()->put('provider_user_to_delete', $record->user_id);
+                    })
+                    ->after(function (Provider $record) {
+                        // Delete the user after the provider has been deleted
+                        $userId = session()->pull('provider_user_to_delete');
+                        if ($userId) {
+                            User::find($userId)?->delete();
+                        }
+                        
+                        // Show notification
+                        $total = session()->pull('provider_deleted_count_' . $record->id, 0);
+                        if ($total > 0) {
+                            \Filament\Notifications\Notification::make()
+                                ->title(__('Provider Data Deleted'))
+                                ->body(__('Provider and :count associated record(s) have been deleted.', ['count' => $total]))
+                                ->warning()
+                                ->send();
+                        }
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->requiresConfirmation()
+                        ->modalHeading(__('Delete Providers and All Associated Data?'))
+                        ->modalDescription(function ($records) {
+                            $totalCounts = [
+                                'products' => 0,
+                                'offers' => 0,
+                                'posts' => 0,
+                                'reviews' => 0,
+                                'subscriptions' => 0,
+                                'banners' => 0,
+                            ];
+                            
+                            foreach ($records as $record) {
+                                $totalCounts['products'] += $record->products()->count();
+                                $totalCounts['offers'] += $record->offers()->count();
+                                $totalCounts['posts'] += $record->posts()->count();
+                                $totalCounts['reviews'] += $record->reviews()->count();
+                                $totalCounts['subscriptions'] += $record->subscriptions()->count();
+                                $totalCounts['banners'] += $record->banners()->count();
+                            }
+                            
+                            $total = array_sum($totalCounts);
+                            
+                            if ($total > 0) {
+                                return __('The selected providers have :count associated record(s) in total. All this data will be permanently deleted. Do you want to continue?', ['count' => $total]);
+                            }
+                            
+                            return __('Are you sure you want to delete the selected providers? This will also delete their user accounts.');
+                        })
+                        ->modalSubmitActionLabel(__('Yes, Delete All'))
+                        ->before(function ($records) {
+                            $totalDeleted = 0;
+                            $userIdsToDelete = [];
+                            
+                            foreach ($records as $record) {
+                                $counts = [
+                                    'products' => $record->products()->count(),
+                                    'offers' => $record->offers()->count(),
+                                    'posts' => $record->posts()->count(),
+                                    'comments' => $record->comments()->count(),
+                                    'reviews' => $record->reviews()->count(),
+                                    'subscriptions' => $record->subscriptions()->count(),
+                                    'banners' => $record->banners()->count(),
+                                    'favourites' => $record->favourites()->count(),
+                                    'reports' => $record->reports()->count(),
+                                ];
+                                
+                                $totalDeleted += array_sum($counts);
+                                
+                                // Delete all associated data
+                                $record->products()->delete();
+                                $record->offers()->delete();
+                                $record->posts()->delete();
+                                $record->comments()->delete();
+                                $record->reviews()->delete();
+                                $record->subscriptions()->delete();
+                                $record->banners()->delete();
+                                $record->favourites()->delete();
+                                $record->reports()->delete();
+                                $record->hiddenRequests()->delete();
+                                $record->days()->delete();
+                                $record->brands()->detach();
+                                
+                                // Store user ID to delete after providers are deleted
+                                if ($record->user_id) {
+                                    $userIdsToDelete[] = $record->user_id;
+                                }
+                            }
+                            
+                            // Store for after hook
+                            session()->put('bulk_providers_deleted_count', $totalDeleted);
+                            session()->put('bulk_providers_users_to_delete', $userIdsToDelete);
+                        })
+                        ->after(function () {
+                            // Delete all users after providers have been deleted
+                            $userIdsToDelete = session()->pull('bulk_providers_users_to_delete', []);
+                            if (!empty($userIdsToDelete)) {
+                                User::whereIn('id', $userIdsToDelete)->delete();
+                            }
+                            
+                            // Show notification
+                            $totalDeleted = session()->pull('bulk_providers_deleted_count', 0);
+                            if ($totalDeleted > 0) {
+                                \Filament\Notifications\Notification::make()
+                                    ->title(__('Providers Data Deleted'))
+                                    ->body(__('Providers and :count associated record(s) have been deleted.', ['count' => $totalDeleted]))
+                                    ->warning()
+                                    ->send();
+                            }
+                        }),
                 ]),
             ]);
     }
@@ -451,3 +624,4 @@ class ProviderResource extends Resource
         return parent::getEloquentQuery()->with(['user', 'category', 'city', 'brands']);
     }
 }
+

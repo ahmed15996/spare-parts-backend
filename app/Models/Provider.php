@@ -54,7 +54,7 @@ class Provider extends Model implements HasMedia
 
     public function comments()
     {
-        return $this->morphMany('App\Models\Comment', 'commentable');
+        return $this->morphMany('App\Models\Comment', 'author');
     }
 
     public function days()

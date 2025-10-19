@@ -84,7 +84,7 @@ class User extends Model implements FilamentUser, HasMedia, Authenticatable, Aut
 
     public function comments()
     {
-        return $this->morphMany('App\Models\Comment', 'commentable');
+        return $this->morphMany('App\Models\Comment', 'author');
     }
 
     public function adminRequests()
