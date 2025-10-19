@@ -28,13 +28,13 @@ class User extends Model implements FilamentUser, HasMedia, Authenticatable, Aut
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'activated_at' => 'datetime',
             'is_active' => 'boolean',
+            'is_verified' => 'boolean',
         ];
     }
-    protected $fillable = array('first_name', 'last_name', 'email', 'phone', 'city_id', 'is_active', 'lat', 'long', 'active_code', 'is_verified', 'address');
+    protected $fillable = array('first_name', 'last_name', 'email', 'password', 'phone', 'city_id', 'is_active', 'lat', 'long', 'active_code', 'is_verified', 'address');
 
     public function sendActiveCode()
     {
@@ -52,8 +52,14 @@ class User extends Model implements FilamentUser, HasMedia, Authenticatable, Aut
     }
     public function canAccessPanel(Panel $panel): bool
     {
-        // Example: Allow access for users with a specific role or condition
-        return $this->hasRole('super_admin');
+        // Allow users with any role EXCEPT 'client' or 'provider' (app users)
+        // This allows super_admin, admin, and any other dashboard roles
+        if ($this->hasRole(['client', 'provider'])) {
+            return false;
+        }
+        
+        // Allow if user has any other role (dashboard users)
+        return $this->roles()->where('guard_name', 'web')->exists();
     }
 
     public function city()

@@ -34,7 +34,7 @@ class AdminPanelProvider extends PanelProvider
             ->unsavedChangesAlerts()
             ->id('admin')
             ->path('admin')
-            ->emailVerification()
+            // ->emailVerification() // Disabled for dashboard users
             ->databaseNotifications()
             ->databaseNotificationsPolling('5s')
             ->login()
