@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BrandResource\Pages;
 use App\Filament\Resources\BrandResource\RelationManagers;
 use App\Models\Brand;
+use App\Models\BrandModel;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -104,11 +105,127 @@ class BrandResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->modalHeading(fn (Brand $record) => $record->models()->count() > 0 
+                        ? __('Delete Brand and Associated Models?')
+                        : __('Delete Brand?'))
+                    ->modalDescription(function (Brand $record) {
+                        $modelsCount = $record->models()->count();
+                        if ($modelsCount > 0) {
+                            // Count total cars across all models
+                            $carsCount = 0;
+                            foreach ($record->models as $model) {
+                                $carsCount += $model->cars()->count();
+                            }
+                            
+                            if ($carsCount > 0) {
+                                return __('This brand has :models_count model(s) with :cars_count associated car(s). Do you want to delete the brand along with all models and cars?', [
+                                    'models_count' => $modelsCount,
+                                    'cars_count' => $carsCount
+                                ]);
+                            }
+                            
+                            return __('This brand has :count model(s). Do you want to delete the brand along with all models?', ['count' => $modelsCount]);
+                        }
+                        
+                        return __('Are you sure you want to delete this brand?');
+                    })
+                    ->modalSubmitActionLabel(__('Yes, Delete'))
+                    ->before(function (Brand $record) {
+                        // Delete all associated models and their cars
+                        if ($record->models()->count() > 0) {
+                            $modelsCount = $record->models()->count();
+                            $carsCount = 0;
+                            
+                            // Delete cars for each model, then delete the model
+                            foreach ($record->models as $model) {
+                                $carsCount += $model->cars()->count();
+                                $model->cars()->delete();
+                            }
+                            
+                            // Delete all models
+                            $record->models()->delete();
+                            
+                            // Show notification
+                            $message = $carsCount > 0 
+                                ? __(':models_count model(s) and :cars_count car(s) have been deleted.', [
+                                    'models_count' => $modelsCount,
+                                    'cars_count' => $carsCount
+                                ])
+                                : __(':count model(s) have been deleted.', ['count' => $modelsCount]);
+                            
+                            \Filament\Notifications\Notification::make()
+                                ->title(__('Models Deleted'))
+                                ->body($message)
+                                ->warning()
+                                ->send();
+                        }
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->requiresConfirmation()
+                        ->modalHeading(__('Delete Brands and Associated Models?'))
+                        ->modalDescription(function ($records) {
+                            $totalModels = 0;
+                            $totalCars = 0;
+                            
+                            foreach ($records as $record) {
+                                $totalModels += $record->models()->count();
+                                foreach ($record->models as $model) {
+                                    $totalCars += $model->cars()->count();
+                                }
+                            }
+                            
+                            if ($totalModels > 0) {
+                                if ($totalCars > 0) {
+                                    return __('The selected brands have :models_count model(s) with :cars_count car(s) in total. Do you want to delete the brands along with all models and cars?', [
+                                        'models_count' => $totalModels,
+                                        'cars_count' => $totalCars
+                                    ]);
+                                }
+                                
+                                return __('The selected brands have :count model(s) in total. Do you want to delete the brands along with all models?', ['count' => $totalModels]);
+                            }
+                            
+                            return __('Are you sure you want to delete the selected brands?');
+                        })
+                        ->modalSubmitActionLabel(__('Yes, Delete All'))
+                        ->before(function ($records) {
+                            $totalModelsDeleted = 0;
+                            $totalCarsDeleted = 0;
+                            
+                            // Delete all associated models and cars for each brand
+                            foreach ($records as $record) {
+                                if ($record->models()->count() > 0) {
+                                    foreach ($record->models as $model) {
+                                        $totalCarsDeleted += $model->cars()->count();
+                                        $model->cars()->delete();
+                                    }
+                                    
+                                    $totalModelsDeleted += $record->models()->count();
+                                    $record->models()->delete();
+                                }
+                            }
+                            
+                            // Show notification if anything was deleted
+                            if ($totalModelsDeleted > 0) {
+                                $message = $totalCarsDeleted > 0 
+                                    ? __(':models_count model(s) and :cars_count car(s) have been deleted.', [
+                                        'models_count' => $totalModelsDeleted,
+                                        'cars_count' => $totalCarsDeleted
+                                    ])
+                                    : __(':count model(s) have been deleted.', ['count' => $totalModelsDeleted]);
+                                
+                                \Filament\Notifications\Notification::make()
+                                    ->title(__('Models Deleted'))
+                                    ->body($message)
+                                    ->warning()
+                                    ->send();
+                            }
+                        }),
                 ]),
             ]);
     }

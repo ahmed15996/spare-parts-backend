@@ -320,5 +320,17 @@
     "Delete Brand Models and Associated Cars?": "Delete Brand Models and Associated Cars?",
     "The selected brand models have :count associated car(s) in total. Do you want to delete the brand models along with all associated cars?": "The selected brand models have :count associated car(s) in total. Do you want to delete the brand models along with all associated cars?",
     "Are you sure you want to delete the selected brand models?": "Are you sure you want to delete the selected brand models?",
-    "Yes, Delete All": "Yes, Delete All"
+    "Yes, Delete All": "Yes, Delete All",
+    "Delete Brand and Associated Models?": "Delete Brand and Associated Models?",
+    "Delete Brand?": "Delete Brand?",
+    "This brand has :models_count model(s) with :cars_count associated car(s). Do you want to delete the brand along with all models and cars?": "This brand has :models_count model(s) with :cars_count associated car(s). Do you want to delete the brand along with all models and cars?",
+    "This brand has :count model(s). Do you want to delete the brand along with all models?": "This brand has :count model(s). Do you want to delete the brand along with all models?",
+    "Are you sure you want to delete this brand?": "Are you sure you want to delete this brand?",
+    ":models_count model(s) and :cars_count car(s) have been deleted.": ":models_count model(s) and :cars_count car(s) have been deleted.",
+    ":count model(s) have been deleted.": ":count model(s) have been deleted.",
+    "Models Deleted": "Models Deleted",
+    "Delete Brands and Associated Models?": "Delete Brands and Associated Models?",
+    "The selected brands have :models_count model(s) with :cars_count car(s) in total. Do you want to delete the brands along with all models and cars?": "The selected brands have :models_count model(s) with :cars_count car(s) in total. Do you want to delete the brands along with all models and cars?",
+    "The selected brands have :count model(s) in total. Do you want to delete the brands along with all models?": "The selected brands have :count model(s) in total. Do you want to delete the brands along with all models?",
+    "Are you sure you want to delete the selected brands?": "Are you sure you want to delete the selected brands?"
 }

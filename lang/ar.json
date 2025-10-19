@@ -1446,5 +1446,17 @@
     "Delete Brand Models and Associated Cars?": "حذف موديلات الماركات والسيارات المرتبطة؟",
     "The selected brand models have :count associated car(s) in total. Do you want to delete the brand models along with all associated cars?": "الموديلات المحددة تحتوي على :count سيارة (سيارات) مرتبطة إجمالاً. هل تريد حذف الموديلات مع جميع السيارات المرتبطة؟",
     "Are you sure you want to delete the selected brand models?": "هل أنت متأكد من حذف الموديلات المحددة؟",
-    "Yes, Delete All": "نعم، احذف الكل"
+    "Yes, Delete All": "نعم، احذف الكل",
+    "Delete Brand and Associated Models?": "حذف الماركة والموديلات المرتبطة؟",
+    "Delete Brand?": "حذف الماركة؟",
+    "This brand has :models_count model(s) with :cars_count associated car(s). Do you want to delete the brand along with all models and cars?": "هذه الماركة تحتوي على :models_count موديل (موديلات) مع :cars_count سيارة (سيارات) مرتبطة. هل تريد حذف الماركة مع جميع الموديلات والسيارات؟",
+    "This brand has :count model(s). Do you want to delete the brand along with all models?": "هذه الماركة تحتوي على :count موديل (موديلات). هل تريد حذف الماركة مع جميع الموديلات؟",
+    "Are you sure you want to delete this brand?": "هل أنت متأكد من حذف هذه الماركة؟",
+    ":models_count model(s) and :cars_count car(s) have been deleted.": "تم حذف :models_count موديل (موديلات) و :cars_count سيارة (سيارات).",
+    ":count model(s) have been deleted.": "تم حذف :count موديل (موديلات).",
+    "Models Deleted": "تم حذف الموديلات",
+    "Delete Brands and Associated Models?": "حذف الماركات والموديلات المرتبطة؟",
+    "The selected brands have :models_count model(s) with :cars_count car(s) in total. Do you want to delete the brands along with all models and cars?": "الماركات المحددة تحتوي على :models_count موديل (موديلات) مع :cars_count سيارة (سيارات) إجمالاً. هل تريد حذف الماركات مع جميع الموديلات والسيارات؟",
+    "The selected brands have :count model(s) in total. Do you want to delete the brands along with all models?": "الماركات المحددة تحتوي على :count موديل (موديلات) إجمالاً. هل تريد حذف الماركات مع جميع الموديلات؟",
+    "Are you sure you want to delete the selected brands?": "هل أنت متأكد من حذف الماركات المحددة؟"
 }  
