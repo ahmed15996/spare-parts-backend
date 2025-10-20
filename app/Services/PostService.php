@@ -128,7 +128,7 @@ class PostService extends BaseService
                 'ar'=>$type === 1 ? $acceptance_body['ar'] : $rejection_body['ar'],
             ],
             'metadata'=>[
-                'type'=>$type === 1 ? 'accepted' : 'rejected',
+                'type'=>$type === 1 ? 'post_accepted' : 'post_rejected',
                 'route'=>'posts.show',
                 'post_id'=>$post->id,
             ]
