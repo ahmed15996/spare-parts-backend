@@ -22,9 +22,6 @@ class ProductController extends Controller
         $provider = Auth::user()->provider;
         $products = Product::query()->where('provider_id', $provider->id)->latest()->get();
 
-        if($products->isEmpty()){
-            return $this->errorResponse(__('No products found'), 404);
-        }
         return $this->successResponse(ProductResource::collection($products), __('Products fetched successfully'));
     }
 
