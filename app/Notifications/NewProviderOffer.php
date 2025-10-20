@@ -50,6 +50,7 @@ class NewProviderOffer extends Notification implements ShouldQueue
                 'type' => 'new_provider_offer',
                 'route' => 'client.requests.offers.show',
                 'model_id' => $offerId,
+                'request_id' => $this->offer->request_id,
             ]);
 
         return $message;

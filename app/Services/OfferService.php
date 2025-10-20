@@ -137,6 +137,7 @@ class OfferService extends BaseService
                     'type'=>'new_provider_offer',
                     'route'=>'client.requests.offers.show',
                     'model_id'=>$offer->id,
+                    'request_id'=>$offer->request->id
                 ]
 
             ];
