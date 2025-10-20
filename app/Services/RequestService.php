@@ -206,6 +206,8 @@ class RequestService extends BaseService
             $query->where('category_id', $provider->category_id);
         }
         $query->where('city_id', $provider->city_id);
+        // creation day after this provider created
+        $query->where('created_at', '>=', $provider->created_at);
         $query->whereHas('car', function($q) use ($provider){
             $q->whereHas('brand',function($q) use ($provider){
                 $q->whereIn('brands.id', $provider->brands->pluck('id'));
