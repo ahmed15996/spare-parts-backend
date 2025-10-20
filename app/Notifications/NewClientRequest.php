@@ -46,7 +46,7 @@ class NewClientRequest extends Notification implements ShouldQueue
             ->data([
                 'type' => (string)($this->data['metadata']['type'] ?? ''),
                 'route' => 'provider.requests.show',
-                'request_id' => (string)($this->data['metadata']['request_id'] ?? ''),
+                'model_id' => (string)($this->data['metadata']['request_id'] ?? ''),
             ]);
             return $message;
     }

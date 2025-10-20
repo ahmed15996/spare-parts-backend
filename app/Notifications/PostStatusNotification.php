@@ -46,7 +46,7 @@ class PostStatusNotification extends Notification implements ShouldQueue
             ->data([
                 'type' => (string)($this->data['metadata']['type'] ?? ''),
                 'route' => 'posts.show',
-                'post_id' => (string)($this->data['metadata']['post_id'] ?? ''),
+                'model_id' => (string)($this->data['metadata']['post_id'] ?? ''),
             ]);
             return $message;
     }
