@@ -36,7 +36,7 @@ class PostController extends Controller
         $data = $request->validate([
             'content' => ['required', 'string'],
             'media' => ['nullable', 'array'],
-            'media.*' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'media.*' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg'],
         ]);
 
         $user = Auth::user();
