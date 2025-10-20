@@ -130,7 +130,7 @@ class PostService extends BaseService
             'metadata'=>[
                 'type'=>$type === 1 ? 'post_accepted' : 'post_rejected',
                 'route'=>'posts.show',
-                'post_id'=>$post->id,
+                'model_id'=>$post->id,
             ]
         ];
         $recipent->notify(new PostStatusNotification($post,$data));

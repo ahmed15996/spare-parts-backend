@@ -151,7 +151,7 @@ class RequestService extends BaseService
                 'metadata'=>[
                     'type'=>'new_client_request',
                     'route'=>'provider.requests.show',
-                    'request_id'=>$request->id,
+                    'model_id'=>$request->id,
                 ]
 
             ];
