@@ -29,6 +29,7 @@ class ProviderResource extends JsonResource
                 'address' => $this->user->address,
                 'category' => CategoryResource::make($this->category),
                 'open_status' => $this->isCurrentlyOpen(),
+                'license' => $this->commercial_number,
 
             ];
 
