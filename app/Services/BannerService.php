@@ -149,4 +149,53 @@ class BannerService extends BaseService
     {
         return $this->banner->where('provider_id', $provider->id)->get();
     }
+
+    /**
+     * Get nearest banners to given coordinates using Haversine formula
+     * Fetches banners from providers nearest to the user's location
+     * @param float $lat Latitude of the point
+     * @param float $long Longitude of the point
+     * @param int $limit Maximum number of banners to return (default: 20)
+     * @param array $scopes Additional scopes to apply (e.g., ['home', 'active'])
+     * @return Collection
+     */
+    public function getNearestBanners(float $lat, float $long, int $limit = 20, array $scopes = []): Collection
+    {
+        $query = $this->banner
+            ->join('providers', 'banners.provider_id', '=', 'providers.id')
+            ->join('users', 'providers.user_id', '=', 'users.id')
+            ->whereNotNull('users.lat')
+            ->whereNotNull('users.long')
+            ->selectRaw("
+                banners.*,
+                (6371 * acos(
+                    cos(radians(?)) * 
+                    cos(radians(users.lat)) * 
+                    cos(radians(users.long) - radians(?)) + 
+                    sin(radians(?)) * 
+                    sin(radians(users.lat))
+                )) AS distance
+            ", [$lat, $long, $lat])
+            ->orderBy('distance', 'asc');
+
+        // Apply additional scopes if provided
+        foreach ($scopes as $scope) {
+            $query->$scope();
+        }
+
+        $query->limit($limit);
+
+        $banners = $query->get();
+        
+        // If no banners found with location, return regular banners with scopes
+        if ($banners->count() === 0) {
+            $fallbackQuery = $this->banner->query();
+            foreach ($scopes as $scope) {
+                $fallbackQuery->$scope();
+            }
+            return $fallbackQuery->limit($limit)->get();
+        }
+
+        return $banners;
+    }
 }
