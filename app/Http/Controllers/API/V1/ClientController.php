@@ -43,6 +43,7 @@ class ClientController extends Controller
         }
         else{
             $providers = $this->providerService->getActiveProviders();
+            $nearestBanners = [];
         }
 
         return $this->successResponse([
