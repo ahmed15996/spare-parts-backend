@@ -34,19 +34,20 @@ class ClientController extends Controller
     public function home(Request $request){
         $user = Auth::user();
         $categories = $this->categoryService->getWithScopes();
+        $banners = $this->bannerService->getWithScopes(['home','active']);
         
         // Fetch banners and providers based on user location
         if($user && $user->lat && $user->long){
-            $banners = $this->bannerService->getNearestBanners($user->lat, $user->long, 20, ['home','active']);
+            $nearestBanners = $this->bannerService->getNearestBanners($user->lat, $user->long, 20, ['home','active']);
             $providers = $this->providerService->getNearestProviders($user->lat, $user->long,$request->limit);
         }
         else{
-            $banners = $this->bannerService->getWithScopes(['home','active']);
             $providers = $this->providerService->getActiveProviders();
         }
 
         return $this->successResponse([
             'banners' => BannerResource::collection($banners),
+            'nearest_banners' => BannerResource::collection($nearestBanners),
             'categories' => CategoryResource::collection($categories),
             'providers' => ProviderResource::collection($providers),
         ]);
