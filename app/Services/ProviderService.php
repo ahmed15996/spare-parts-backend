@@ -6,9 +6,12 @@ use App\Exceptions\BusinessLogicException;
 use App\Models\Package;
 use App\Models\Provider;
 use App\Models\Subscription;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use function App\Helpers\setting;
 use function App\Helpers\settings;
 
@@ -235,5 +238,88 @@ class ProviderService extends BaseService
             'total' => $finalPrice ? $finalPrice : $package->price,
         ]);
         return $subscription;
+    }
+
+
+    public function createProviderWithoutRequest(array $data): ?Provider{
+        try{
+        DB::transaction(function () use ($data) {
+            // Create User
+            $user = User::create([
+                'first_name' => $data['first_name'],
+                'last_name' => $data['last_name'],
+                'email' => $data['email'],
+                'phone' => $data['phone'],
+                'city_id' => $data['city_id'] == 0 ? null : $data['city_id'],
+                'lat' => $data['lat'],
+                'long' => $data['long'],
+                'address' => $data['address'],
+                'is_active' => true,
+                'is_verified' => true,
+            ]);
+
+            // Assign provider role
+            $role = Role::where('name', 'provider')->where('guard_name', 'sanctum')->first();
+            // delete all roles from the user
+            $user->roles()->delete();
+            $user->assignRole($role);
+
+            // Create Provider
+            $provider = Provider::create([
+                'user_id' => $user->id,
+                'store_name' => [
+                    'ar' => $data['store_name']['ar'],
+                    'en' => $data['store_name']['en'],
+                ],
+                'description' => $data['description'],
+                'commercial_number' => $data['commercial_number'],
+                'location' => $data['location'],
+                'category_id' => $data['category_id'],
+                'city_id' => $data['city_id'] == 0 ? null : $data['city_id'],
+            ]);
+
+            // Ensure provider was created successfully with an ID
+            if (!$provider || !$provider->id) {
+                throw new \Exception(__('Failed to create provider record'));
+            }
+
+            // Handle brands relationship
+                if ($data['brands']) {
+                $brandIds = is_string($data['brands']) 
+                    ? json_decode($data['brands'], true) 
+                    : $data['brands'];
+                
+                if (is_array($brandIds) && !empty($brandIds)) {
+                    // Filter out any invalid brand IDs
+                    $validBrandIds = array_filter(array_map('intval', $brandIds), function($id) {
+                        return $id > 0;
+                    });
+                    
+                    if (!empty($validBrandIds)) {
+                        $provider->brands()->sync($validBrandIds);
+                    }
+                }
+            }
+
+            // Copy media files from registration request to provider
+            if(isset($data['logo'])){
+                foreach ($data['logo'] as $media) {
+                    $media->copy($provider, 'logo');
+                }
+            }   
+            if(isset($data['commercial_number_image'])){
+                foreach ($data['commercial_number_image'] as $media) {
+                    $media->copy($provider, 'commercial_number_image');
+                }   
+            }
+
+            // Update registration request status
+            $provider->update(['status' => 1]);
+        });
+        return $this->provider;
+        }catch(\Exception $e){
+            Log::error('Failed to create provider without request: ' . $e->getMessage());
+            return null;
+        }
     }
 }

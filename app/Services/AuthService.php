@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Services\BaseService;
 use App\Services\UserService;
 use App\Services\ProviderRegisterationRequestService;
+use App\Services\ProviderService;
+use function App\Helpers\setting;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Http\Request;
@@ -18,7 +20,8 @@ class AuthService extends BaseService
 
     public function __construct(
         private UserService $userService,
-        private ProviderRegisterationRequestService $providerRegistrationService
+        private ProviderRegisterationRequestService $providerRegistrationService,
+        private ProviderService $providerService
     ) {
     }
 
@@ -116,6 +119,15 @@ class AuthService extends BaseService
     public function providerRegisterRequest(array $data)
     {
         $data['phone'] = $this->normalizePhone($data['phone']);
+        if(!setting('general','reqeust_for_provider_registration')){
+            // directly create provider without request 
+            $provider = $this->providerService->createProviderWithoutRequest($data);
+            if($provider){
+                return $this->successResponse([],__('Provider registered successfully'));
+            }else{
+                return $this->errorResponse(__('Failed to register provider'));
+            }
+        }
         return $this->providerRegistrationService->createRegistrationRequest($data);
     }
     public function clientRegister(array $data)

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Cache;
 class GeneralSettings extends Settings
 {
     public int $packages_discount;
+    public int $reqeust_for_provider_registration;
 
     public static function group(): string
     {
@@ -22,7 +23,7 @@ class GeneralSettings extends Settings
         
         // Clear specific general settings cache
         Cache::forget('setting_general_packages_discount');
-        
+        Cache::forget('setting_general_reqeust_for_provider_registration');
         return $this;
     }
 }
