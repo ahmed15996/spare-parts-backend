@@ -31,7 +31,7 @@ class ManageGeneral extends SettingsPage
                     ->suffix('%')
                     ->required(),
                 Forms\Components\Toggle::make('reqeust_for_provider_registration')
-                    ->label('Request for Provider Registration')
+                    ->label(__('Request for Provider Registration'))
                     ->translateLabel()
                     ->required(),
             ]);

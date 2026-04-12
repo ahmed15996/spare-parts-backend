@@ -1447,6 +1447,7 @@
     "The selected brand models have :count associated car(s) in total. Do you want to delete the brand models along with all associated cars?": "الموديلات المحددة تحتوي على :count سيارة (سيارات) مرتبطة إجمالاً. هل تريد حذف الموديلات مع جميع السيارات المرتبطة؟",
     "Are you sure you want to delete the selected brand models?": "هل أنت متأكد من حذف الموديلات المحددة؟",
     "Yes, Delete All": "نعم، احذف الكل",
+    "Request for Provider Registration":"طلب تسجيل المزود",
     "Delete Brand and Associated Models?": "حذف الماركة والموديلات المرتبطة؟",
     "Delete Brand?": "حذف الماركة؟",
     "This brand has :models_count model(s) with :cars_count associated car(s). Do you want to delete the brand along with all models and cars?": "هذه الماركة تحتوي على :models_count موديل (موديلات) مع :cars_count سيارة (سيارات) مرتبطة. هل تريد حذف الماركة مع جميع الموديلات والسيارات؟",
