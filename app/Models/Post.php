@@ -29,6 +29,10 @@ class Post extends Model implements HasMedia
     {
         return $this->morphMany(Like::class, 'likeable');
     }
+    public function reports()
+    {
+        return $this->morphMany(Report::class, 'reportable');
+    }
 
     public function getAuthorDisplayNameAttribute(): ?string
     {

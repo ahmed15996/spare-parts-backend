@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Filament\Notifications\Actions\Action;
+use App\Models\Post;
 
 class ReportService extends BaseService
 {
@@ -26,11 +27,12 @@ class ReportService extends BaseService
         $reportable = match ($type) {
             0 => Comment::query()->find($targetId),
             1 => Provider::query()->find($targetId),
+            2 => Post::query()->find($targetId),
             default => null,
         };
 
         if (!$reportable) {
-            $key = $type === 0 ? 'comment_id' : ($type === 1 ? 'provider_id' : 'model_id');
+            $key = $type === 0 ? 'comment_id' : ($type === 1 ? 'provider_id' : ($type === 2 ? 'post_id' : 'model_id'));
             throw ValidationException::withMessages([
                 $key => __('The selected target was not found.'),
             ]);

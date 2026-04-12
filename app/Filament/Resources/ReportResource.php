@@ -35,7 +35,7 @@ class ReportResource extends Resource
                 Tables\Columns\TextColumn::make('reporter.name')->label(__('Reporter'))->searchable(),
                 Tables\Columns\TextColumn::make('reportable_type')->label(__('Type'))->formatStateUsing(function ($state) {
                     if (!$state) return '-';
-                    return str_contains($state, 'Comment') ? __('Comment') : (str_contains($state, 'Provider') ? __('Provider') : $state);
+                    return str_contains($state, 'Comment') ? __('Comment') : (str_contains($state, 'Provider') ? __('Provider') : (str_contains($state, 'Post') ? __('Post') : $state));
                 }),
                 Tables\Columns\TextColumn::make('created_at')->label(__('Created At'))->dateTime()->since(),
             ])
@@ -57,12 +57,14 @@ class ReportResource extends Resource
                         Infolists\Components\TextEntry::make('reportable_type')->label(__('Type'))
                             ->formatStateUsing(function ($state) {
                                 if (!$state) return '-';
-                                return str_contains($state, 'Comment') ? __('Comment') : (str_contains($state, 'Provider') ? __('Provider') : $state);
+                                return str_contains($state, 'Comment') ? __('Comment') : (str_contains($state, 'Provider') ? __('Provider') : (str_contains($state, 'Post') ? __('Post') : $state));
                             }),
                         Infolists\Components\TextEntry::make('reportable_id')->label(__('Provider ID'))
                             ->visible(fn ($record) => $record->reportable && is_a($record->reportable, \App\Models\Provider::class)),
                         Infolists\Components\TextEntry::make('reportable_id')->label(__('Comment ID'))
                             ->visible(fn ($record) => $record->reportable && is_a($record->reportable, \App\Models\Comment::class)),
+                        Infolists\Components\TextEntry::make('reportable_id')->label(__('Post ID'))
+                            ->visible(fn ($record) => $record->reportable && is_a($record->reportable, \App\Models\Post::class)),
                         Infolists\Components\TextEntry::make('reason')->label(__('Reason'))->columnSpanFull(),
                         Infolists\Components\TextEntry::make('created_at')->label(__('Created At'))->dateTime('d/m/Y H:i'),
                     ])->columns(2),
@@ -92,6 +94,18 @@ class ReportResource extends Resource
                             ->label(__('Reason'))
                             ->visible(fn ($record) => $record->reportable && is_a($record->reportable, \App\Models\Provider::class))
                             ->columnSpanFull(),
+
+                        // If reportable is Post: show post content and its author info
+                        Infolists\Components\TextEntry::make('reportable.content')
+                            ->label(__('Post Content'))
+                            ->visible(fn ($record) => $record->reportable && is_a($record->reportable, \App\Models\Post::class))
+                            ->columnSpanFull(),
+                        Infolists\Components\TextEntry::make('reportable.author.name')
+                            ->label(__('Author'))
+                            ->visible(fn ($record) => $record->reportable && is_a($record->reportable, \App\Models\Post::class)),
+                        Infolists\Components\TextEntry::make('reportable.author.phone')
+                            ->label(__('Phone'))
+                            ->visible(fn ($record) => $record->reportable && is_a($record->reportable, \App\Models\Post::class)),
                     ])->columns(2),
             ]);
     }
