@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Auth;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use App\Settings\ContentSettings;
 
 
 
@@ -90,3 +91,9 @@ Route::post('/debug-broadcasting-auth', function (Illuminate\Http\Request $reque
         ]
     ]);
 })->middleware(['web', 'auth']);
+
+Route::get('/privacy-policy', function (ContentSettings $contentSettings) {
+    return view('static-pages.pages.privacy-policy', [
+        'privacyAr' => $contentSettings->privacy_ar,
+    ]);
+});
