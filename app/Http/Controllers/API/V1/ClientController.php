@@ -40,14 +40,17 @@ class ClientController extends Controller
         $adminBanners = $this->adminBannerService->getActiveBanners();
 
         if($user && $user->lat && $user->long){
+            $nearestBanners = $this->bannerService->getNearestBanners($user->lat, $user->long, 20, ['home','active']);
             $providers = $this->providerService->getNearestProviders($user->lat, $user->long,$request->limit);
         }
         else{
             $providers = $this->providerService->getActiveProviders();
+            $nearestBanners = [];
         }
 
         return $this->successResponse([
             'admin_banners' => AdminBannerResource::collection($adminBanners),
+            'nearest_banners' => BannerResource::collection($nearestBanners),
             'categories' => CategoryResource::collection($categories),
             'providers' => ProviderResource::collection($providers),
         ]);
