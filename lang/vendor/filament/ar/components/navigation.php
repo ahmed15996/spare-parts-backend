@@ -25,6 +25,7 @@ return [
         'general_settings' => 'الإعدادات العامة',
         'social_media' => 'وسائل التواصل الاجتماعي',
         'onboardings' => 'التوجيهات',
+        'admin_banners' => 'البانرات الإدارية',
     ],
 
     'actions' => [

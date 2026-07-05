@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Http\Resources\API\V1\AdminBannerResource;
 use App\Http\Resources\API\V1\BannerResource;
 use App\Http\Resources\API\V1\ProviderResource;
 use App\Http\Resources\API\V1\ProviderBreadcramb;
@@ -15,6 +16,7 @@ use App\Models\Product;
 use App\Models\Provider;
 use App\Models\Favourite;
 use App\Services\CategoryService;
+use App\Services\AdminBannerService;
 use App\Services\BannerService;
 use App\Services\ProviderService;
 use App\Services\ProviderSearchService;
@@ -26,6 +28,7 @@ class ClientController extends Controller
 {
     public function __construct(protected CategoryService $categoryService,
     protected BannerService $bannerService,
+    protected AdminBannerService $adminBannerService,
     protected ProviderService $providerService,
     protected ProviderSearchService $providerSearchService,
     protected ProductService $productService)
@@ -34,21 +37,17 @@ class ClientController extends Controller
     public function home(Request $request){
         $user = Auth::user();
         $categories = $this->categoryService->getWithScopes();
-        $banners = $this->bannerService->getWithScopes(['home','active']);
-        
-        // Fetch banners and providers based on user location
+        $adminBanners = $this->adminBannerService->getActiveBanners();
+
         if($user && $user->lat && $user->long){
-            $nearestBanners = $this->bannerService->getNearestBanners($user->lat, $user->long, 20, ['home','active']);
             $providers = $this->providerService->getNearestProviders($user->lat, $user->long,$request->limit);
         }
         else{
             $providers = $this->providerService->getActiveProviders();
-            $nearestBanners = [];
         }
 
         return $this->successResponse([
-            'banners' => BannerResource::collection($banners),
-            'nearest_banners' => BannerResource::collection($nearestBanners),
+            'admin_banners' => AdminBannerResource::collection($adminBanners),
             'categories' => CategoryResource::collection($categories),
             'providers' => ProviderResource::collection($providers),
         ]);

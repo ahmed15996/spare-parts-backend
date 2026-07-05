@@ -25,6 +25,7 @@ return [
         'general_settings' => 'General Settings',
         'social_media' => 'Social Media',
         'onboardings' => 'Onboardings',
+        'admin_banners' => 'Admin Banners',
     ],
 
     'actions' => [
