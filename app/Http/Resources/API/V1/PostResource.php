@@ -88,7 +88,7 @@ class PostResource extends JsonResource
                 $data['author'] = [
                     'id' => $author->id,
                     'name' => $author->name ?? ($author->store_name ?? null),
-                    'address' => $author->address ?? null,
+                    'address' => $author->provider->location ?? null,
                     'avatar' => method_exists($author, 'getFirstMediaUrl') ? $author->getFirstMediaUrl('logo') : null,
                 ];
             }

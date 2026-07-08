@@ -26,7 +26,7 @@ class ProviderResource extends JsonResource
                 'logo' => $this->getFirstMediaUrl('logo'),
                 'phone' => $this->user->phone,
                 'rating' => $this->getAverageRating(),
-                'address' => $this->user->address,
+                'address' => $this->location,
                 'category' => CategoryResource::make($this->category),
                 'open_status' => $this->isCurrentlyOpen(),
                 'license' => $this->commercial_number,

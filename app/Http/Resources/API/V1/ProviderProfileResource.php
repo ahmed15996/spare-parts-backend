@@ -32,7 +32,7 @@ class ProviderProfileResource extends JsonResource
                  'commercial_number_image' => $this->getFirstMediaUrl('commercial_number_image'),
                  'lat' => $this->user->lat,
                  'long' => $this->user->long,
-                 'address' => $this->user->address,
+                 'address' => $this->location,
                  
             ];
 
